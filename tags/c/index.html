@@ -1,0 +1,100 @@
+<!DOCTYPE html><html class="appearance-auto" lang="en"><head><meta charset="UTF-8"><title>Stream's blog</title><meta name="description" content="专业写BUG"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><!-- End Baidu Analytics --><link rel="icon" href="/images/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/widget-post-list.css"><meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">Stream's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><span>Tags · c++</span></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/about">About</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">Home</a></h3><h3 class="is-inline-block"><a href="/about">About</a></h3><h3 class="is-inline-block"><a href="/archives">Archives</a></h3></header><main><article class="post-container is-flex is-justify-content-center section container is-max-widescreen pt-4 px-2"><div class="columns is-variable is-1-tablet is-3-desktop-only is-2-widescreen is-full-width"><section class="column"><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/c++"><i class="tag post-item-tag">c++</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2021/05/22/C-%E5%9F%BA%E7%A1%80/">C++基础</a></h2><time class="has-text-grey" datetime="2021-05-22T01:19:43.000Z">2021-05-22</time><p class="is-flex-grow-2 mt-2">模板模板是一种类型进行参数化的工具，通常有两种形式
+
+函数模板  ~函数模板针对仅参数类型不同的函数1234567891011template &amp;lt;typename type&amp;gt; return-type func-name(parameter list){   // 函数体}//例：template &amp;lt;typename T&amp;gt; T add(T a, T b){    return a+b;}
+类模板  ~类模板针对仅数据成员和函数成员类型不同的类1234template &amp;lt;typename type&amp;gt; class 类名{    // 类定义};
+模板的声明或定义只能在全局，命名空间或类范围内进行
+
+默认类型模板参数类模板的类型形参可以有默认值，函数模板的类型形参则不能
+函数模板..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2021/05/22/C-%E5%9F%BA%E7%A1%80/">Read more</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/c++"><i class="tag post-item-tag">c++</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2021/05/22/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">lambda表达式</a></h2><time class="has-text-grey" datetime="2021-05-22T01:18:21.000Z">2021-05-22</time><p class="is-flex-grow-2 mt-2">lambda表达式lambda表达式有如下优点：
+
+声明式编程风格：就地匿名定义目标函数或函数对象，不需要额外写一个命名函数或者函数对象。以更直接的方式去写程序，好的可读性和可维护性。
+简洁：不需要额外再写一个函数或者函数对象，避免了代码膨胀和功能分散，让开发者更加集中精力在手边的问题，同时也获取了更高的生产率。
+在需要的时间和地点实现功能闭包，使程序更灵活。lambda 表达式的概念和基本用法lambda 表达式定义了一个匿名函数，并且可以捕获一定范围内的变量。lambda 表达式的语法形式可简单归纳如下：12345[ 捕获列表 ] ( 参数表 ) 函数选项 -&amp;gt; 返回值类型 { 函数体 };//简单例子 auto f = [](int a) -&amp;gt; int { return a + 1; };..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2021/05/22/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">Read more</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/c++"><i class="tag post-item-tag">c++</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2021/05/22/%E5%9F%BA%E4%BA%8Ewindows%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B/">基于windows系统的多线程</a></h2><time class="has-text-grey" datetime="2021-05-22T01:17:24.000Z">2021-05-22</time><p class="is-flex-grow-2 mt-2">睡眠排序法1234567891011121314151617181920212223242526272829// Created on Apple Pencil.#include &amp;lt;iostream&amp;gt;#include &amp;lt;Windows.h&amp;gt;#include &amp;lt;thread&amp;gt;using namespace std;#define max(a,b)  a&amp;gt;b? a:b;void sleepsort(int i){    Sleep(i*100);    cout &amp;lt;&amp;lt; i &amp;lt;&amp;lt; &quot;,&quot;;}int main() {    int item[] = { 10,1,3,4,9,4,2,5,3,20};    int Max = item[0];    ..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2021/05/22/%E5%9F%BA%E4%BA%8Ewindows%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B/">Read more</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/c++"><i class="tag post-item-tag">c++</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2021/05/22/%E5%BC%82%E5%B8%B8/">异常</a></h2><time class="has-text-grey" datetime="2021-05-22T01:14:39.000Z">2021-05-22</time><p class="is-flex-grow-2 mt-2">异常抛出异常
+
+您可以使用 throw 语句在代码块中的任何地方抛出异常。throw语句的操作数可以是任意的表达式，表达式的结果的类型决定了抛出的异常的类型。
+
+12345678double division(int a, int b){   if( b == 0 )   {      throw &quot;Division by zero condition!&quot;;   }   return (a/b);}
+
+捕获异常
+
+catch 块跟在 try 块后面，用于捕获异常。您可以指定想要捕捉的异常类型，这是由catch关键字后的括号内的异常声明决定的。
+
+1234567try{   // 保护代码}catch( ExceptionName e ){  // 处理 ExceptionName 异常的代码}
+
+实例
+
+1..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2021/05/22/%E5%BC%82%E5%B8%B8/">Read more</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/c++"><i class="tag post-item-tag">c++</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2021/05/22/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">智能指针</a></h2><time class="has-text-grey" datetime="2021-05-22T01:14:24.000Z">2021-05-22</time><p class="is-flex-grow-2 mt-2">智能指针
+unique_ptr
+
+
+同一时刻只能有一个 unique_ptr 指向给对象
+unique_ptr 指针的生命周期从创建时开始，直到离开作用域。离开作用域时，若其指向对象，则其所指对象销毁
+unique_ptr 的使用能够包括：
+
+
+为动态申请的内存提供异常安全
+将动态申请内存的所有权传递给某个函数
+从某个函数返回动态申请内存的所有权
+在容器中保存指针
+所有auto_ptr具有的功能12345678910111213#include &amp;lt;iostream&amp;gt;#include &amp;lt;memory&amp;gt;int main() {    {        std::unique_ptr&amp;lt;int&amp;gt; uptr(new int(10));  //绑定动态对象        //std:..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2021/05/22/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">Read more</a></section></article><article class="post-item-card"><section class="content post-card-content p-4 pb-5"><header><a href="/tags/c++"><i class="tag post-item-tag">c++</i></a></header><h2 class="mt-4 mb-0 is-family-serif"><a href="/2021/05/22/STL/">STL</a></h2><time class="has-text-grey" datetime="2021-05-22T01:12:53.000Z">2021-05-22</time><p class="is-flex-grow-2 mt-2">STL
+Standard Template Library
+
+
+
+
+类别
+解释
+
+
+
+容器(containers)
+特殊的数据结构，实现了数组链表队列等等，实质是模板类
+
+
+迭代器(iterators)
+一种复杂的指针，可以通过其读写容器中的对象，实质是运算符重载
+
+
+空间配置器(allocator)
+容器的空间配置管理的模板类
+
+
+配接器(adapters)
+用来修饰容器、仿函数、迭代器接口
+
+
+算法(algorithms)
+读写容器对象的逻辑算法：排序，便利，查找，等等实质是模板函数
+
+
+仿函数(functors)
+类似函数，通过重载()运算符来模拟函数行为的类
+
+
+
+STL 容器种类和功能
+
+
+
+类别
+解释
+
+
+
+序列容器
+主要包括 vector 向量容器、list 列表容器以及 deque 双端队列..</p><a class="button is-default mt-2 has-text-weight-semibold" href="/2021/05/22/STL/">Read more</a></section></article></section><aside class="column is-hidden-mobile is-4-tablet is-3-widescreen"><div style="position: sticky; top: 50px;"><main class="aside-card-container tag-widget is-in-tag-page"><h3>Tags</h3><section><a href="/tags/c++"><span class="tag post-item-tag" style="margin-bottom: 5px;">c++</span></a><a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%20c++"><span class="tag post-item-tag" style="margin-bottom: 5px;">数据结构 c++</span></a></section></main></div></aside></div></article><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
+
+window.addEventListener('resize', $claudia.throttle(function () {
+    var images = document.querySelectorAll('.js-img-fadeIn')
+
+    images.forEach($claudia.blurBackdropImg)
+}, 150))</script></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/stream12138"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> Stream 2021</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span></span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script>$claudia.fadeInImage(null, $claudia.blurBackdropImg)
+
+window.addEventListener('resize', $claudia.throttle(function () {
+    var images = document.querySelectorAll('.js-img-fadeIn')
+
+    images.forEach($claudia.blurBackdropImg)
+}, 150))</script></body></html>
