@@ -19,7 +19,7 @@
 <meta property="og:description" content="STL Standard Template Library     类别 解释    容器(containers) 特殊的数据结构，实现了数组链表队列等等，实质是模板类   迭代器(iterators) 一种复杂的指针，可以通过其读写容器中的对象，实质是运算符重载   空间配置器(allocator) 容器的空间配置管理的模板类   配接器(adapters) 用来修饰容器、仿函数、迭代器接口">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-05-22T01:12:53.000Z">
-<meta property="article:modified_time" content="2021-05-22T01:14:58.347Z">
+<meta property="article:modified_time" content="2021-05-22T08:06:25.916Z">
 <meta property="article:author" content="Stream">
 <meta property="article:tag" content="c++">
 <meta name="twitter:card" content="summary">
@@ -338,7 +338,31 @@
 <td>不支持迭代器</td>
 </tr>
 </tbody></table>
-<h3 id="迭代器的定义方式"><a href="#迭代器的定义方式" class="headerlink" title="迭代器的定义方式"></a>迭代器的定义方式</h3><p>尽管不同容器对应着不同类别的迭代器，但这些迭代器有着较为统一的定义方式<br>| 迭代器定义方式 | 具体格式                                    |<br>| ————– | ——————————————- |<br>| 正向迭代器     | 容器类名::iterator  迭代器名;               |<br>| 常量正向迭代器 | 容器类名::const_iterator  迭代器名;         |<br>| 反向迭代器     | 容器类名::reverse_iterator  迭代器名;       |<br>| 常量反向迭代器 | 容器类名::const_reverse_iterator  迭代器名; |</p>
+<h3 id="迭代器的定义方式"><a href="#迭代器的定义方式" class="headerlink" title="迭代器的定义方式"></a>迭代器的定义方式</h3><p>尽管不同容器对应着不同类别的迭代器，但这些迭代器有着较为统一的定义方式</p>
+<table>
+<thead>
+<tr>
+<th>迭代器定义方式</th>
+<th>具体格式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>正向迭代器</td>
+<td>容器类名::iterator  迭代器名;</td>
+</tr>
+<tr>
+<td>常量正向迭代器</td>
+<td>容器类名::const_iterator  迭代器名;</td>
+</tr>
+<tr>
+<td>反向迭代器</td>
+<td>容器类名::reverse_iterator  迭代器名;</td>
+</tr>
+<tr>
+<td>常量反向迭代器</td>
+<td>容器类名::const_reverse_iterator  迭代器名;</td>
+</tr>
+</tbody></table>
 <h3 id="遍历-vector-容器。"><a href="#遍历-vector-容器。" class="headerlink" title="//遍历 vector 容器。"></a>//遍历 vector 容器。</h3><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int main()</span><br><span class="line">{</span><br><span class="line">    vector&lt;int&gt; v{1,2,3,4,5,6,7,8,9,10}; //v被初始化成有10个元素</span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; i = 0; i &lt; v.size(); ++i)</span><br><span class="line">    cout &lt;&lt; v[i] &lt;&lt;" ";</span><br><span class="line">    //创建一个正向迭代器，当然，vector也支持其他 3 种定义迭代器的方式</span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; "第二种遍历方法：" &lt;&lt; endl;</span><br><span class="line">    vector&lt;int&gt;::iterator i;</span><br><span class="line">    //用 != 比较两个迭代器</span><br><span class="line">    for (i = v.begin(); i != v.end(); ++i)</span><br><span class="line">        cout &lt;&lt; *i &lt;&lt; " ";</span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; "第三种遍历方法：" &lt;&lt; endl;</span><br><span class="line">    for (i = v.begin(); i &lt; v.end(); ++i) //用 &lt; 比较两个迭代器</span><br><span class="line">    cout &lt;&lt; *i &lt;&lt; " ";</span><br><span class="line">   </span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; "第四种遍历方法：" &lt;&lt; endl;</span><br><span class="line">    i = v.begin();</span><br><span class="line">    while (i &lt; v.end()) </span><br><span class="line">    {</span><br><span class="line">        cout &lt;&lt; *i &lt;&lt; " ";</span><br><span class="line">        i += 2; // 随机访问迭代器支持 "+= 整数"  的操作</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
       
