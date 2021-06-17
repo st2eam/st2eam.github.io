@@ -196,6 +196,148 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-智能指针"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2021/05/22/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">智能指针</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2021/05/22/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" class="article-date">
+	  <time datetime="2021-05-22T01:14:24.000Z" itemprop="datePublished">2021-05-22</time>
+	</a>
+
+      
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          智能指针
+unique_ptr
+
+
+同一时刻只能有一个 unique_ptr 指向给对象
+unique_ptr 指针的生命周期从创建时开始，直到离开作用域。离开作用域时，若其指向对象，则其所指对象销毁
+unique_ptr 的使用能够包括：
+
+
+为动态申请的内存提供异常安全
+将动态申请内存的所有权传递给某个函数
+从某个函数返回动态申请内存的所有权
+在容器中保存指针
+所有auto_ptr具有的功能12345678910111213#include &lt;iostream&gt;#inclu...
+        </p>
+        <p class="article-more-link">
+          <a href="/2021/05/22/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-STL"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2021/05/22/STL/">STL</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2021/05/22/STL/" class="article-date">
+	  <time datetime="2021-05-22T01:12:53.000Z" itemprop="datePublished">2021-05-22</time>
+	</a>
+
+      
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          STL
+Standard Template Library
+
+
+
+
+类别
+解释
+
+
+
+容器(containers)
+特殊的数据结构，实现了数组链表队列等等，实质是模板类
+
+
+迭代器(iterators)
+一种复杂的指针，可以通过其读写容器中的对象，实质是运算符重载
+
+
+空间配置器(allocator)
+容器的空间配置管理的模板类
+
+
+配接器(adapters)
+用来修饰容器、仿函数、迭代器接口
+
+
+算法(algorithms)
+读写容器对象的逻辑算法：排序，便利，查找，等等实质是模板函数
+...
+        </p>
+        <p class="article-more-link">
+          <a href="/2021/05/22/STL/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-数据结构"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     

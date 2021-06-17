@@ -3,18 +3,25 @@
 <head>
   <meta charset="utf-8">
   
-  <title>tag: 数据结构 c++ | Stream</title>
+  <title>一个具有两道作业的批处理系统 | Stream</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
+  <meta name="keywords" content="操作系统" />
   
   
   
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Stream">
-<meta property="og:url" content="http://example.com/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-c/index.html">
+  
+  <meta name="description" content="1有一个具有2道作业的批处理系统，作业调度采用短作业优先的调度算法，进程调度采用以优先数为基础的抢占式调度算法。在下表所示的作业序列，作业优先数即为进程优先数，优先数越小优先级越高。     作业名 到达时间 估计运行时间 优先数    A 10:00 40分 5   B 10:20 30分 3   C 10:30 50分 4   D 10:50 20分 6   123(1) 列出所有作业进入内存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个具有两道作业的批处理系统">
+<meta property="og:url" content="http://example.com/2021/06/17/%E4%B8%80%E4%B8%AA%E5%85%B7%E6%9C%89%E4%B8%A4%E9%81%93%E4%BD%9C%E4%B8%9A%E7%9A%84%E6%89%B9%E5%A4%84%E7%90%86%E7%B3%BB%E7%BB%9F/index.html">
 <meta property="og:site_name" content="Stream">
+<meta property="og:description" content="1有一个具有2道作业的批处理系统，作业调度采用短作业优先的调度算法，进程调度采用以优先数为基础的抢占式调度算法。在下表所示的作业序列，作业优先数即为进程优先数，优先数越小优先级越高。     作业名 到达时间 估计运行时间 优先数    A 10:00 40分 5   B 10:20 30分 3   C 10:30 50分 4   D 10:50 20分 6   123(1) 列出所有作业进入内存">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-06-17T15:25:03.000Z">
+<meta property="article:modified_time" content="2021-06-17T15:31:13.156Z">
 <meta property="article:author" content="Stream">
+<meta property="article:tag" content="操作系统">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Stream" type="application/atom+xml">
@@ -64,8 +71,6 @@
   
 
   
-    <link rel="stylesheet" href="/css/archive.css" >
-  
   
   
 
@@ -75,7 +80,7 @@
 
 
 
-  <body>
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
 
 
   
@@ -98,7 +103,7 @@
             
               <a class="brand" style="
                  margin-top: 0px;"  
-                 >
+                href="#" data-toggle="modal" data-target="#myModal" >
                   <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
               </a>
             
@@ -169,43 +174,186 @@
             
       <div id="content" class="outer">
         
-          <section id="main" style="float:none;">
-  
-  
-  
+          <section id="main" style="float:none;"><article id="post-一个具有两道作业的批处理系统" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
     
     
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <h1><a href="/archives/2021" class="archive-year">2021</a></h1>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      
-	<a href="/2021/05/17/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="archive-article-date">
-	  <time datetime="2021-05-17T14:08:31.000Z" itemprop="datePublished">2021-05-17</time>
-	</a>
-
-      
+      <header class="article-header">
+        
   
-    <h1 class="thumb" itemprop="name">
-      <a class="archive-article-title" href="/2021/05/17/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+    <h1 class="thumb" class="article-title" itemprop="name">
+      一个具有两道作业的批处理系统
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2021/06/17/%E4%B8%80%E4%B8%AA%E5%85%B7%E6%9C%89%E4%B8%A4%E9%81%93%E4%BD%9C%E4%B8%9A%E7%9A%84%E6%89%B9%E5%A4%84%E7%90%86%E7%B3%BB%E7%BB%9F/" class="article-date">
+	  <time datetime="2021-06-17T15:25:03.000Z" itemprop="datePublished">2021-06-17</time>
+	</a>
 
+      
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">有一个具有2道作业的批处理系统，作业调度采用短作业优先的调度算法，进程调度采用以优先数为基础的抢占式调度算法。在下表所示的作业序列，作业优先数即为进程优先数，优先数越小优先级越高。</span><br></pre></td></tr></tbody></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="center">作业名</th>
+<th align="center">到达时间</th>
+<th align="center">估计运行时间</th>
+<th align="center">优先数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">A</td>
+<td align="center">10:00</td>
+<td align="center">40分</td>
+<td align="center">5</td>
+</tr>
+<tr>
+<td align="center">B</td>
+<td align="center">10:20</td>
+<td align="center">30分</td>
+<td align="center">3</td>
+</tr>
+<tr>
+<td align="center">C</td>
+<td align="center">10:30</td>
+<td align="center">50分</td>
+<td align="center">4</td>
+</tr>
+<tr>
+<td align="center">D</td>
+<td align="center">10:50</td>
+<td align="center">20分</td>
+<td align="center">6</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(1) 列出所有作业进入内存时间及结束时间</span><br><span class="line">(2) 计算平均周转时间。</span><br><span class="line">【提示】在本题中，每个作业的运行将经历2级调度：作业调度和进程调度。作业调度采用短作业优先调度算法，进程调度采用基于优先数的抢占式调度算法，高优先级的进程可以抢占系统处理机。只有当作业调度程序将作业装入内存后，方能参与进程调度。本题中的批处理系统是2道作业系统，因此每次只能有2道作业进入系统内存。</span><br></pre></td></tr></tbody></table></figure>
+
+<ol>
+<li><p>10：00，A作业到达，进入系统 开始运行。</p>
+</li>
+<li><p>10：20，B作业到达，系统内存中只有一道作业A，B作业进入内存，此时A运行20min，还剩20min,由于B作业的优先数小，即优先级高，则作业A进入就绪状态，作业B开始运行。</p>
+</li>
+<li><p>10：30，C作业到达，内存中已有两道作业，则在后备队列中等待被作业调度程序调度，A等待10min,剩20min,继续等待，B运行10min,还剩20min,继续运行。</p>
+</li>
+<li><p>10：50， D作业到达，B作业完成，内存中只剩下作业A,剩20min，作业D与作业C相比，作业D的运行所需时间少被调到进内存，内存中的A和D相比，A的优先级高，A继续运行。</p>
+</li>
+<li><p>11：10，作业A运行完成，作业C被调度进内存，内存中有作业D和作业C，C的优先级比D高，C先运行。</p>
+</li>
+<li><p>12：00 ，作业C完成，D运行。</p>
+</li>
+<li><p>12：20，作业D完成。<br>$$<br>周转时间 = 作业完成时间 - 作业到达时间<br>$$<br>$$<br>平均周转时间：(70+30+90+90)/4=70<br>$$</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Stream</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/2021/06/17/一个具有两道作业的批处理系统/" target="_blank" title="一个具有两道作业的批处理系统">http://example.com/2021/06/17/一个具有两道作业的批处理系统/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2099/05/20/images/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          images
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/06/17/%E7%A3%81%E7%9B%98%E8%AE%BF%E9%97%AE%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">磁盘访问调度算法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav">None</ol>
+    
+    </div>
+  </aside>
 
 </section>
         
@@ -309,6 +457,10 @@
 
 
 
+  
+<script src="/js/dialog.js"></script>
+
+
 
 
 
@@ -392,6 +544,8 @@
   
   <a id="rocket" href="#top" class=""></a>
   <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
   
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
