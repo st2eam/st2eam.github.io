@@ -11,15 +11,15 @@
   
   
   
-  <meta name="description" content="1有一个具有2道作业的批处理系统，作业调度采用短作业优先的调度算法，进程调度采用以优先数为基础的抢占式调度算法。在下表所示的作业序列，作业优先数即为进程优先数，优先数越小优先级越高。     作业名 到达时间 估计运行时间 优先数    A 10:00 40分 5   B 10:20 30分 3   C 10:30 50分 4   D 10:50 20分 6   123(1) 列出所有作业进入内存">
+  <meta name="description" content="有一个具有2道作业的批处理系统，作业调度采用短作业优先的调度算法，进程调度采用以优先数为基础的抢占式调度算法。在下表所示的作业序列，作业优先数即为进程优先数，优先数越小优先级越高。    作业名 到达时间 估计运行时间 优先数    A 10:00 40分 5   B 10:20 30分 3   C 10:30 50分 4   D 10:50 20分 6   123(1) 列出所有作业进入内存时间">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一个具有两道作业的批处理系统">
 <meta property="og:url" content="http://example.com/2021/06/17/%E4%B8%80%E4%B8%AA%E5%85%B7%E6%9C%89%E4%B8%A4%E9%81%93%E4%BD%9C%E4%B8%9A%E7%9A%84%E6%89%B9%E5%A4%84%E7%90%86%E7%B3%BB%E7%BB%9F/index.html">
 <meta property="og:site_name" content="Stream">
-<meta property="og:description" content="1有一个具有2道作业的批处理系统，作业调度采用短作业优先的调度算法，进程调度采用以优先数为基础的抢占式调度算法。在下表所示的作业序列，作业优先数即为进程优先数，优先数越小优先级越高。     作业名 到达时间 估计运行时间 优先数    A 10:00 40分 5   B 10:20 30分 3   C 10:30 50分 4   D 10:50 20分 6   123(1) 列出所有作业进入内存">
+<meta property="og:description" content="有一个具有2道作业的批处理系统，作业调度采用短作业优先的调度算法，进程调度采用以优先数为基础的抢占式调度算法。在下表所示的作业序列，作业优先数即为进程优先数，优先数越小优先级越高。    作业名 到达时间 估计运行时间 优先数    A 10:00 40分 5   B 10:20 30分 3   C 10:30 50分 4   D 10:50 20分 6   123(1) 列出所有作业进入内存时间">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-06-17T15:25:03.000Z">
-<meta property="article:modified_time" content="2021-06-17T15:31:13.156Z">
+<meta property="article:modified_time" content="2021-06-17T15:33:54.504Z">
 <meta property="article:author" content="Stream">
 <meta property="article:tag" content="操作系统">
 <meta name="twitter:card" content="summary">
@@ -207,8 +207,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">有一个具有2道作业的批处理系统，作业调度采用短作业优先的调度算法，进程调度采用以优先数为基础的抢占式调度算法。在下表所示的作业序列，作业优先数即为进程优先数，优先数越小优先级越高。</span><br></pre></td></tr></tbody></table></figure>
-
+        <p>有一个具有2道作业的批处理系统，作业调度采用短作业优先的调度算法，进程调度采用以优先数为基础的抢占式调度算法。在下表所示的作业序列，作业优先数即为进程优先数，优先数越小优先级越高。</p>
 <table>
 <thead>
 <tr>
@@ -258,9 +257,10 @@
 </li>
 <li><p>12：00 ，作业C完成，D运行。</p>
 </li>
-<li><p>12：20，作业D完成。<br>$$<br>周转时间 = 作业完成时间 - 作业到达时间<br>$$<br>$$<br>平均周转时间：(70+30+90+90)/4=70<br>$$</p>
+<li><p>12：20，作业D完成。</p>
 </li>
 </ol>
+<p>周转时间 = 作业完成时间 - 作业到达时间<br>平均周转时间：(70+30+90+90)/4=70</p>
 
       
     </div>
