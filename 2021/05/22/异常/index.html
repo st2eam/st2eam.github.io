@@ -11,15 +11,15 @@
   
   
   
-  <meta name="description" content="异常抛出异常  您可以使用 throw 语句在代码块中的任何地方抛出异常。throw语句的操作数可以是任意的表达式，表达式的结果的类型决定了抛出的异常的类型。  12345678double division(int a, int b){   if( b &#x3D;&#x3D; 0 )   {      throw &quot;Division by zero condition!&quot;;   }   return (a&#x2F;b);">
+  <meta name="description" content="异常Error Code  基于Error Code的错误处理 被调用函数发生错误时返回错误码 函数调用方检查并处理错误码   痛点 代码繁琐，错误处理和业务逻辑耦合 错误码表现力不足 容易被忽略 有的特殊函数没有返回值（构造函数，赋值操作符等）    关键词 exception, throw, try&#x2F;catch 抛出异常  您可以使用 throw 语句在代码块中的任何地方抛出异常。throw语">
 <meta property="og:type" content="article">
 <meta property="og:title" content="异常">
 <meta property="og:url" content="http://example.com/2021/05/22/%E5%BC%82%E5%B8%B8/index.html">
 <meta property="og:site_name" content="Stream">
-<meta property="og:description" content="异常抛出异常  您可以使用 throw 语句在代码块中的任何地方抛出异常。throw语句的操作数可以是任意的表达式，表达式的结果的类型决定了抛出的异常的类型。  12345678double division(int a, int b){   if( b &#x3D;&#x3D; 0 )   {      throw &quot;Division by zero condition!&quot;;   }   return (a&#x2F;b);">
+<meta property="og:description" content="异常Error Code  基于Error Code的错误处理 被调用函数发生错误时返回错误码 函数调用方检查并处理错误码   痛点 代码繁琐，错误处理和业务逻辑耦合 错误码表现力不足 容易被忽略 有的特殊函数没有返回值（构造函数，赋值操作符等）    关键词 exception, throw, try&#x2F;catch 抛出异常  您可以使用 throw 语句在代码块中的任何地方抛出异常。throw语">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-05-22T01:14:39.000Z">
-<meta property="article:modified_time" content="2021-05-22T01:15:56.751Z">
+<meta property="article:modified_time" content="2021-07-18T20:35:05.221Z">
 <meta property="article:author" content="Stream">
 <meta property="article:tag" content="c++">
 <meta name="twitter:card" content="summary">
@@ -207,13 +207,30 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="异常"><a href="#异常" class="headerlink" title="异常"></a><a target="_blank" rel="noopener" href="https://www.runoob.com/cplusplus/cpp-exceptions-handling.html">异常</a></h2><p>抛出异常</p>
+        <h2 id="异常"><a href="#异常" class="headerlink" title="异常"></a><a target="_blank" rel="noopener" href="https://www.runoob.com/cplusplus/cpp-exceptions-handling.html">异常</a></h2><p><strong>Error Code</strong></p>
+<ul>
+<li>基于Error Code的错误处理<ul>
+<li>被调用函数发生错误时返回错误码</li>
+<li>函数调用方检查并处理错误码</li>
+</ul>
+</li>
+<li>痛点<ul>
+<li>代码繁琐，错误处理和业务逻辑耦合</li>
+<li>错误码表现力不足</li>
+<li>容易被忽略</li>
+<li>有的特殊函数没有返回值（构造函数，赋值操作符等）</li>
+</ul>
+</li>
+</ul>
+<p><strong>关键词</strong></p>
+<p><code>exception, throw, try/catch</code></p>
+<p><strong>抛出异常</strong></p>
 <blockquote>
 <p>您可以使用 throw 语句在代码块中的任何地方抛出异常。throw语句的操作数可以是任意的表达式，表达式的结果的类型决定了抛出的异常的类型。</p>
 </blockquote>
 <figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">double division(int a, int b)</span><br><span class="line">{</span><br><span class="line">   if( b == 0 )</span><br><span class="line">   {</span><br><span class="line">      throw "Division by zero condition!";</span><br><span class="line">   }</span><br><span class="line">   return (a/b);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<p>捕获异常</p>
+<p><strong>捕获异常</strong></p>
 <blockquote>
 <p>catch 块跟在 try 块后面，用于捕获异常。您可以指定想要捕捉的异常类型，这是由catch关键字后的括号内的异常声明决定的。</p>
 </blockquote>
@@ -227,6 +244,56 @@
 <p>运行结果</p>
 </blockquote>
 <figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Division by zero condition!</span><br></pre></td></tr></tbody></table></figure>
+<p><strong>捕获多种类型异常</strong></p>
+<ul>
+<li>多个catch块</li>
+<li>不发生隐式转换</li>
+<li>支持子类转基类对象</li>
+</ul>
+<p><strong>捕获所有异常</strong>  </p>
+<p><code>catch(...)</code></p>
+<p>Catch块中的那些事儿</p>
+<ul>
+<li>错误恢复<ul>
+<li>如果可以，如果有必要</li>
+</ul>
+</li>
+<li>记录错误<ul>
+<li>如果有必要</li>
+</ul>
+</li>
+<li>向上返回<ul>
+<li>返回错误码</li>
+<li>重新抛出异常</li>
+</ul>
+</li>
+</ul>
+<p><strong>异常捕获链</strong></p>
+<ul>
+<li>异常抛出后程序执行将立即跳转至最近的try块的最后，按顺序匹配catch块并执行；</li>
+<li>相应的catch块执行后异常被处理，程序继续执行；</li>
+<li>若无匹配的catch块则继续跳转至下一个最近的try块进行处理；</li>
+<li>若当前函数中异常未被处理，则退出该函数（stack unwinding），在其调用函数中进行处理；</li>
+<li>递归以上步骤支持异常被处理；</li>
+<li>若跳转至最顶层依然无匹配的catch块，则程序退出;</li>
+</ul>
+<p><strong>捕获Windows SEH异常</strong><br>__try/__except</p>
+<p><strong>异常总结</strong></p>
+<ul>
+<li>优点<ul>
+<li>隔离异常处理代码</li>
+<li>异常无法被忽略</li>
+<li>构造函数可以报错</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>写异常安全的代码并不简单</li>
+<li>错误现场易丢失</li>
+<li>性能损失（现代编译器可能问题不大）</li>
+<li>编译出的二进制文件体积较大</li>
+</ul>
+</li>
+</ul>
 
       
     </div>

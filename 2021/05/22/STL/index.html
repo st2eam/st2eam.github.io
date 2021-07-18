@@ -19,7 +19,7 @@
 <meta property="og:description" content="STL Standard Template Library     类别 解释    容器(containers) 特殊的数据结构，实现了数组链表队列等等，实质是模板类   迭代器(iterators) 一种复杂的指针，可以通过其读写容器中的对象，实质是运算符重载   空间配置器(allocator) 容器的空间配置管理的模板类   配接器(adapters) 用来修饰容器、仿函数、迭代器接口">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-05-22T01:12:53.000Z">
-<meta property="article:modified_time" content="2021-05-22T08:06:25.916Z">
+<meta property="article:modified_time" content="2021-07-18T20:33:49.132Z">
 <meta property="article:author" content="Stream">
 <meta property="article:tag" content="c++">
 <meta name="twitter:card" content="summary">
@@ -213,32 +213,32 @@
 <table>
 <thead>
 <tr>
-<th>类别</th>
+<th align="center"><div style="width:110px">类别</div></th>
 <th>解释</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>容器(containers)</td>
+<td align="center">容器(containers)</td>
 <td>特殊的数据结构，实现了数组链表队列等等，实质是模板类</td>
 </tr>
 <tr>
-<td>迭代器(iterators)</td>
+<td align="center">迭代器(iterators)</td>
 <td>一种复杂的指针，可以通过其读写容器中的对象，实质是运算符重载</td>
 </tr>
 <tr>
-<td>空间配置器(allocator)</td>
+<td align="center">空间配置器(allocator)</td>
 <td>容器的空间配置管理的模板类</td>
 </tr>
 <tr>
-<td>配接器(adapters)</td>
+<td align="center">配接器(adapters)</td>
 <td>用来修饰容器、仿函数、迭代器接口</td>
 </tr>
 <tr>
-<td>算法(algorithms)</td>
+<td align="center">算法(algorithms)</td>
 <td>读写容器对象的逻辑算法：排序，便利，查找，等等实质是模板函数</td>
 </tr>
 <tr>
-<td>仿函数(functors)</td>
+<td align="center">仿函数(functors)</td>
 <td>类似函数，通过重载()运算符来模拟函数行为的类</td>
 </tr>
 </tbody></table>
@@ -247,20 +247,20 @@
 <table>
 <thead>
 <tr>
-<th>类别</th>
+<th align="center"><div style="width:80px">类别</div></th>
 <th>解释</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>序列容器</td>
+<td align="center">序列容器</td>
 <td>主要包括 vector 向量容器、list 列表容器以及 deque 双端队列容器。之所以被称为序列容器，是因为元素在容器中的位置同元素的值无关，即容器不是排序的。将元素插入容器时，指定在什么位置，元素就会位于什么位置。</td>
 </tr>
 <tr>
-<td>排序容器</td>
+<td align="center">排序容器</td>
 <td>包括 set 集合容器、multiset多重集合容器、map映射容器以及 multimap 多重映射容器。排序容器中的元素默认是由小到大排序好的，即便是插入元素，元素也会插入到适当位置。所以关联容器在查找时具有非常好的性能。</td>
 </tr>
 <tr>
-<td>哈希容器</td>
+<td align="center">哈希容器</td>
 <td>C++ 11 新加入 4 种关联式容器，分别是 unordered_set 哈希集合、unordered_multiset 哈希多重集合、unordered_map 哈希映射以及 unordered_multimap 哈希多重映射。和排序容器不同，哈希容器中的元素是未排序的，元素的位置由哈希函数确定。</td>
 </tr>
 </tbody></table>
@@ -271,14 +271,9 @@
 <blockquote>
 <p>输入迭代器和输出迭代器比较特殊，它们不是把数组或容器当做操作对象，而是把输入流/输出流作为操作对象。</p>
 </blockquote>
-<ol>
-<li><p>==前向迭代器（forward iterator）==<br>假设 p 是一个前向迭代器，则 p 支持 ++p，p++，*p 操作，还可以被复制或赋值，可以用 == 和 != 运算符进行比较。此外，两个正向迭代器可以互相赋值。</p>
-</li>
-<li><p>==双向迭代器（bidirectional iterator）==<br>双向迭代器具有正向迭代器的全部功能，除此之外，假设 p 是一个双向迭代器，则还可以进行 –p 或者 p– 操作（即一次向后移动一个位置）。</p>
-</li>
-<li><p>==随机访问迭代器（random access iterator）==<br>随机访问迭代器具有双向迭代器的全部功能。除此之外，假设 p 是一个随机访问迭代器，i 是一个整型变量或常量，则 p 还支持以下操作：</p>
-</li>
-</ol>
+<p><strong>前向迭代器（forward iterator）</strong><br>假设 p 是一个前向迭代器，则 p 支持 ++p，p++，*p 操作，还可以被复制或赋值，可以用 == 和 != 运算符进行比较。此外，两个正向迭代器可以互相赋值。</p>
+<p><strong>双向迭代器（bidirectional iterator）</strong><br>双向迭代器具有正向迭代器的全部功能，除此之外，假设 p 是一个双向迭代器，则还可以进行 –p 或者 p– 操作（即一次向后移动一个位置）。</p>
+<p><strong>随机访问迭代器（random access iterator）</strong><br>随机访问迭代器具有双向迭代器的全部功能。除此之外，假设 p 是一个随机访问迭代器，i 是一个整型变量或常量，则 p 还支持以下操作：</p>
 <ul>
 <li>p+=i：使得 p 往后移动 i 个元素。</li>
 <li>p-=i：使得 p 往前移动 i 个元素。</li>
@@ -291,79 +286,268 @@
 <tr>
 <th>容器</th>
 <th>对应的迭代器类型</th>
+<th>应用</th>
 </tr>
 </thead>
 <tbody><tr>
 <td>array</td>
 <td>随机访问迭代器</td>
-</tr>
-<tr>
-<td>vector</td>
-<td>随机访问迭代器</td>
-</tr>
-<tr>
-<td>deque</td>
-<td>随机访问迭代器</td>
-</tr>
-<tr>
-<td>list</td>
-<td>双向迭代器</td>
-</tr>
-<tr>
-<td>set / multiset</td>
-<td>双向迭代器</td>
-</tr>
-<tr>
-<td>map / multimap</td>
-<td>双向迭代器</td>
-</tr>
-<tr>
-<td>forward_list</td>
-<td>前向迭代器</td>
-</tr>
-<tr>
-<td>unordered_map / unordered_multimap</td>
-<td>前向迭代器</td>
-</tr>
-<tr>
-<td>unordered_set / unordered_multiset</td>
-<td>前向迭代器</td>
+<td></td>
 </tr>
 <tr>
 <td>stack</td>
 <td>不支持迭代器</td>
+<td>后进先出容器</td>
 </tr>
 <tr>
 <td>queue</td>
 <td>不支持迭代器</td>
+<td>先进先出容器</td>
+</tr>
+<tr>
+<td>vector</td>
+<td>随机访问迭代器</td>
+<td>直接访问任意元素，快速插入、删除尾部元素</td>
+</tr>
+<tr>
+<td>deque</td>
+<td>随机访问迭代器</td>
+<td>直接访问任意元素，快速插入、删除头部和尾部元素</td>
+</tr>
+<tr>
+<td>list</td>
+<td>双向迭代器</td>
+<td>快速插入、删除任意位置元素</td>
+</tr>
+<tr>
+<td>set / multiset</td>
+<td>双向迭代器</td>
+<td>快速查询元素，无重复关键字/允许重复关键字</td>
+</tr>
+<tr>
+<td>map / multimap</td>
+<td>双向迭代器</td>
+<td>Key/value pair mapping(键值对映射)。不允许重复关键字/允许重复关键字，使用关键字快速查询元素</td>
+</tr>
+<tr>
+<td>forward_list</td>
+<td>前向迭代器</td>
+<td></td>
+</tr>
+<tr>
+<td>unordered_map / unordered_multimap</td>
+<td>前向迭代器</td>
+<td></td>
+</tr>
+<tr>
+<td>unordered_set / unordered_multiset</td>
+<td>前向迭代器</td>
+<td></td>
 </tr>
 </tbody></table>
-<h3 id="迭代器的定义方式"><a href="#迭代器的定义方式" class="headerlink" title="迭代器的定义方式"></a>迭代器的定义方式</h3><p>尽管不同容器对应着不同类别的迭代器，但这些迭代器有着较为统一的定义方式</p>
-<table>
+<h3 id="迭代器的定义方式"><a href="#迭代器的定义方式" class="headerlink" title="迭代器的定义方式"></a>迭代器的定义方式</h3><p>尽管不同容器对应着不同类别的迭代器，但这些迭代器有着较为统一的定义方式<br>|迭代器定义方式|具体格式|<br>|——–|——–|<br>|正向迭代器    |容器类名::iterator  迭代器名;|<br>|常量正向迭代器    |容器类名::const_iterator  迭代器名;|<br>|反向迭代器    |容器类名::reverse_iterator  迭代器名;|<br>|常量反向迭代器    |容器类名::const_reverse_iterator  迭代器名;|</p>
+<h3 id="排序后迭代器访问list"><a href="#排序后迭代器访问list" class="headerlink" title="排序后迭代器访问list"></a>排序后迭代器访问list</h3><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">List-&gt;sort();</span><br><span class="line">for (list&lt;int&gt;::iterator iter = List-&gt;begin(); iter != List-&gt;end(); iter++)</span><br><span class="line">{</span><br><span class="line">	cout &lt;&lt; *iter &lt;&lt; " ";</span><br><span class="line">}</span><br><span class="line">cout &lt;&lt; endl;</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="一级容器的通用函数"><a href="#一级容器的通用函数" class="headerlink" title="一级容器的通用函数"></a>一级容器的通用函数</h3><table>
 <thead>
 <tr>
-<th>迭代器定义方式</th>
-<th>具体格式</th>
+<th><div style="width:120px">Functions</div></th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>正向迭代器</td>
-<td>容器类名::iterator  迭代器名;</td>
+<td>c1.swap(c2)</td>
+<td>交换两个容器c1和c2的内容</td>
 </tr>
 <tr>
-<td>常量正向迭代器</td>
-<td>容器类名::const_iterator  迭代器名;</td>
+<td>c1.max_size()</td>
+<td>返回一个容器可以容纳的最大元素数量</td>
 </tr>
 <tr>
-<td>反向迭代器</td>
-<td>容器类名::reverse_iterator  迭代器名;</td>
+<td>c.clear()</td>
+<td>删除容器中的所有元素</td>
 </tr>
 <tr>
-<td>常量反向迭代器</td>
-<td>容器类名::const_reverse_iterator  迭代器名;</td>
+<td>c.begin()</td>
+<td>返回容器首元素的迭代器</td>
+</tr>
+<tr>
+<td>c.end()</td>
+<td>返回容器尾元素之后位置的迭代器</td>
+</tr>
+<tr>
+<td>c.rbegin()</td>
+<td>返回容器为元素的迭代器，用于逆序遍历</td>
+</tr>
+<tr>
+<td>c.rend()</td>
+<td>返回容器首元素之前位置的迭代器，用于逆序遍历</td>
+</tr>
+<tr>
+<td>c.erase(beg, end)</td>
+<td>删除容器中从beg到end-1之间的元素。beg和end都是迭代器</td>
 </tr>
 </tbody></table>
+<h3 id="顺序容器通用函数"><a href="#顺序容器通用函数" class="headerlink" title="顺序容器通用函数"></a>顺序容器通用函数</h3><table>
+<thead>
+<tr>
+<th><div style="width:120px">Functions</div></th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>assign(n, elem)</td>
+<td>将指定元素的n份拷贝加入(赋值)到容器中</td>
+</tr>
+<tr>
+<td>assign(beg,end)</td>
+<td>将迭代器[beg,end)间的元素赋值给当前容器</td>
+</tr>
+<tr>
+<td>push_back(elem)</td>
+<td>将元素附加到容器</td>
+</tr>
+<tr>
+<td>pop_back()</td>
+<td>删除容器尾元素</td>
+</tr>
+<tr>
+<td>front()</td>
+<td>返回容器首元素</td>
+</tr>
+<tr>
+<td>back()</td>
+<td>返回容器尾元素</td>
+</tr>
+<tr>
+<td>insert(position,elem)</td>
+<td>将元素插入到容器指定位置</td>
+</tr>
+</tbody></table>
+<h3 id="关联容器通用函数"><a href="#关联容器通用函数" class="headerlink" title="关联容器通用函数"></a>关联容器通用函数</h3><table>
+<thead>
+<tr>
+<th><div style="width:140px">Functions</div></th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>find(key)</td>
+<td>搜索容器中具有key的元素，返回指向该元素的迭代器</td>
+</tr>
+<tr>
+<td>lower_bound(key)</td>
+<td>搜索容器中具有key的第一个元素，返回指向该元素的迭代器</td>
+</tr>
+<tr>
+<td>upper_bound(key)</td>
+<td>搜索容器中具有key的最后一个元素，返回指向此元素之后位置的迭代器</td>
+</tr>
+<tr>
+<td>count(key)</td>
+<td>返回容器中具有key的元素的数目</td>
+</tr>
+</tbody></table>
+<h3 id="迭代器支持的运算符"><a href="#迭代器支持的运算符" class="headerlink" title="迭代器支持的运算符"></a>迭代器支持的运算符</h3><table>
+<thead>
+<tr>
+<th>类别</th>
+<th>运算符</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>All iterators</td>
+<td>++p</td>
+</tr>
+<tr>
+<td>All iterators</td>
+<td>p++</td>
+</tr>
+<tr>
+<td>Input iterators</td>
+<td>*p</td>
+</tr>
+<tr>
+<td>Input iterators</td>
+<td>p1==p2</td>
+</tr>
+<tr>
+<td>Input iterators</td>
+<td>p1!=p2</td>
+</tr>
+<tr>
+<td>Output iterators</td>
+<td>*p</td>
+</tr>
+<tr>
+<td>Bidirectionl iterators</td>
+<td>–p</td>
+</tr>
+<tr>
+<td>Bidirectionl iterators</td>
+<td>p–</td>
+</tr>
+<tr>
+<td>Random access iterators</td>
+<td>p+=i</td>
+</tr>
+<tr>
+<td>Random access iterators</td>
+<td>p-=i</td>
+</tr>
+<tr>
+<td>Random access iterators</td>
+<td>p+i</td>
+</tr>
+<tr>
+<td>Random access iterators</td>
+<td>p-i</td>
+</tr>
+<tr>
+<td>Random access iterators</td>
+<td>p1&lt;p2</td>
+</tr>
+<tr>
+<td>Random access iterators</td>
+<td>p1&lt;=p2</td>
+</tr>
+<tr>
+<td>Random access iterators</td>
+<td>p1&gt;p2</td>
+</tr>
+<tr>
+<td>Random access iterators</td>
+<td>p1&gt;=p2</td>
+</tr>
+<tr>
+<td>Random access iterators</td>
+<td>p[i]</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">graph TB</span><br><span class="line"></span><br><span class="line">A(Input iterators) --&gt;C(Forward iterators)</span><br><span class="line">B(Output iterators) --&gt;C(Forward iterators)</span><br><span class="line">C(Forward iterators)--&gt;D(Bidirectional iterators)</span><br><span class="line">D(Bidirectional iterators)--&gt;E(Random access  iterators)</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="priority-queue"><a href="#priority-queue" class="headerlink" title="priority_queue"></a>priority_queue</h3><ul>
+<li>优先队列元素按其优先级(priority) 读取，默认使用 &lt; 运算符来比较元素</li>
+<li>默认基于vector实现。也可基于<br>deque，但不能用list<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">priority_queue&lt;float&gt; q;</span><br><span class="line">q.push(22.22);</span><br><span class="line">q.push(66.66);</span><br><span class="line">q.push(44.44);</span><br><span class="line">cout &lt;&lt; q.top();</span><br><span class="line"></span><br><span class="line">output:66.66</span><br></pre></td></tr></tbody></table></figure></li>
+</ul>
 <h3 id="遍历-vector-容器。"><a href="#遍历-vector-容器。" class="headerlink" title="//遍历 vector 容器。"></a>//遍历 vector 容器。</h3><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int main()</span><br><span class="line">{</span><br><span class="line">    vector&lt;int&gt; v{1,2,3,4,5,6,7,8,9,10}; //v被初始化成有10个元素</span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; i = 0; i &lt; v.size(); ++i)</span><br><span class="line">    cout &lt;&lt; v[i] &lt;&lt;" ";</span><br><span class="line">    //创建一个正向迭代器，当然，vector也支持其他 3 种定义迭代器的方式</span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; "第二种遍历方法：" &lt;&lt; endl;</span><br><span class="line">    vector&lt;int&gt;::iterator i;</span><br><span class="line">    //用 != 比较两个迭代器</span><br><span class="line">    for (i = v.begin(); i != v.end(); ++i)</span><br><span class="line">        cout &lt;&lt; *i &lt;&lt; " ";</span><br><span class="line">    </span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; "第三种遍历方法：" &lt;&lt; endl;</span><br><span class="line">    for (i = v.begin(); i &lt; v.end(); ++i) //用 &lt; 比较两个迭代器</span><br><span class="line">    cout &lt;&lt; *i &lt;&lt; " ";</span><br><span class="line">   </span><br><span class="line">    cout &lt;&lt; endl &lt;&lt; "第四种遍历方法：" &lt;&lt; endl;</span><br><span class="line">    i = v.begin();</span><br><span class="line">    while (i &lt; v.end()) </span><br><span class="line">    {</span><br><span class="line">        cout &lt;&lt; *i &lt;&lt; " ";</span><br><span class="line">        i += 2; // 随机访问迭代器支持 "+= 整数"  的操作</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="STL的精华——萃取（trait）"><a href="#STL的精华——萃取（trait）" class="headerlink" title="STL的精华——萃取（trait）"></a>STL的精华——萃取（trait）</h2><blockquote>
+<p>当函数，类或者一些封装的通用算法中的某些部分会因为数据类型不同而导致处理或逻辑不同（而我们又不希望因为数据类型的差异而修改算法本身的封装时），traits会是一种很好的解决方案。</p>
+</blockquote>
+<p>函数参数列表接受两个迭代器，累加两个迭代器之间的数据，假定迭代器指向的数据类型是T，迭代器类型为Iter。</p>
+<p>声明如下：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">template &lt;typename Iter, typename T&gt;</span><br><span class="line">T sum(Iter begin, Iter end)</span><br><span class="line">{</span><br><span class="line">	T result {};</span><br><span class="line">	while (begin != end) {</span><br><span class="line">		result += *begin++;</span><br><span class="line">	}</span><br><span class="line">	return result;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">int main( )</span><br><span class="line">{</span><br><span class="line">	vector&lt;int&gt; vi { 1, 2, 3, 4 };</span><br><span class="line">	vector&lt;string&gt; vs { "ha", "sa", "ki" };</span><br><span class="line">	</span><br><span class="line">	int s = sum&lt;vector&lt;int&gt;::iterator, int&gt;(vi.begin(), vi.end());</span><br><span class="line">	string s2 = sum&lt;vector&lt;string&gt;::iterator, string&gt;(vs.begin(), vs.end());</span><br><span class="line">	return 0;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="什么是萃取，为什么要萃取"><a href="#什么是萃取，为什么要萃取" class="headerlink" title="什么是萃取，为什么要萃取"></a>什么是萃取，为什么要萃取</h3><p>有没有办法只用一个类型参数，就实现上面的函数？</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">template &lt;typename Iter&gt;</span><br><span class="line">typename Iter::value_type sum(Iter begin, Iter end)</span><br><span class="line">{</span><br><span class="line">	typename Iter::value_type result {};</span><br><span class="line">	while (begin != end) {</span><br><span class="line">		result += *begin++;</span><br><span class="line">	}</span><br><span class="line">	return result;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>value_type就是属于迭代器的一个特性，迭代器可以随时随地获取到自己的特性，这个就是萃取。</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">template&lt;class Category, class T, class Distance = ptrdiff_t,</span><br><span class="line">class Pointer = T*, class Reference = T&amp;&gt;</span><br><span class="line">struct iterator</span><br><span class="line">{</span><br><span class="line">    typedef Category	iterator_category;</span><br><span class="line">    typedef T			value_type;</span><br><span class="line">    typedef Distance	difference_type;</span><br><span class="line">    typedef Pointer		pointer;</span><br><span class="line">    typedef Reference	reference;</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line">template&lt;class Iterator&gt;</span><br><span class="line">struct iterator_traits</span><br><span class="line">{</span><br><span class="line">    typedef typename Iterator::iterator_category	iterator_category;</span><br><span class="line">    typedef typename Iterator::value_type			value_type;</span><br><span class="line">    typedef typename Iterator::difference_type		difference_type;</span><br><span class="line">    typedef typename Iterator::pointer				pointer;</span><br><span class="line">    typedef typename Iterator::reference 			reference;</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<p>迭代器类别、指向的数据类型都是萃取出来的特性。</p>
+<h2 id="无处不在的特化——为了提高性能无所不用其极"><a href="#无处不在的特化——为了提高性能无所不用其极" class="headerlink" title="无处不在的特化——为了提高性能无所不用其极"></a>无处不在的特化——为了提高性能无所不用其极</h2><p>以下就对以数组指针作为迭代器实现的类型做了偏特化，指定迭代器类别为随机迭代器，这样就可以对这些数组指针使用专属于随机迭代器的方法。</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">template&lt;class T&gt;</span><br><span class="line">struct iterator_traits&lt;T*&gt;</span><br><span class="line">{</span><br><span class="line">    typedef random_access_iterator_tag 	iterator_category;</span><br><span class="line">    typedef T 							value_type;</span><br><span class="line">    typedef ptrdiff_t 					difference_type;</span><br><span class="line">    typedef T*							pointer;</span><br><span class="line">    typedef T&amp; 							reference;</span><br><span class="line">};</span><br><span class="line">template&lt;class T&gt;</span><br><span class="line">struct iterator_traits&lt;const T*&gt;</span><br><span class="line">{</span><br><span class="line">    typedef random_access_iterator_tag 	iterator_category;</span><br><span class="line">    typedef T 							value_type;</span><br><span class="line">    typedef ptrdiff_t 					difference_type;</span><br><span class="line">    typedef const T*					pointer;</span><br><span class="line">    typedef const T&amp; 					reference;</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<p>对于不同的数据类型，copy的实现也是大不相同的，对于POD（Plain Old Data，普通旧数据，如int，char，double），memcpy就是最高效的copy方式，对于类对象可能要通过拷贝构造函数才能完整复制一个对象。那怎么针对不同的数据类型采用不同的方式拷贝方式呢？答案依然是特化。</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">template&lt;class InputIterator, class OutputIterator&gt;</span><br><span class="line">OutputIterator __copy(InputIterator first, InputIterator last, OutputIterator result, _true_type){</span><br><span class="line">    auto dist = distance(first, last);</span><br><span class="line">    memcpy(result, first, sizeof(*first) * dist);</span><br><span class="line">    advance(result, dist);</span><br><span class="line">    return result;</span><br><span class="line">}</span><br><span class="line">template&lt;class InputIterator, class OutputIterator&gt;</span><br><span class="line">OutputIterator __copy(InputIterator first, InputIterator last, OutputIterator result, _false_type){</span><br><span class="line">    while (first != last){</span><br><span class="line">        *result = *first;</span><br><span class="line">        ++result;</span><br><span class="line">        ++first;</span><br><span class="line">    }</span><br><span class="line">    return result;</span><br><span class="line">}</span><br><span class="line">template&lt;class InputIterator, class OutputIterator, class T&gt;</span><br><span class="line">OutputIterator _copy(InputIterator first, InputIterator last, OutputIterator result, T*){</span><br><span class="line">    typedef typename TinySTL::_type_traits&lt;T&gt;::is_POD_type is_pod;</span><br><span class="line">    return __copy(first, last, result, is_pod());</span><br><span class="line">}</span><br><span class="line">template &lt;class InputIterator, class OutputIterator&gt;</span><br><span class="line">OutputIterator copy(InputIterator first, InputIterator last, OutputIterator result){</span><br><span class="line">    return _copy(first, last, result, value_type(first));</span><br><span class="line">}</span><br><span class="line">template&lt;&gt;</span><br><span class="line">inline char *copy(char *first, char *last, char *result){</span><br><span class="line">    auto dist = last - first;</span><br><span class="line">    memcpy(result, first, sizeof(*first) * dist);</span><br><span class="line">    return result + dist;</span><br><span class="line">}</span><br><span class="line">template&lt;&gt;</span><br><span class="line">inline wchar_t *copy(wchar_t *first, wchar_t *last, wchar_t *result){</span><br><span class="line">    auto dist = last - first;</span><br><span class="line">    memcpy(result, first, sizeof(*first) * dist);</span><br><span class="line">    return result + dist;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="内存拷贝函数memcpy"><a href="#内存拷贝函数memcpy" class="headerlink" title="内存拷贝函数memcpy"></a>内存拷贝函数memcpy</h3><p>原型：void*memcpy(void*dest, const void*src,unsigned int count); </p>
+<p>功能：由src所指内存区域复制count个字节到dest所指内存区域。  </p>
+<p>说明：src和dest所指内存区域不能重叠，函数返回指向dest的指针。    </p>
+<h2 id="参考STL源码"><a href="#参考STL源码" class="headerlink" title="参考STL源码"></a><a target="_blank" rel="noopener" href="https://github.com/zouxiaohang/TinySTL.git">参考STL源码</a></h2><p>这是一个简易版的STL实现，适用于初学者研究STL的设计思想。</p>
 
       
     </div>
@@ -453,7 +637,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#STL"><span class="nav-number">1.</span> <span class="nav-text">STL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#STL-%E5%AE%B9%E5%99%A8%E7%A7%8D%E7%B1%BB%E5%92%8C%E5%8A%9F%E8%83%BD"><span class="nav-number">1.1.</span> <span class="nav-text">STL 容器种类和功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="nav-number">1.2.</span> <span class="nav-text">迭代器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-11-%E6%A0%87%E5%87%86%E4%B8%AD%E4%B8%8D%E5%90%8C%E5%AE%B9%E5%99%A8%E6%8C%87%E5%AE%9A%E4%BD%BF%E7%94%A8%E7%9A%84%E8%BF%AD%E4%BB%A3%E5%99%A8%E7%B1%BB%E5%9E%8B%E3%80%82"><span class="nav-number">1.3.</span> <span class="nav-text">C++ 11 标准中不同容器指定使用的迭代器类型。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8%E7%9A%84%E5%AE%9A%E4%B9%89%E6%96%B9%E5%BC%8F"><span class="nav-number">1.4.</span> <span class="nav-text">迭代器的定义方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%8D%E5%8E%86-vector-%E5%AE%B9%E5%99%A8%E3%80%82"><span class="nav-number">1.5.</span> <span class="nav-text">&#x2F;&#x2F;遍历 vector 容器。</span></a></li></ol></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#STL"><span class="nav-number">1.</span> <span class="nav-text">STL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#STL-%E5%AE%B9%E5%99%A8%E7%A7%8D%E7%B1%BB%E5%92%8C%E5%8A%9F%E8%83%BD"><span class="nav-number">1.1.</span> <span class="nav-text">STL 容器种类和功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="nav-number">1.2.</span> <span class="nav-text">迭代器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-11-%E6%A0%87%E5%87%86%E4%B8%AD%E4%B8%8D%E5%90%8C%E5%AE%B9%E5%99%A8%E6%8C%87%E5%AE%9A%E4%BD%BF%E7%94%A8%E7%9A%84%E8%BF%AD%E4%BB%A3%E5%99%A8%E7%B1%BB%E5%9E%8B%E3%80%82"><span class="nav-number">1.3.</span> <span class="nav-text">C++ 11 标准中不同容器指定使用的迭代器类型。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8%E7%9A%84%E5%AE%9A%E4%B9%89%E6%96%B9%E5%BC%8F"><span class="nav-number">1.4.</span> <span class="nav-text">迭代器的定义方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E5%90%8E%E8%BF%AD%E4%BB%A3%E5%99%A8%E8%AE%BF%E9%97%AElist"><span class="nav-number">1.5.</span> <span class="nav-text">排序后迭代器访问list</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E7%BA%A7%E5%AE%B9%E5%99%A8%E7%9A%84%E9%80%9A%E7%94%A8%E5%87%BD%E6%95%B0"><span class="nav-number">1.6.</span> <span class="nav-text">一级容器的通用函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%BA%E5%BA%8F%E5%AE%B9%E5%99%A8%E9%80%9A%E7%94%A8%E5%87%BD%E6%95%B0"><span class="nav-number">1.7.</span> <span class="nav-text">顺序容器通用函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E8%81%94%E5%AE%B9%E5%99%A8%E9%80%9A%E7%94%A8%E5%87%BD%E6%95%B0"><span class="nav-number">1.8.</span> <span class="nav-text">关联容器通用函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%94%AF%E6%8C%81%E7%9A%84%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.9.</span> <span class="nav-text">迭代器支持的运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#priority-queue"><span class="nav-number">1.10.</span> <span class="nav-text">priority_queue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%8D%E5%8E%86-vector-%E5%AE%B9%E5%99%A8%E3%80%82"><span class="nav-number">1.11.</span> <span class="nav-text">&#x2F;&#x2F;遍历 vector 容器。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#STL%E7%9A%84%E7%B2%BE%E5%8D%8E%E2%80%94%E2%80%94%E8%90%83%E5%8F%96%EF%BC%88trait%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">STL的精华——萃取（trait）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%90%83%E5%8F%96%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E8%90%83%E5%8F%96"><span class="nav-number">2.1.</span> <span class="nav-text">什么是萃取，为什么要萃取</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E5%A4%84%E4%B8%8D%E5%9C%A8%E7%9A%84%E7%89%B9%E5%8C%96%E2%80%94%E2%80%94%E4%B8%BA%E4%BA%86%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD%E6%97%A0%E6%89%80%E4%B8%8D%E7%94%A8%E5%85%B6%E6%9E%81"><span class="nav-number">3.</span> <span class="nav-text">无处不在的特化——为了提高性能无所不用其极</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%8B%B7%E8%B4%9D%E5%87%BD%E6%95%B0memcpy"><span class="nav-number">3.1.</span> <span class="nav-text">内存拷贝函数memcpy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83STL%E6%BA%90%E7%A0%81"><span class="nav-number">4.</span> <span class="nav-text">参考STL源码</span></a></li></ol>
     
     </div>
   </aside>

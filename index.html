@@ -247,6 +247,237 @@
 
 
   
+    <article id="post-CPP基础"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2021/07/19/CPP%E5%9F%BA%E7%A1%80/">CPP基础</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2021/07/19/CPP%E5%9F%BA%E7%A1%80/" class="article-date">
+	  <time datetime="2021-07-18T20:41:24.000Z" itemprop="datePublished">2021-07-19</time>
+	</a>
+
+      
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          类的声明123456789class 类名{    private:        私有的数据和成员函数;    public:        公用的数据和成员函数;    protected:        保护的数据和成员函数;}
+探讨public/private给我们带来了什么好处？
+
+类的内部数据得到保护
+类的使用方法更加明确，不易出错
+类的实现细节更容易修改
+内部数据修改有了统一入口，更容易调试
+
+默认生成的函数
+默认构造函数
+默认析构函数
+拷贝构造函数
+赋值操作符
+地址运算符
+...
+        </p>
+        <p class="article-more-link">
+          <a href="/2021/07/19/CPP%E5%9F%BA%E7%A1%80/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-类型转换"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2021/07/19/%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/">类型转换</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2021/07/19/%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/" class="article-date">
+	  <time datetime="2021-07-18T20:39:55.000Z" itemprop="datePublished">2021-07-19</time>
+	</a>
+
+      
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          隐式类型转换
+编译器自动完成
+转换场景
+初始化
+变量赋值
+计算表达式
+
+
+转换规则
+尽量类型向上升级
+尽量避免数据丢失
+
+
+
+12345678910111213graph BTA(bool) --&gt;B(char)B(char) --&gt;C(short int)C(short int) --&gt;D(int)D(int) --&gt;E(unsigned int)E(unsigned int) --&gt;F(long)F(long) --&gt;G(unsigned)G(uns...
+        </p>
+        <p class="article-more-link">
+          <a href="/2021/07/19/%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-虚函数"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2021/07/19/%E8%99%9A%E5%87%BD%E6%95%B0/">虚函数</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2021/07/19/%E8%99%9A%E5%87%BD%E6%95%B0/" class="article-date">
+	  <time datetime="2021-07-18T20:38:14.000Z" itemprop="datePublished">2021-07-19</time>
+	</a>
+
+      
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          虚函数表 Virtual Table对于一个类来说，如果类中存在虚函数，那么该类的大小就会多4个字节，然而这4个字节就是一个指针的大小，这个指针指向虚函数表。 所以，如果对象存在虚函数，那么编译器就会生成一个指向虚函数表的指针，所有的虚函数都存在于这个表中，虚函数表就可以理解为一个数组，每个单元用来存放虚函数的地址。
+1234567891011121314151617181920212223242526272829303132333435#include &lt;iostream&gt;#...
+        </p>
+        <p class="article-more-link">
+          <a href="/2021/07/19/%E8%99%9A%E5%87%BD%E6%95%B0/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
+    <article id="post-运算符重载"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2021/07/19/%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/">运算符重载</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2021/07/19/%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/" class="article-date">
+	  <time datetime="2021-07-18T20:37:14.000Z" itemprop="datePublished">2021-07-19</time>
+	</a>
+
+      
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          运算符重载一般格式如下
+1234&lt;返回类型说明符&gt; operator &lt;运算符符号&gt; (&lt;参数表&gt;){    &lt;函数体&gt;}
+不可重载：|    Operator    |                  |      || :————: | —————- | —- ||    .     | 类属关系运算符   |      ||    .*    | 成员指针运算符   |      ||    ::    | 作用域运算符     | ...
+        </p>
+        <p class="article-more-link">
+          <a href="/2021/07/19/%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
+  
     <article id="post-一个具有两道作业的批处理系统"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -528,221 +759,6 @@ D
         </p>
         <p class="article-more-link">
           <a href="/2021/05/22/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-C-基础"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2021/05/22/C-%E5%9F%BA%E7%A1%80/">C++基础</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2021/05/22/C-%E5%9F%BA%E7%A1%80/" class="article-date">
-	  <time datetime="2021-05-22T01:19:43.000Z" itemprop="datePublished">2021-05-22</time>
-	</a>
-
-      
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          模板模板是一种类型进行参数化的工具，通常有两种形式
-
-函数模板  ~函数模板针对仅参数类型不同的函数1234567891011template &lt;typename type&gt; return-type func-name(parameter list){   // 函数体}//例：template &lt;typename T&gt; T add(T a, T b){    return a+b;}
-类模板  ~类模板针对仅数据成员和函数成员类型不同的类1234template ...
-        </p>
-        <p class="article-more-link">
-          <a href="/2021/05/22/C-%E5%9F%BA%E7%A1%80/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-lambda表达式"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2021/05/22/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">lambda表达式</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2021/05/22/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="article-date">
-	  <time datetime="2021-05-22T01:18:21.000Z" itemprop="datePublished">2021-05-22</time>
-	</a>
-
-      
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          lambda表达式lambda表达式有如下优点：
-
-声明式编程风格：就地匿名定义目标函数或函数对象，不需要额外写一个命名函数或者函数对象。以更直接的方式去写程序，好的可读性和可维护性。
-简洁：不需要额外再写一个函数或者函数对象，避免了代码膨胀和功能分散，让开发者更加集中精力在手边的问题，同时也获取了更高的生产率。
-在需要的时间和地点实现功能闭包，使程序更灵活。lambda 表达式的概念和基本用法lambda 表达式定义了一个匿名函数，并且可以捕获一定范围内的变量。lambda 表达式的语法...
-        </p>
-        <p class="article-more-link">
-          <a href="/2021/05/22/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-基于windows系统的多线程"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2021/05/22/%E5%9F%BA%E4%BA%8Ewindows%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B/">基于windows系统的多线程</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2021/05/22/%E5%9F%BA%E4%BA%8Ewindows%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="article-date">
-	  <time datetime="2021-05-22T01:17:24.000Z" itemprop="datePublished">2021-05-22</time>
-	</a>
-
-      
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          睡眠排序法1234567891011121314151617181920212223242526272829// Created on Apple Pencil.#include &lt;iostream&gt;#include &lt;Windows.h&gt;#include &lt;thread&gt;using namespace std;#define max(a,b)  a&gt;b? a:b;void sleepsort(int i){    Sleep(i*100);   ...
-        </p>
-        <p class="article-more-link">
-          <a href="/2021/05/22/%E5%9F%BA%E4%BA%8Ewindows%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-      
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-
-  
-    <article id="post-异常"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2021/05/22/%E5%BC%82%E5%B8%B8/">异常</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2021/05/22/%E5%BC%82%E5%B8%B8/" class="article-date">
-	  <time datetime="2021-05-22T01:14:39.000Z" itemprop="datePublished">2021-05-22</time>
-	</a>
-
-      
-      
-      
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p class="article-excerpt-content">
-          异常抛出异常
-
-您可以使用 throw 语句在代码块中的任何地方抛出异常。throw语句的操作数可以是任意的表达式，表达式的结果的类型决定了抛出的异常的类型。
-
-12345678double division(int a, int b){   if( b == 0 )   {      throw "Division by zero condition!";   }   return (a/b);}
-
-捕获异常
-
-catch 块跟在 try 块后面，用于捕获异常。您可以指定想要捕捉的异常类...
-        </p>
-        <p class="article-more-link">
-          <a href="/2021/05/22/%E5%BC%82%E5%B8%B8/#more">Read More</a>
         </p>
       
     </div>

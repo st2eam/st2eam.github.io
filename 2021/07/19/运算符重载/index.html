@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>运算符重载 | Stream</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  
+  
+  <meta name="description" content="运算符重载一般格式如下 1234&lt;返回类型说明符&gt; operator &lt;运算符符号&gt; (&lt;参数表&gt;){    &lt;函数体&gt;} 不可重载：|    Operator    |                  |      || :————: | —————- | —- ||    .     | 类属关系运算符   |      ||    .*">
+<meta property="og:type" content="article">
+<meta property="og:title" content="运算符重载">
+<meta property="og:url" content="http://example.com/2021/07/19/%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/index.html">
+<meta property="og:site_name" content="Stream">
+<meta property="og:description" content="运算符重载一般格式如下 1234&lt;返回类型说明符&gt; operator &lt;运算符符号&gt; (&lt;参数表&gt;){    &lt;函数体&gt;} 不可重载：|    Operator    |                  |      || :————: | —————- | —- ||    .     | 类属关系运算符   |      ||    .*">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-07-18T20:37:14.000Z">
+<meta property="article:modified_time" content="2021-07-18T20:37:44.672Z">
+<meta property="article:author" content="Stream">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Stream" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+
+<meta name="generator" content="Hexo 5.4.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-运算符重载" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      运算符重载
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2021/07/19/%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/" class="article-date">
+	  <time datetime="2021-07-18T20:37:14.000Z" itemprop="datePublished">2021-07-19</time>
+	</a>
+
+      
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="运算符重载"><a href="#运算符重载" class="headerlink" title="运算符重载"></a>运算符重载</h2><p>一般格式如下</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;返回类型说明符&gt; operator &lt;运算符符号&gt; (&lt;参数表&gt;)</span><br><span class="line">{</span><br><span class="line">    &lt;函数体&gt;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>不可重载：<br>|    Operator    |                  |      |<br>| :————: | —————- | —- |<br>|    <code>.</code>     | 类属关系运算符   |      |<br>|    <code>.*</code>    | 成员指针运算符   |      |<br>|    <code>::</code>    | 作用域运算符     |      |<br>|    <code>#</code>     | 编译预处理符号   |      |<br>|    <code>?:</code>    | 三目条件运算符   |      |<br>| <code>sizeof()</code> | 取数据类型的长度 |      |</p>
+<ul>
+<li>重载运算符限制在c++语言中已有的运算符范围内的允许重载的运算符之中，<strong>不能创建新的运算符</strong></li>
+<li>运算符重载的实质是函数重载，遵循函数重载的选择原则</li>
+<li>重载之后<strong>不能改变运算符的优先级和结合性</strong>，也不能够改变运算符操作数的个数及语法结构</li>
+<li>运算符重载不能改变该运算符用于内部类型对象的含义</li>
+<li>运算符重载是针对新类型数据的实际需要对原有运算符进行的适当的改造，<strong>重载的功能应当与原有功能相类似</strong></li>
+<li>重载运算符的函数不能有默认的参数，否则就改变了运算符的参数个数</li>
+<li>重载的运算符只能是用户自定义类型</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center"><div style="width:60px">表达式</div></th>
+<th>作为成员函数</th>
+<th>作为非成员函数</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">@a</td>
+<td><code>(a).operator@ ()</code></td>
+<td>operator@ (a)</td>
+<td><code>   !std::cin</code>调用<code> std::cin.operator!()</code></td>
+</tr>
+<tr>
+<td align="center">a@b</td>
+<td><code>(a).operator@ (b)</code></td>
+<td>operator@ (a, b)</td>
+<td><code>   std::cout &lt;&lt; 42</code>调用<code> std::cout.operator&lt;&lt;(42)</code></td>
+</tr>
+<tr>
+<td align="center">a=b</td>
+<td><code>(a).operator= (b)</code></td>
+<td>不能是非成员</td>
+<td><code>   std::string s; s = "abc";</code>调用<code> s.operator=("abc")</code></td>
+</tr>
+<tr>
+<td align="center">a(b…)</td>
+<td><code>(a).operator()(b...)</code></td>
+<td>不能是非成员</td>
+<td><code>   std::random_device r; auto n = r();</code>调用<code> r.operator()()</code></td>
+</tr>
+<tr>
+<td align="center">a[b]</td>
+<td><code>(a).operator[](b)</code></td>
+<td>不能是非成员</td>
+<td><code>   std::map&lt;int, int&gt; m; m[1] = 2;</code>调用<code> m.operator[](1)</code></td>
+</tr>
+<tr>
+<td align="center">a-&gt;</td>
+<td><code>(a).operator-&gt;()</code></td>
+<td>不能是非成员</td>
+<td><code>   auto p = std::make_unique&lt;S&gt;(); p-&gt;bar()</code>调用<code> p.operator-&gt;()</code></td>
+</tr>
+<tr>
+<td align="center">a@</td>
+<td><code>(a).operator@ (0)</code></td>
+<td>operator@ (a, 0)</td>
+<td><code>   std::vector&lt;int&gt;::iterator i = v.begin(); i++</code>调用<code> i.operator++(0)</code></td>
+</tr>
+</tbody></table>
+<p>此表中，@ 是表示所有匹配运算符的占位符：@a 为所有前缀运算符，a@ 为除 -&gt; 以外的所有后缀运算符，a@b 为除 = 以外的所有其他运算符</p>
+<h2 id="类型转换重载"><a href="#类型转换重载" class="headerlink" title="类型转换重载"></a>类型转换重载</h2><p>double类型转换重载</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">operator double();</span><br></pre></td></tr></tbody></table></figure>
+<p>bool类型转换重载</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">operator bool();</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="成员函数运算符重载"><a href="#成员函数运算符重载" class="headerlink" title="成员函数运算符重载"></a>成员函数运算符重载</h2><p>语法格式</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">class 类名</span><br><span class="line">{</span><br><span class="line">    返回类型 operator 运算符 (参数表);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="友元运算符重载"><a href="#友元运算符重载" class="headerlink" title="友元运算符重载"></a>友元运算符重载</h2><p>在类的内部，定义友元运算符重载函数的格式如下：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class xx</span><br><span class="line">{</span><br><span class="line">    friend &lt;返回类型说明符&gt; operator &lt;运算符符号&gt; (形参表)</span><br><span class="line">    {</span><br><span class="line">    	&lt;函数体&gt;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><h4 id="一元运算符重载"><a href="#一元运算符重载" class="headerlink" title="- 一元运算符重载"></a>- 一元运算符重载</h4><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Vec2D operator -()</span><br><span class="line">{</span><br><span class="line">	return Vec2D(-x, -y);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="运算符重载-1"><a href="#运算符重载-1" class="headerlink" title="[]运算符重载"></a>[]运算符重载</h4><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">int&amp; operator[](int i)</span><br><span class="line">{</span><br><span class="line">	if (i &gt; SIZE)</span><br><span class="line">	{</span><br><span class="line">		cout &lt;&lt; "索引超过最大值" &lt;&lt; endl;</span><br><span class="line">		// 返回第一个元素</span><br><span class="line">		return arr[0];</span><br><span class="line">	}</span><br><span class="line">	return arr[i];</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="和-–-运算符重载"><a href="#和-–-运算符重载" class="headerlink" title="++ 和 – 运算符重载"></a>++ 和 – 运算符重载</h4><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">//重载前缀递增运算符++</span><br><span class="line">Time operator ++()</span><br><span class="line">{</span><br><span class="line">	second++;</span><br><span class="line">	if (second &gt; 59)</span><br><span class="line">	{</span><br><span class="line">		second -= 60;</span><br><span class="line">		minute++;</span><br><span class="line">	}</span><br><span class="line">	if (minute &gt; 59)</span><br><span class="line">	{</span><br><span class="line">		minute -= 60;</span><br><span class="line">		hour++;</span><br><span class="line">	}</span><br><span class="line">	if (hour &gt; 23)</span><br><span class="line">	{</span><br><span class="line">		hour -= 24;</span><br><span class="line">	}</span><br><span class="line">	return *this;</span><br><span class="line">}</span><br><span class="line">//重载后缀递增运算符++</span><br><span class="line">Time operator ++(int)</span><br><span class="line">{</span><br><span class="line">	Time T = *this;</span><br><span class="line">	second++;</span><br><span class="line">	if (second &gt; 59)</span><br><span class="line">	{</span><br><span class="line">		second -= 60;</span><br><span class="line">		minute++;</span><br><span class="line">	}</span><br><span class="line">	if (minute &gt; 59)</span><br><span class="line">	{</span><br><span class="line">		minute -= 60;</span><br><span class="line">		hour++;</span><br><span class="line">	}</span><br><span class="line">	if (hour &gt; 23)</span><br><span class="line">	{</span><br><span class="line">		hour -= 24;</span><br><span class="line">	}</span><br><span class="line">	return T;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="输入输出运算符重载"><a href="#输入输出运算符重载" class="headerlink" title="输入输出运算符重载"></a>输入输出运算符重载</h4><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">friend ostream&amp; operator&lt;&lt;(ostream&amp; output,const Time&amp; T)</span><br><span class="line">{</span><br><span class="line">	output &lt;&lt; T.hour &lt;&lt;":"&lt;&lt; T.minute &lt;&lt; ":" &lt;&lt; T.second;</span><br><span class="line">	return output;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">friend istream&amp; operator&gt;&gt;(istream&amp; input, Time&amp;T)</span><br><span class="line">{</span><br><span class="line">	input &gt;&gt; T.hour &gt;&gt; T.minute &gt;&gt; T.second;</span><br><span class="line">	return input;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="赋值运算符重载"><a href="#赋值运算符重载" class="headerlink" title="赋值运算符重载"></a>赋值运算符重载</h4><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">void operator=(const Time&amp; T)</span><br><span class="line">{</span><br><span class="line">	hour = T.hour;</span><br><span class="line">	minute = T.minute;</span><br><span class="line">	second = T.second;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="覆盖-override-与重载-overload"><a href="#覆盖-override-与重载-overload" class="headerlink" title="覆盖(override)与重载(overload)"></a>覆盖(override)与重载(overload)</h2><ul>
+<li><p><strong>成员函数覆盖</strong>是指派生类重新定义基类的虚函数</p>
+</li>
+<li><p><strong>成员函数重载</strong>是指函数名相同，参数不同（数量、类型、次序）</p>
+</li>
+<li><p><strong>成员函数隐藏</strong>（重定义）</p>
+</li>
+</ul>
+<ol>
+<li>不在同一个作用域内（分别位于基类与继承类中）</li>
+<li>函数名字相同</li>
+<li>返回值可以不同</li>
+<li>参数不同。此时，无论有无<code>virtual</code>关键字，基类的函数将被隐藏</li>
+<li>参数相同，但是基类函数没有<code>virtual</code>关键字。此时，基类的函数被隐藏</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Stream</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/2021/07/19/运算符重载/" target="_blank" title="运算符重载">http://example.com/2021/07/19/运算符重载/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/07/19/%E8%99%9A%E5%87%BD%E6%95%B0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          虚函数
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/06/17/%E4%B8%80%E4%B8%AA%E5%85%B7%E6%9C%89%E4%B8%A4%E9%81%93%E4%BD%9C%E4%B8%9A%E7%9A%84%E6%89%B9%E5%A4%84%E7%90%86%E7%B3%BB%E7%BB%9F/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">一个具有两道作业的批处理系统</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD"><span class="nav-number">1.</span> <span class="nav-text">运算符重载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E9%87%8D%E8%BD%BD"><span class="nav-number">2.</span> <span class="nav-text">类型转换重载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD"><span class="nav-number">3.</span> <span class="nav-text">成员函数运算符重载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8B%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD"><span class="nav-number">4.</span> <span class="nav-text">友元运算符重载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">5.</span> <span class="nav-text">实例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD"><span class="nav-number">5.0.1.</span> <span class="nav-text">- 一元运算符重载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD-1"><span class="nav-number">5.0.2.</span> <span class="nav-text">[]运算符重载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%92%8C-%E2%80%93-%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD"><span class="nav-number">5.0.3.</span> <span class="nav-text">++ 和 – 运算符重载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD"><span class="nav-number">5.0.4.</span> <span class="nav-text">输入输出运算符重载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD"><span class="nav-number">5.0.5.</span> <span class="nav-text">赋值运算符重载</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A6%86%E7%9B%96-override-%E4%B8%8E%E9%87%8D%E8%BD%BD-overload"><span class="nav-number">6.</span> <span class="nav-text">覆盖(override)与重载(overload)</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2021 - 2021 Stream All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+
+  
+<script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Stream
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 Stream All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

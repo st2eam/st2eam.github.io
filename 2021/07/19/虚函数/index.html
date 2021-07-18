@@ -3,26 +3,26 @@
 <head>
   <meta charset="utf-8">
   
-  <title>images | Stream</title>
+  <title>虚函数 | Stream</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="keywords" content="images" />
+  <meta name="keywords" content="c++" />
   
   
   
   
-  <meta property="og:type" content="article">
-<meta property="og:title" content="images">
-<meta property="og:url" content="http://example.com/2099/05/20/images/index.html">
+  <meta name="description" content="虚函数表 Virtual Table对于一个类来说，如果类中存在虚函数，那么该类的大小就会多4个字节，然而这4个字节就是一个指针的大小，这个指针指向虚函数表。 所以，如果对象存在虚函数，那么编译器就会生成一个指向虚函数表的指针，所有的虚函数都存在于这个表中，虚函数表就可以理解为一个数组，每个单元用来存放虚函数的地址。 1234567891011121314151617181920212223242">
+<meta property="og:type" content="article">
+<meta property="og:title" content="虚函数">
+<meta property="og:url" content="http://example.com/2021/07/19/%E8%99%9A%E5%87%BD%E6%95%B0/index.html">
 <meta property="og:site_name" content="Stream">
+<meta property="og:description" content="虚函数表 Virtual Table对于一个类来说，如果类中存在虚函数，那么该类的大小就会多4个字节，然而这4个字节就是一个指针的大小，这个指针指向虚函数表。 所以，如果对象存在虚函数，那么编译器就会生成一个指向虚函数表的指针，所有的虚函数都存在于这个表中，虚函数表就可以理解为一个数组，每个单元用来存放虚函数的地址。 1234567891011121314151617181920212223242">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/images/r2e391.png">
-<meta property="article:published_time" content="2099-05-20T11:04:17.000Z">
-<meta property="article:modified_time" content="2021-05-22T01:47:43.746Z">
+<meta property="article:published_time" content="2021-07-18T20:38:14.000Z">
+<meta property="article:modified_time" content="2021-07-18T20:39:17.420Z">
 <meta property="article:author" content="Stream">
-<meta property="article:tag" content="images">
+<meta property="article:tag" content="c++">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/r2e391.png">
   
     <link rel="alternate" href="/atom.xml" title="Stream" type="application/atom+xml">
   
@@ -174,7 +174,7 @@
             
       <div id="content" class="outer">
         
-          <section id="main" style="float:none;"><article id="post-images" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+          <section id="main" style="float:none;"><article id="post-虚函数" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
     
@@ -182,7 +182,7 @@
         
   
     <h1 class="thumb" class="article-title" itemprop="name">
-      images
+      虚函数
     </h1>
   
 
@@ -190,8 +190,8 @@
     
     <div class="article-meta">
       
-	<a href="/2099/05/20/images/" class="article-date">
-	  <time datetime="2099-05-20T11:04:17.000Z" itemprop="datePublished">2099-05-20</time>
+	<a href="/2021/07/19/%E8%99%9A%E5%87%BD%E6%95%B0/" class="article-date">
+	  <time datetime="2021-07-18T20:38:14.000Z" itemprop="datePublished">2021-07-19</time>
 	</a>
 
       
@@ -207,7 +207,42 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="/images/r2e391.png"></p>
+        <h2 id="虚函数表-Virtual-Table"><a href="#虚函数表-Virtual-Table" class="headerlink" title="虚函数表 Virtual Table"></a><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1599283">虚函数表</a> Virtual Table</h2><p>对于一个类来说，<strong>如果类中存在虚函数，那么该类的大小就会多4个字节，然而这4个字节就是一个指针的大小，这个指针指向虚函数表。</strong> 所以，如果对象存在虚函数，那么编译器就会生成一个指向虚函数表的指针，所有的虚函数都存在于这个表中，<strong>虚函数表就可以理解为一个数组，每个单元用来存放虚函数的地址。</strong></p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">class Base {</span><br><span class="line">public:</span><br><span class="line">	virtual void a() { cout &lt;&lt; "Base a()" &lt;&lt; endl; }</span><br><span class="line">	virtual void b() { cout &lt;&lt; "Base b()" &lt;&lt; endl; }</span><br><span class="line">	virtual void c() { cout &lt;&lt; "Base c()" &lt;&lt; endl; }</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line">class Derive : public Base {</span><br><span class="line">public:</span><br><span class="line">	virtual void b() { cout &lt;&lt; "Derive b()" &lt;&lt; endl; }</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">{</span><br><span class="line">	cout &lt;&lt; "----------Base-------------" &lt;&lt; endl;</span><br><span class="line">	Base* q = new Base;</span><br><span class="line">	long* tmp1 = (long*)q;</span><br><span class="line">	long* vptr1 = (long*)(*tmp1);</span><br><span class="line">	for (int i = 0; i &lt; 3; i++) {</span><br><span class="line">		printf("vptr[%d] : %p\n", i, vptr1[i]);</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	Derive* p = new Derive;</span><br><span class="line">	long* tmp = (long*)p;</span><br><span class="line">	long* vptr = (long*)(*tmp);</span><br><span class="line">	cout &lt;&lt; "---------Derive------------" &lt;&lt; endl;</span><br><span class="line">	for (int i = 0; i &lt; 3; i++) {</span><br><span class="line">		printf("vptr[%d] : %p\n", i, vptr[i]);</span><br><span class="line">	}</span><br><span class="line">	return 0;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="纯虚析构函数"><a href="#纯虚析构函数" class="headerlink" title="纯虚析构函数"></a>纯虚析构函数</h2><p>如果基类并不需要回收清理什么，那么析构函数就可以是虚构函数</p>
+<h2 id="虚析构函数"><a href="#虚析构函数" class="headerlink" title="虚析构函数"></a>虚析构函数</h2><ul>
+<li><p>一般的建议是作为基类的析构函数是虚函数</p>
+</li>
+<li><p>当指针指向的对象是基类类型时，delete销毁对象的时候并不会调用派生类的析构函数，这样就造成了对象销毁不完整</p>
+<blockquote>
+<p> 总结一下虚析构函数的作用：</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>（1）如果基类的析构函数不加virtual关键字<br>当基类的析构函数不声明成虚析构函数的时候，当派生类继承父类，基类的指针指向派生类时，delete掉基类的指针，只调动基类的析构函数，而不调动派生类的析构函数。</p>
+</blockquote>
+<blockquote>
+<p>（2）如果基类的析构函数加virtual关键字<br>当基类的析构函数声明成虚析构函数的时候，当派生类继承基类，基类的指针指向派生类时，delete掉基类的指针，先调动派生类的析构函数，再调动基类的析构函数。</p>
+</blockquote>
+<blockquote>
+<p>原理分析</p>
+</blockquote>
+<p>由于基类的析构函数为虚函数，所以派生类会在所有属性的前面形成虚表，而虚表内部存储的就是基类的虚函数。<br>当delete基类的指针时，由于派生类的析构函数与基类的析构函数构成多态，所以得先调动派生类的析构函数；之所以再调动基类的析构函数，是因为delete的机制所引起的,delete 基类指针所指的空间，要调用基类的析构函数。</p>
+<h2 id="虚继承"><a href="#虚继承" class="headerlink" title="虚继承"></a>虚继承</h2><ul>
+<li><p>是指一个指定的基类，在继承体系结构中，将其成员数据实例共享给也从这个基类型直接或间接派生的其它类。</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class typename :virtual public inheritance{</span><br><span class="line"></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="纯虚函数"><a href="#纯虚函数" class="headerlink" title="纯虚函数"></a>纯虚函数</h2><figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">virtual</span> ReturnType <span class="title">Function</span><span class="params">(Argument List)</span></span>=<span class="number">0</span>;</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="抽象类"><a href="#抽象类" class="headerlink" title="抽象类"></a>抽象类</h2></li>
+<li><p>含有纯虚函数的类就是抽象类</p>
+</li>
+<li><p>抽象类没有完整的信息，只能是派生类的基类</p>
+</li>
+<li><p>抽象类不能有实例，不能有静态成员</p>
+</li>
+<li><p>派生类应该实现抽象类的所有方法</p>
+</li>
+</ul>
 
       
     </div>
@@ -221,7 +256,7 @@
           </li>
           <li class="post-copyright-link">
           <strong>Post link:  </strong>
-          <a href="/2099/05/20/images/" target="_blank" title="images">http://example.com/2099/05/20/images/</a>
+          <a href="/2021/07/19/虚函数/" target="_blank" title="虚函数">http://example.com/2021/07/19/虚函数/</a>
           </li>
           <li class="post-copyright-license">
             <strong>Copyright Notice:   </strong>
@@ -261,7 +296,7 @@
       
       
         
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/images/" rel="tag">images</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/" rel="tag">c++</a></li></ul>
 
       
 
@@ -271,10 +306,19 @@
     
 <nav id="article-nav">
   
+    <a href="/2021/07/19/%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          类型转换
+        
+      </div>
+    </a>
   
-    <a href="/2021/07/19/CPP%E5%9F%BA%E7%A1%80/" id="article-nav-older" class="article-nav-link-wrap">
+  
+    <a href="/2021/07/19/%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">CPP基础</div>
+      <div class="article-nav-title">运算符重载</div>
     </a>
   
 </nav>
@@ -288,7 +332,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-        <ol class="nav">None</ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8-Virtual-Table"><span class="nav-number">1.</span> <span class="nav-text">虚函数表 Virtual Table</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%AF%E8%99%9A%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">纯虚析构函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">虚析构函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E7%BB%A7%E6%89%BF"><span class="nav-number">4.</span> <span class="nav-text">虚继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%AF%E8%99%9A%E5%87%BD%E6%95%B0"><span class="nav-number">5.</span> <span class="nav-text">纯虚函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%BD%E8%B1%A1%E7%B1%BB"><span class="nav-number">6.</span> <span class="nav-text">抽象类</span></a></li></ol>
     
     </div>
   </aside>
