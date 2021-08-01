@@ -134,7 +134,7 @@
                   
                     <div class="item">
                   
-                    <img id="carousel-img2" src="/css/images/background2.jpg">
+                    <img id="carousel-img2" src="/css/images/background2.png">
                   </div>
 
                   <!-- 自适应大图 -->
@@ -155,7 +155,7 @@
                   
                     <div class="item">
                   
-                    <img id="carousel-img3" src="/css/images/background3.jpg">
+                    <img id="carousel-img3" src="/css/images/background3.png">
                   </div>
 
                   <!-- 自适应大图 -->
@@ -218,7 +218,7 @@
                   
                     <div class="item">
                   
-                    <img id="carousel-img6" src="/css/images/background6.jpg">
+                    <img id="carousel-img6" src="/css/images/background6.png">
                   </div>
 
                   <!-- 自适应大图 -->
@@ -260,7 +260,7 @@
                   
                     <div class="item">
                   
-                    <img id="carousel-img8" src="/css/images/background8.jpg">
+                    <img id="carousel-img8" src="/css/images/background8.png">
                   </div>
 
                   <!-- 自适应大图 -->
@@ -390,6 +390,69 @@
       <div id="content" class="outer">
         
           <section id="main" style="float:none;">
+  
+    <article id="post-设计模式"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2021/05/22/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2021/05/22/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="article-date">
+	  <time datetime="2021-05-22T01:54:48.000Z" itemprop="datePublished">2021-05-22</time>
+	</a>
+
+      
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p class="article-excerpt-content">
+          设计模式
+工厂模式
+
+意图：定义一个创建对象的接口，让其子类自己决定实例化哪一个工厂类，工厂模式使其创建过程延迟到子类进行。
+
+主要解决：主要解决接口选择的问题。
+
+何时使用：我们明确地计划不同条件下创建不同实例时。
+
+如何解决：让其子类实现工厂接口，返回的也是一个抽象的产品。
+
+关键代码：创建过程在其子类执行。
+
+应用实例： 1、您需要一辆汽车，可以直接从工厂里面提货，而不用去管这辆汽车是怎么做出来的，以及这个汽车里面的具体实现。 2、Hibernate 换数据库只需换方言和驱动就可以。...
+        </p>
+        <p class="article-more-link">
+          <a href="/2021/05/22/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+
   
     <article id="post-模板"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
@@ -1121,5 +1184,20 @@ Quick StartCreate a new post1$ hexo new "My New Post...
   <a id="rocket" href="#top" class=""></a>
   <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
   
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
