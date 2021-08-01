@@ -19,9 +19,9 @@
 <meta property="og:description" content="系统桌面目录的文件搜索工具完成功能 完整实现基本功能 包含桌面目录下的所有文件及文件夹 搜索及排序展示功能,包含程序图标、名称、路径、大小信息. 右键菜单，右键中菜单中包含启动和删除功能 程序启动后默认隐藏至系统托盘,通过 alt+空格 唤出，再次按下 alt+空格 隐藏； 关闭程序时隐藏自系统托盘,需要在系统托盘下右键退出才是真正结束程序 中文名称的程序支持通过拼音首字母进行混合搜索   搜索速">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/.com//20210731204126.png">
-<meta property="og:image" content="http://example.com/2021/08/01/%E7%B3%BB%E7%BB%9F%E6%A1%8C%E9%9D%A2%E7%9B%AE%E5%BD%95%E7%9A%84%E6%96%87%E4%BB%B6%E6%90%9C%E7%B4%A2%E5%B7%A5%E5%85%B7/%E7%B3%BB%E7%BB%9F%E6%A1%8C%E9%9D%A2%E7%9B%AE%E5%BD%95%E7%9A%84%E6%96%87%E4%BB%B6%E6%90%9C%E7%B4%A2%E5%B7%A5%E5%85%B7//20210731204502.png">
+<meta property="og:image" content="http://example.com/%E7%B3%BB%E7%BB%9F%E6%A1%8C%E9%9D%A2%E7%9B%AE%E5%BD%95%E7%9A%84%E6%96%87%E4%BB%B6%E6%90%9C%E7%B4%A2%E5%B7%A5%E5%85%B7//20210731204502.png">
 <meta property="article:published_time" content="2021-08-01T09:15:42.000Z">
-<meta property="article:modified_time" content="2021-08-01T09:18:58.243Z">
+<meta property="article:modified_time" content="2021-08-01T09:23:39.717Z">
 <meta property="article:author" content="Stream">
 <meta property="article:tag" content="QT">
 <meta name="twitter:card" content="summary">
@@ -233,7 +233,7 @@
 <li>或许可以使用map+list之类的数据结构存储使用内存缓存进行存储</li>
 </ol>
 <h3 id="运行结果展示"><a href="#运行结果展示" class="headerlink" title="运行结果展示"></a>运行结果展示</h3><p><img src="/.com//20210731204126.png" alt="image"></p>
-<p><img src="%E7%B3%BB%E7%BB%9F%E6%A1%8C%E9%9D%A2%E7%9B%AE%E5%BD%95%E7%9A%84%E6%96%87%E4%BB%B6%E6%90%9C%E7%B4%A2%E5%B7%A5%E5%85%B7//20210731204502.png" alt="image"></p>
+<p><img src="/%E7%B3%BB%E7%BB%9F%E6%A1%8C%E9%9D%A2%E7%9B%AE%E5%BD%95%E7%9A%84%E6%96%87%E4%BB%B6%E6%90%9C%E7%B4%A2%E5%B7%A5%E5%85%B7//20210731204502.png" alt="image"></p>
 <h2 id="2021-07-26"><a href="#2021-07-26" class="headerlink" title="2021/07/26"></a>2021/07/26</h2><h4 id="开始构思实现"><a href="#开始构思实现" class="headerlink" title="开始构思实现"></a>开始构思实现</h4><p>最开始尝试使用listWidget控件作为主要的显示控件,以QStringList为数据存储.因为感觉listWidget自带的<code>addItems</code>函数以及setIcon等函数和QStringList的配合使用对工具实现非常的方便,而且可以添加自定义的Widget作为Items,作为之后的ui美化.但是经过测试对比发现以QStringList为数据存储进行筛选排序时运行速度缓慢不能达到要求.</p>
 <p>之后改用对数据库支持较好的listView作为显示控件,但是listView只能显示第一列的数据,所以最后决定改用tableView作为显示的控件,用数据库进行存储.</p>
 <h2 id="2021-07-27"><a href="#2021-07-27" class="headerlink" title="2021/07/27"></a>2021/07/27</h2><h3 id="实现的功能"><a href="#实现的功能" class="headerlink" title="实现的功能"></a>实现的功能</h3><p>今日的工作完成了在搜索栏输入关键字，快速搜索系统桌面目录里的文件和文件夹，展示在列表中，包含程序名称、路径、大小信息。支持模糊匹配搜索; 右键菜单,包含启动和删除功能</p>
@@ -642,20 +642,5 @@
   
     <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
   
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
