@@ -1,4 +1,4 @@
-# Week-03 完成思路
+# 完成思路
 
 ## 目的
 
@@ -80,7 +80,7 @@ grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
 3. 在 js 里面，经常需要使用 js 往页面中插入 html 内容。
    html 内容比较少的时候还好，但是当内容比较多时，会显得 js 比较复杂，十分的不方便。
 
-​ 给`<script>`设置`type="text/template"`，标签里面的内容不会被执行，也不会显示在页面上，但是可以在另一个 script 里面通过获取插入到页面中。这样就把大段的 HTML 操作从 js 里面分离开了。
+ 给`<script>`设置`type="text/template"`，标签里面的内容不会被执行，也不会显示在页面上，但是可以在另一个 script 里面通过获取插入到页面中。这样就把大段的 HTML 操作从 js 里面分离开了。
 
 ```html
 <script type="text/template" id="temp">
