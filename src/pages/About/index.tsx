@@ -24,7 +24,7 @@ import {
   Palette,
   Code,
 } from '@mui/icons-material';
-import './About.less';
+import './index.module.less';
 
 const About: React.FC = () => {
   const skills = [

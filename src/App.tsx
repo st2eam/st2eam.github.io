@@ -1,10 +1,10 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Box } from '@mui/material';
-import Navbar from '@/components/Navbar/Navbar';
-import Home from '@/pages/Home/Home';
-import Notes from '@/pages/Notes/Notes';
-import About from '@/pages/About/About';
+import Navbar from '@/components/Navbar';
+import Home from '@/pages/Home';
+import Notes from '@/pages/Notes';
+import About from '@/pages/About';
 import '@/styles/App.less';
 
 const App: React.FC = () => {

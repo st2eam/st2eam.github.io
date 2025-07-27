@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Container, Typography, Box, Chip, Button, useMediaQuery, useTheme } from '@mui/material';
 import { PhotoCamera, Refresh } from '@mui/icons-material';
-import MasonryGallery from '@/components/MasonryGallery/MasonryGallery';
-import './Home.less';
+import MasonryGallery from '@/components/MasonryGallery';
+import './index.module.less';
 
 // 生成随机尺寸的摄影作品数据
 const generateRandomPhotos = (count: number) => {
