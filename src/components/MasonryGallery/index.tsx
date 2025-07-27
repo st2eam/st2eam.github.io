@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
-import './index.module.less';
+import styles from './index.module.less';
 
 interface ImageItem {
   id: string;
@@ -49,7 +49,7 @@ const MasonryGallery: React.FC<MasonryGalleryProps> = ({ images, loading = false
 
   const renderSkeletons = () => {
     return Array.from({ length: 8 }).map((_, index) => (
-      <Card key={`skeleton-${index}`} className="gallery-item">
+      <Card key={`skeleton-${index}`} className={styles.galleryItem}>
         <Skeleton variant="rectangular" height={Math.random() * 200 + 200} animation="wave" />
       </Card>
     ));
@@ -57,11 +57,11 @@ const MasonryGallery: React.FC<MasonryGalleryProps> = ({ images, loading = false
 
   if (loading) {
     return (
-      <Box className="masonry-gallery">
+      <Box className={styles.masonryGallery}>
         <Masonry
           breakpointCols={breakpointColumnsObj}
-          className="masonry-grid"
-          columnClassName="masonry-grid-column"
+          className={styles.masonryGrid}
+          columnClassName={styles.masonryGridColumn}
         >
           {renderSkeletons()}
         </Masonry>
@@ -70,11 +70,11 @@ const MasonryGallery: React.FC<MasonryGalleryProps> = ({ images, loading = false
   }
 
   return (
-    <Box className="masonry-gallery">
+    <Box className={styles.masonryGallery}>
       <Masonry
         breakpointCols={breakpointColumnsObj}
-        className="masonry-grid"
-        columnClassName="masonry-grid-column"
+        className={styles.masonryGrid}
+        columnClassName={styles.masonryGridColumn}
       >
         {images.map((image, index) => (
           <Fade
@@ -83,21 +83,21 @@ const MasonryGallery: React.FC<MasonryGalleryProps> = ({ images, loading = false
             style={{ transitionDelay: `${index * 100}ms` }}
             key={image.id}
           >
-            <Card className="gallery-item" onClick={() => handleImageClick(image)}>
+            <Card className={styles.galleryItem} onClick={() => handleImageClick(image)}>
               <CardMedia
                 component="img"
                 image={image.src}
                 alt={image.alt}
                 loading="lazy"
-                className="gallery-image"
+                className={styles.galleryImage}
                 style={{
                   aspectRatio: `${image.width} / ${image.height}`,
                 }}
               />
-              <Box className="image-overlay">
-                <Box className="image-info">
-                  <span className="image-title">{image.alt}</span>
-                  {image.category && <span className="image-category">{image.category}</span>}
+              <Box className={styles.imageOverlay}>
+                <Box className={styles.imageInfo}>
+                  <span className={styles.imageTitle}>{image.alt}</span>
+                  {image.category && <span className={styles.imageCategory}>{image.category}</span>}
                 </Box>
               </Box>
             </Card>

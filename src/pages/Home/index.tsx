@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Container, Typography, Box, Chip, Button, useMediaQuery, useTheme } from '@mui/material';
 import { PhotoCamera, Refresh } from '@mui/icons-material';
 import MasonryGallery from '@/components/MasonryGallery';
-import './index.module.less';
+import styles from './index.module.less';
 
 // 生成随机尺寸的摄影作品数据
 const generateRandomPhotos = (count: number) => {
@@ -96,19 +96,19 @@ const Home: React.FC = () => {
   };
 
   return (
-    <Box className="home-page">
+    <Box className={styles.homePage}>
       {/* Hero Section */}
-      <Box className="hero-section">
+      <Box className={styles.heroSection}>
         <Container maxWidth="lg">
-          <Box className="hero-content">
-            <Typography variant={isMobile ? 'h3' : 'h2'} component="h1" className="hero-title">
+          <Box className={styles.heroContent}>
+            <Typography variant={isMobile ? 'h3' : 'h2'} component="h1" className={styles.heroTitle}>
               stream 个人小站
             </Typography>
-            <Typography variant="h6" className="hero-subtitle">
+            <Typography variant="h6" className={styles.heroSubtitle}>
               所有内容均由AI生成，网站有待完善，不代表本人真实想法以及水平
             </Typography>
-            <Box className="hero-stats">
-              <Box className="stat-item">
+            <Box className={styles.heroStats}>
+              <Box className={styles.statItem}>
                 <PhotoCamera />
                 <span>{photos.length} 张作品</span>
               </Box>
@@ -118,13 +118,13 @@ const Home: React.FC = () => {
       </Box>
 
       {/* Gallery Section */}
-      <Container maxWidth="xl" className="gallery-section">
+      <Container maxWidth="xl" className={styles.gallerySection}>
         {/* Category Filter */}
-        <Box className="category-filter">
-          <Typography variant="h5" className="section-title">
+        <Box className={styles.categoryFilter}>
+          <Typography variant="h5" className={styles.sectionTitle}>
             作品展示
           </Typography>
-          <Box className="filter-chips">
+          <Box className={styles.filterChips}>
             {categories.map(category => (
               <Chip
                 key={category}
@@ -132,7 +132,7 @@ const Home: React.FC = () => {
                 onClick={() => handleCategoryChange(category)}
                 color={selectedCategory === category ? 'primary' : 'default'}
                 variant={selectedCategory === category ? 'filled' : 'outlined'}
-                className="category-chip"
+                className={styles.categoryChip}
               />
             ))}
           </Box>
@@ -141,7 +141,7 @@ const Home: React.FC = () => {
             startIcon={<Refresh />}
             onClick={handleRefresh}
             disabled={loading}
-            className="refresh-button"
+            className={styles.refreshButton}
           >
             {loading ? '加载中...' : '刷新图片'}
           </Button>
