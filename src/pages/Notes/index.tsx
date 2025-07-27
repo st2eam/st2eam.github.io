@@ -59,64 +59,64 @@ const mockNotes = [
 
 const Notes: React.FC = () => {
   return (
-    <Box className="notes-page">
+    <Box className={styles.notesPage}>
       <Container maxWidth="lg">
         {/* Page Header */}
-        <Box className="page-header">
-          <Typography variant="h3" component="h1" className="page-title">
+        <Box className={styles.pageHeader}>
+          <Typography variant="h3" component="h1" className={styles.pageTitle}>
             摄影笔记
           </Typography>
-          <Typography variant="h6" className="page-subtitle">
+          <Typography variant="h6" className={styles.pageSubtitle}>
             记录摄影路上的思考与成长
           </Typography>
         </Box>
 
         {/* Notes Grid */}
-        <Grid container spacing={3} className="notes-grid">
+        <Grid container spacing={3} className={styles.notesGrid}>
           {mockNotes.map(note => (
             <Grid item xs={12} md={6} lg={4} key={note.id}>
-              <Card className="note-card">
+              <Card className={styles.noteCard}>
                 <CardContent>
                   {/* Note Category */}
                   <Chip
                     label={note.category}
                     size="small"
-                    className="note-category"
+                    className={styles.noteCategory}
                     color="primary"
                     variant="outlined"
                   />
 
                   {/* Note Title */}
-                  <Typography variant="h6" component="h2" className="note-title">
+                  <Typography variant="h6" component="h2" className={styles.noteTitle}>
                     {note.title}
                   </Typography>
 
                   {/* Note Excerpt */}
-                  <Typography variant="body2" className="note-excerpt">
+                  <Typography variant="body2" className={styles.noteExcerpt}>
                     {note.excerpt}
                   </Typography>
 
                   {/* Note Meta */}
-                  <Box className="note-meta">
-                    <Box className="meta-item">
+                  <Box className={styles.noteMeta}>
+                    <Box className={styles.metaItem}>
                       <CalendarToday fontSize="small" />
                       <span>{note.date}</span>
                     </Box>
-                    <Box className="meta-item">
+                    <Box className={styles.metaItem}>
                       <AccessTime fontSize="small" />
                       <span>{note.readTime}</span>
                     </Box>
                   </Box>
 
                   {/* Note Tags */}
-                  <Box className="note-tags">
+                  <Box className={styles.noteTags}>
                     {note.tags.map((tag, index) => (
                       <Chip
                         key={index}
                         label={tag}
                         size="small"
                         variant="outlined"
-                        className="tag-chip"
+                        className={styles.tagChip}
                       />
                     ))}
                   </Box>
@@ -127,11 +127,11 @@ const Notes: React.FC = () => {
         </Grid>
 
         {/* Coming Soon Section */}
-        <Box className="coming-soon">
-          <Typography variant="h5" className="coming-soon-title">
+        <Box className={styles.comingSoon}>
+          <Typography variant="h5" className={styles.comingSoonTitle}>
             更多内容即将到来...
           </Typography>
-          <Typography variant="body1" className="coming-soon-text">
+          <Typography variant="body1" className={styles.comingSoonText}>
             我会持续分享摄影技巧、后期处理心得和设备使用经验
           </Typography>
         </Box>
