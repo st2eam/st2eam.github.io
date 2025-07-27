@@ -16,29 +16,45 @@
     "@types/react-dom": "^18.2.23",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-masonry-css": "^1.0.16",
     "react-router-dom": "^6.22.3",
     "react-scripts": "5.0.1",
     "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4",
-    "react-masonry-css": "^1.0.16"
+    "web-vitals": "^2.1.4"
   },
   "devDependencies": {
+    "@craco/craco": "^7.1.0",
+    "craco-less": "^3.0.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.3",
     "less": "^4.2.0",
     "less-loader": "^12.2.0",
-    "@craco/craco": "^7.1.0",
-    "craco-less": "^3.0.1"
+    "prettier": "^3.6.2"
   },
   "scripts": {
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,less,md}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,less,md}\""
   },
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
-    ]
+      "react-app/jest",
+      "prettier"
+    ],
+    "plugins": [
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": "warn",
+      "@typescript-eslint/no-unused-vars": "warn",
+      "react-hooks/exhaustive-deps": "warn"
+    }
   },
   "browserslist": {
     "production": [

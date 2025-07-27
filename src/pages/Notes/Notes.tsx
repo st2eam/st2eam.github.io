@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  Container,
-  Typography,
-  Box,
-  Card,
-  CardContent,
-  Chip,
-  Grid,
-  Avatar,
-} from '@mui/material';
+import { Container, Typography, Box, Card, CardContent, Chip, Grid } from '@mui/material';
 import { CalendarToday, AccessTime } from '@mui/icons-material';
 import './Notes.less';
 
@@ -82,29 +73,29 @@ const Notes: React.FC = () => {
 
         {/* Notes Grid */}
         <Grid container spacing={3} className="notes-grid">
-          {mockNotes.map((note) => (
+          {mockNotes.map(note => (
             <Grid item xs={12} md={6} lg={4} key={note.id}>
               <Card className="note-card">
                 <CardContent>
                   {/* Note Category */}
-                  <Chip 
-                    label={note.category} 
-                    size="small" 
+                  <Chip
+                    label={note.category}
+                    size="small"
                     className="note-category"
                     color="primary"
                     variant="outlined"
                   />
-                  
+
                   {/* Note Title */}
                   <Typography variant="h6" component="h2" className="note-title">
                     {note.title}
                   </Typography>
-                  
+
                   {/* Note Excerpt */}
                   <Typography variant="body2" className="note-excerpt">
                     {note.excerpt}
                   </Typography>
-                  
+
                   {/* Note Meta */}
                   <Box className="note-meta">
                     <Box className="meta-item">
@@ -116,7 +107,7 @@ const Notes: React.FC = () => {
                       <span>{note.readTime}</span>
                     </Box>
                   </Box>
-                  
+
                   {/* Note Tags */}
                   <Box className="note-tags">
                     {note.tags.map((tag, index) => (

@@ -4,92 +4,92 @@
   min-height: 100vh;
   background: @background-color;
   padding: 40px 0;
-  
+
   @media @mobile {
     padding: 24px 0;
   }
-  
+
   .about-hero {
     text-align: center;
     padding: 60px 0;
     margin-bottom: 48px;
-    
+
     @media @mobile {
       padding: 40px 0;
       margin-bottom: 32px;
     }
-    
+
     .profile-avatar {
       width: 150px;
       height: 150px;
       margin: 0 auto 24px;
       border: 4px solid @white;
       box-shadow: @shadow;
-      
+
       @media @mobile {
         width: 120px;
         height: 120px;
       }
     }
-    
+
     .profile-name {
       color: @primary-color;
       font-weight: 700;
       margin-bottom: 8px;
-      
+
       @media @mobile {
         font-size: 2rem;
       }
     }
-    
+
     .profile-title {
       color: @text-light;
       font-weight: 300;
       margin-bottom: 32px;
-      
+
       @media @mobile {
         font-size: 1rem;
         margin-bottom: 24px;
       }
     }
-    
+
     .contact-links {
       display: flex;
       justify-content: center;
       gap: 32px;
       margin-bottom: 24px;
-      
+
       @media @mobile {
         flex-direction: column;
         gap: 16px;
         align-items: center;
       }
-      
+
       .contact-item {
         display: flex;
         align-items: center;
         gap: 8px;
         color: @text-light;
         font-size: 16px;
-        
+
         .MuiSvgIcon-root {
           color: @primary-color;
         }
       }
     }
-    
+
     .social-links {
       display: flex;
       justify-content: center;
       gap: 16px;
-      
+
       .social-icon {
         width: 40px;
         height: 40px;
         color: @text-light;
         cursor: pointer;
         transition: all 0.3s ease;
-        
+
         &:hover {
           color: @primary-color;
           transform: translateY(-2px);
@@ -97,7 +97,7 @@
       }
     }
   }
-  
+
   .about-content {
     .bio-card,
     .skills-card,
@@ -106,43 +106,43 @@
       border-radius: @border-radius;
       box-shadow: @shadow;
       transition: all 0.3s ease;
-      
+
       &:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
       }
-      
+
       .section-title {
         color: @primary-color;
         font-weight: 600;
         margin-bottom: 20px;
       }
     }
-    
+
     .bio-card {
       .bio-text {
         line-height: 1.8;
         margin-bottom: 16px;
         color: @text-color;
-        
+
         &:last-child {
           margin-bottom: 0;
         }
       }
     }
-    
+
     .skills-card {
       .skills-list {
         padding: 0;
-        
+
         .skill-item {
           padding: 12px 0;
-          
+
           .skill-icon {
             color: @primary-color;
             min-width: 40px;
           }
-          
+
           .skill-progress {
             width: 100%;
             height: 6px;
@@ -150,7 +150,7 @@
             border-radius: 3px;
             margin-top: 8px;
             overflow: hidden;
-            
+
             .progress-bar {
               height: 100%;
               background: linear-gradient(90deg, @primary-color, lighten(@primary-color, 20%));
@@ -161,17 +161,17 @@
         }
       }
     }
-    
+
     .equipment-card {
       .equipment-list {
         display: flex;
         flex-wrap: wrap;
         gap: 12px;
-        
+
         .equipment-chip {
           font-weight: 500;
           transition: all 0.3s ease;
-          
+
           &:hover {
             background: rgba(44, 62, 80, 0.1);
             transform: translateY(-1px);
@@ -179,19 +179,19 @@
         }
       }
     }
-    
+
     .philosophy-card {
       .philosophy-text {
         line-height: 1.8;
         color: @text-color;
         margin-bottom: 20px;
         font-style: italic;
-        
+
         &:last-child {
           margin-bottom: 0;
         }
       }
-      
+
       .divider {
         margin: 24px 0;
         background: rgba(44, 62, 80, 0.1);

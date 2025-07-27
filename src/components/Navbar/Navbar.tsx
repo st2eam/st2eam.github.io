@@ -44,7 +44,7 @@ const Navbar: React.FC = () => {
         </IconButton>
       </Box>
       <List>
-        {navItems.map((item) => (
+        {navItems.map(item => (
           <ListItem
             key={item.name}
             component={Link}
@@ -72,7 +72,7 @@ const Navbar: React.FC = () => {
           >
             ST2EAM
           </Typography>
-          
+
           {isMobile ? (
             <IconButton
               color="inherit"
@@ -84,7 +84,7 @@ const Navbar: React.FC = () => {
             </IconButton>
           ) : (
             <Box className="nav-links">
-              {navItems.map((item) => (
+              {navItems.map(item => (
                 <Button
                   key={item.name}
                   color="inherit"
@@ -99,7 +99,7 @@ const Navbar: React.FC = () => {
           )}
         </Toolbar>
       </AppBar>
-      
+
       <Drawer
         variant="temporary"
         anchor="right"

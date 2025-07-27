@@ -49,18 +49,14 @@ const About: React.FC = () => {
       <Container maxWidth="lg">
         {/* Hero Section */}
         <Box className="about-hero">
-          <Avatar
-            src="/api/placeholder/200/200"
-            alt="ST2EAM"
-            className="profile-avatar"
-          />
+          <Avatar src="/api/placeholder/200/200" alt="ST2EAM" className="profile-avatar" />
           <Typography variant="h3" component="h1" className="profile-name">
             ST2EAM
           </Typography>
           <Typography variant="h6" className="profile-title">
             摄影师 · 视觉艺术家 · 前端开发者
           </Typography>
-          
+
           {/* Contact Links */}
           <Box className="contact-links">
             <Box className="contact-item">
@@ -72,7 +68,7 @@ const About: React.FC = () => {
               <span>contact@st2eam.com</span>
             </Box>
           </Box>
-          
+
           {/* Social Links */}
           <Box className="social-links">
             <GitHub className="social-icon" />
@@ -116,17 +112,12 @@ const About: React.FC = () => {
                 <List className="skills-list">
                   {skills.map((skill, index) => (
                     <ListItem key={index} className="skill-item">
-                      <ListItemIcon className="skill-icon">
-                        {skill.icon}
-                      </ListItemIcon>
-                      <ListItemText 
+                      <ListItemIcon className="skill-icon">{skill.icon}</ListItemIcon>
+                      <ListItemText
                         primary={skill.name}
                         secondary={
                           <Box className="skill-progress">
-                            <Box 
-                              className="progress-bar"
-                              style={{ width: `${skill.level}%` }}
-                            />
+                            <Box className="progress-bar" style={{ width: `${skill.level}%` }} />
                           </Box>
                         }
                       />
@@ -146,12 +137,7 @@ const About: React.FC = () => {
                 </Typography>
                 <Box className="equipment-list">
                   {equipment.map((item, index) => (
-                    <Chip
-                      key={index}
-                      label={item}
-                      variant="outlined"
-                      className="equipment-chip"
-                    />
+                    <Chip key={index} label={item} variant="outlined" className="equipment-chip" />
                   ))}
                 </Box>
               </CardContent>
