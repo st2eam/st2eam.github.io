@@ -25,5 +25,10 @@ module.exports = {
       '@/hooks': path.resolve(__dirname, 'src/hooks'),
       '@/types': path.resolve(__dirname, 'src/types'),
     },
+    configure: webpackConfig => {
+      // 设置构建输出目录为 docs/
+      webpackConfig.output.path = path.resolve(__dirname, 'docs');
+      return webpackConfig;
+    },
   },
 };
