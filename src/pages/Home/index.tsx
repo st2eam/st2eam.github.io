@@ -101,7 +101,11 @@ const Home: React.FC = () => {
       <Box className={styles.heroSection}>
         <Container maxWidth="lg">
           <Box className={styles.heroContent}>
-            <Typography variant={isMobile ? 'h3' : 'h2'} component="h1" className={styles.heroTitle}>
+            <Typography
+              variant={isMobile ? 'h3' : 'h2'}
+              component="h1"
+              className={styles.heroTitle}
+            >
               stream 个人小站
             </Typography>
             <Typography variant="h6" className={styles.heroSubtitle}>
