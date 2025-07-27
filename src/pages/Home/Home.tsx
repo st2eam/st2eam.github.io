@@ -102,10 +102,10 @@ const Home: React.FC = () => {
         <Container maxWidth="lg">
           <Box className="hero-content">
             <Typography variant={isMobile ? 'h3' : 'h2'} component="h1" className="hero-title">
-              ST2EAM 摄影作品集
+              stream 个人小站
             </Typography>
             <Typography variant="h6" className="hero-subtitle">
-              用镜头记录世界的美好瞬间
+              所有内容均由AI生成，网站有待完善，不代表本人真实想法以及水平
             </Typography>
             <Box className="hero-stats">
               <Box className="stat-item">
