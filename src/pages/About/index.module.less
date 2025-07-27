@@ -1,6 +1,6 @@
 @import '../../styles/global.less';
 
-.about-page {
+.aboutPage {
   min-height: 100vh;
   background: @background-color;
   padding: 40px 0;
@@ -9,7 +9,7 @@
     padding: 24px 0;
   }
 
-  .about-hero {
+  .aboutHero {
     text-align: center;
     padding: 60px 0;
     margin-bottom: 48px;
@@ -19,7 +19,7 @@
       margin-bottom: 32px;
     }
 
-    .profile-avatar {
+    .profileAvatar {
       width: 150px;
       height: 150px;
       margin: 0 auto 24px;
@@ -32,7 +32,7 @@
       }
     }
 
-    .profile-name {
+    .profileName {
       color: @primary-color;
       font-weight: 700;
       margin-bottom: 8px;
@@ -42,7 +42,7 @@
       }
     }
 
-    .profile-title {
+    .profileTitle {
       color: @text-light;
       font-weight: 300;
       margin-bottom: 32px;
@@ -53,7 +53,7 @@
       }
     }
 
-    .contact-links {
+    .contactLinks {
       display: flex;
       justify-content: center;
       gap: 32px;
@@ -65,7 +65,7 @@
         align-items: center;
       }
 
-      .contact-item {
+      .contactItem {
         display: flex;
         align-items: center;
         gap: 8px;
@@ -78,12 +78,12 @@
       }
     }
 
-    .social-links {
+    .socialLinks {
       display: flex;
       justify-content: center;
       gap: 16px;
 
-      .social-icon {
+      .socialIcon {
         width: 40px;
         height: 40px;
         color: @text-light;
@@ -98,11 +98,11 @@
     }
   }
 
-  .about-content {
-    .bio-card,
-    .skills-card,
-    .equipment-card,
-    .philosophy-card {
+  .aboutContent {
+    .bioCard,
+    .skillsCard,
+    .equipmentCard,
+    .philosophyCard {
       border-radius: @border-radius;
       box-shadow: @shadow;
       transition: all 0.3s ease;
@@ -112,15 +112,15 @@
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
       }
 
-      .section-title {
+      .sectionTitle {
         color: @primary-color;
         font-weight: 600;
         margin-bottom: 20px;
       }
     }
 
-    .bio-card {
-      .bio-text {
+    .bioCard {
+      .bioText {
         line-height: 1.8;
         margin-bottom: 16px;
         color: @text-color;
@@ -131,19 +131,19 @@
       }
     }
 
-    .skills-card {
-      .skills-list {
+    .skillsCard {
+      .skillsList {
         padding: 0;
 
-        .skill-item {
+        .skillItem {
           padding: 12px 0;
 
-          .skill-icon {
+          .skillIcon {
             color: @primary-color;
             min-width: 40px;
           }
 
-          .skill-progress {
+          .skillProgress {
             width: 100%;
             height: 6px;
             background: #e0e0e0;
@@ -151,7 +151,7 @@
             margin-top: 8px;
             overflow: hidden;
 
-            .progress-bar {
+            .progressBar {
               height: 100%;
               background: linear-gradient(90deg, @primary-color, lighten(@primary-color, 20%));
               border-radius: 3px;
@@ -162,13 +162,13 @@
       }
     }
 
-    .equipment-card {
-      .equipment-list {
+    .equipmentCard {
+      .equipmentList {
         display: flex;
         flex-wrap: wrap;
         gap: 12px;
 
-        .equipment-chip {
+        .equipmentChip {
           font-weight: 500;
           transition: all 0.3s ease;
 
@@ -180,8 +180,8 @@
       }
     }
 
-    .philosophy-card {
-      .philosophy-text {
+    .philosophyCard {
+      .philosophyText {
         line-height: 1.8;
         color: @text-color;
         margin-bottom: 20px;
