@@ -117,7 +117,10 @@ const About: React.FC = () => {
                         primary={skill.name}
                         secondary={
                           <Box className={styles.skillProgress}>
-                            <Box className={styles.progressBar} style={{ width: `${skill.level}%` }} />
+                            <Box
+                              className={styles.progressBar}
+                              style={{ width: `${skill.level}%` }}
+                            />
                           </Box>
                         }
                       />
@@ -137,7 +140,12 @@ const About: React.FC = () => {
                 </Typography>
                 <Box className={styles.equipmentList}>
                   {equipment.map((item, index) => (
-                    <Chip key={index} label={item} variant="outlined" className={styles.equipmentChip} />
+                    <Chip
+                      key={index}
+                      label={item}
+                      variant="outlined"
+                      className={styles.equipmentChip}
+                    />
                   ))}
                 </Box>
               </CardContent>
