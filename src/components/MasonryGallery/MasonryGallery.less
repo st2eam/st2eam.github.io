@@ -4,7 +4,7 @@
   padding: 24px;
   max-width: 1400px;
   margin: 0 auto;
-  
+
   @media @mobile {
     padding: 16px;
   }
@@ -19,7 +19,7 @@
 .masonry-grid-column {
   padding-left: 16px;
   background-clip: padding-box;
-  
+
   .gallery-item {
     margin-bottom: 16px;
     break-inside: avoid;
@@ -29,20 +29,20 @@
     box-shadow: @shadow;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
-    
+
     &:hover {
       transform: translateY(-4px);
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-      
+
       .image-overlay {
         opacity: 1;
       }
-      
+
       .gallery-image {
         transform: scale(1.05);
       }
     }
-    
+
     .gallery-image {
       width: 100%;
       height: auto;
@@ -50,7 +50,7 @@
       transition: transform 0.3s ease;
       object-fit: cover;
     }
-    
+
     .image-overlay {
       position: absolute;
       top: 0;
@@ -68,17 +68,17 @@
       display: flex;
       align-items: flex-end;
       padding: 16px;
-      
+
       .image-info {
         color: @white;
-        
+
         .image-title {
           display: block;
           font-size: 14px;
           font-weight: 500;
           margin-bottom: 4px;
         }
-        
+
         .image-category {
           display: block;
           font-size: 12px;
