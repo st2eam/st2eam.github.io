@@ -1,6 +1,6 @@
-@import '../../styles/global.less';
+@import '@/styles/global.less';
 
-.masonry-gallery {
+.masonryGallery {
   padding: 24px;
   max-width: 1400px;
   margin: 0 auto;
@@ -10,17 +10,17 @@
   }
 }
 
-.masonry-grid {
+.masonryGrid {
   display: flex;
   margin-left: -16px;
   width: auto;
 }
 
-.masonry-grid-column {
+.masonryGridColumn {
   padding-left: 16px;
   background-clip: padding-box;
 
-  .gallery-item {
+  .galleryItem {
     margin-bottom: 16px;
     break-inside: avoid;
     position: relative;
@@ -34,16 +34,16 @@
       transform: translateY(-4px);
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 
-      .image-overlay {
+      .imageOverlay {
         opacity: 1;
       }
 
-      .gallery-image {
+      .galleryImage {
         transform: scale(1.05);
       }
     }
 
-    .gallery-image {
+    .galleryImage {
       width: 100%;
       height: auto;
       display: block;
@@ -51,35 +51,33 @@
       object-fit: cover;
     }
 
-    .image-overlay {
+    .imageOverlay {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(
-        to bottom,
-        transparent 0%,
-        transparent 50%,
-        rgba(0, 0, 0, 0.7) 100%
-      );
+      background: linear-gradient(to bottom,
+          transparent 0%,
+          transparent 50%,
+          rgba(0, 0, 0, 0.7) 100%);
       opacity: 0;
       transition: opacity 0.3s ease;
       display: flex;
       align-items: flex-end;
       padding: 16px;
 
-      .image-info {
+      .imageInfo {
         color: @white;
 
-        .image-title {
+        .imageTitle {
           display: block;
           font-size: 14px;
           font-weight: 500;
           margin-bottom: 4px;
         }
 
-        .image-category {
+        .imageCategory {
           display: block;
           font-size: 12px;
           opacity: 0.8;

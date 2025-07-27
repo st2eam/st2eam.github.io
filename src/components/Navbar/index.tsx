@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { Menu as MenuIcon, Close as CloseIcon } from '@mui/icons-material';
 import { Link, useLocation } from 'react-router-dom';
-import './index.module.less';
+import styles from './index.module.less';
 
 const Navbar: React.FC = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -34,8 +34,8 @@ const Navbar: React.FC = () => {
   ];
 
   const drawer = (
-    <Box className="mobile-drawer">
-      <Box className="drawer-header">
+    <Box className={styles.mobileDrawer}>
+      <Box className={styles.drawerHeader}>
         <Typography variant="h6" component="div">
           ST2EAM
         </Typography>
@@ -50,7 +50,7 @@ const Navbar: React.FC = () => {
             component={Link}
             to={item.path}
             onClick={handleDrawerToggle}
-            className={location.pathname === item.path ? 'active' : ''}
+            className={location.pathname === item.path ? styles.active : ''}
           >
             <ListItemText primary={item.name} />
           </ListItem>
@@ -61,13 +61,13 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <AppBar position="fixed" className="navbar">
+      <AppBar position="fixed" className={styles.navbar}>
         <Toolbar>
           <Typography
             variant="h6"
             component={Link}
             to="/"
-            className="logo"
+            className={styles.logo}
             sx={{ flexGrow: 1, textDecoration: 'none', color: 'inherit' }}
           >
             ST2EAM
@@ -83,14 +83,14 @@ const Navbar: React.FC = () => {
               <MenuIcon />
             </IconButton>
           ) : (
-            <Box className="nav-links">
+            <Box className={styles.navLinks}>
               {navItems.map(item => (
                 <Button
                   key={item.name}
                   color="inherit"
                   component={Link}
                   to={item.path}
-                  className={location.pathname === item.path ? 'active' : ''}
+                  className={location.pathname === item.path ? styles.active : ''}
                 >
                   {item.name}
                 </Button>
@@ -108,7 +108,7 @@ const Navbar: React.FC = () => {
         ModalProps={{
           keepMounted: true,
         }}
-        className="mobile-drawer-container"
+        className={styles.mobileDrawerContainer}
       >
         {drawer}
       </Drawer>
