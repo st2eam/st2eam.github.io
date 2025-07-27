@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Typography, Box, Card, CardContent, Chip, Grid } from '@mui/material';
 import { CalendarToday, AccessTime } from '@mui/icons-material';
-import './Notes.less';
+import './index.module.less';
 
 // 模拟笔记数据
 const mockNotes = [

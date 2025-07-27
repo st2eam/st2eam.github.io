@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
-import './MasonryGallery.less';
+import './index.module.less';
 
 interface ImageItem {
   id: string;
