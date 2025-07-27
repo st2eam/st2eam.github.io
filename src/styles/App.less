@@ -1,0 +1,16 @@
+@import './global.less';
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  padding-top: 64px; // navbar 高度
+  
+  @media @mobile {
+    padding-top: 56px;
+  }
+}
