@@ -29,10 +29,19 @@
     letter-spacing: 2.5px;
     color: @text;
     text-decoration: none;
-    transition: opacity 0.3s ease;
+    position: relative;
+    transition: letter-spacing 0.4s @ease-out-expo;
+    background-image: linear-gradient(90deg, @text 0%, @text 50%, @accent 50%, @accent 100%);
+    background-size: 200% 100%;
+    background-position: 0% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: background-position 0.55s @ease-out-expo, letter-spacing 0.4s @ease-out-expo;
 
     &:hover {
-      opacity: 0.7;
+      background-position: -100% 0;
+      letter-spacing: 3.5px;
     }
   }
 
@@ -58,16 +67,39 @@
     border-radius: @radius-full;
     transition: all 0.35s @ease-out-quart;
     position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 4px;
+      width: 0;
+      height: 2px;
+      background: @accent;
+      border-radius: 2px;
+      transform: translateX(-50%);
+      transition: width 0.45s @ease-out-expo;
+      pointer-events: none;
+    }
 
     &:hover {
       opacity: 1;
       background: fade(@text, 5%);
+
+      &::before {
+        width: 18px;
+      }
     }
 
     &.active {
       opacity: 1;
       color: @text;
       background: fade(@text, 7%);
+
+      &::before {
+        width: 22px;
+      }
     }
   }
 }
@@ -117,16 +149,35 @@
   border-radius: @radius-sm;
   text-decoration: none;
   color: @text-secondary;
-  transition: all 0.3s ease;
+  transition: all 0.35s @ease-out-quart;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background: @accent;
+    transform: translateX(-100%);
+    transition: transform 0.4s @ease-out-expo;
+  }
 
   &:hover {
     background: fade(@accent, 6%);
     color: @text;
+    padding-left: 26px;
+
+    &::after { transform: translateX(0); }
   }
 
   &.active {
     background: fade(@accent, 10%);
     color: @accent-dark;
+
+    &::after { transform: translateX(0); }
   }
 
   .drawerItemText {

@@ -1,0 +1,22 @@
+@import '@/styles/global.less';
+
+.transition {
+  width: 100%;
+  will-change: transform, opacity, filter;
+  transition:
+    opacity 0.42s @ease-out-expo,
+    transform 0.55s @ease-out-expo,
+    filter 0.42s @ease-out-expo;
+}
+
+.in {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+.out {
+  opacity: 0;
+  transform: translateY(12px);
+  filter: blur(4px);
+}

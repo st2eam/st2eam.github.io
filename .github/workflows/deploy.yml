@@ -28,8 +28,6 @@ jobs:
 
       - name: Build
         run: npm run build
-        env:
-          CI: false
 
       - uses: actions/configure-pages@v4
 

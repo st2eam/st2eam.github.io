@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Container,
   Typography,
   Box,
   Chip,
   IconButton,
+  Button,
   useMediaQuery,
   useTheme,
   ToggleButtonGroup,
@@ -16,10 +17,15 @@ import {
   KeyboardArrowDown,
   ViewQuilt,
   Timeline,
+  ArrowForward,
 } from '@mui/icons-material';
 import MasonryGallery from '@/components/MasonryGallery';
 import TimelineGallery from '@/components/TimelineGallery';
 import ScrollReveal from '@/components/ScrollReveal';
+import BlurText from '@/components/reactbits/BlurText/BlurText';
+import RotatingText from '@/components/reactbits/RotatingText/RotatingText';
+import ShinyText from '@/components/reactbits/ShinyText/ShinyText';
+import CountUp from '@/components/reactbits/CountUp/CountUp';
 import { PhotoConfig, photos as realPhotos, categories } from '@/config/photos';
 import styles from './index.module.less';
 
@@ -93,32 +99,83 @@ const Home: React.FC = () => {
     document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const heroBgImage = useMemo(() => {
+    const first = realPhotos[0];
+    return first ? first.src : '';
+  }, []);
+
   return (
     <Box className={styles.homePage}>
       <Box className={styles.hero}>
-        <Box className={styles.heroOrbs}>
-          <Box className={styles.orb1} />
-          <Box className={styles.orb2} />
-          <Box className={styles.orb3} />
-        </Box>
+        {heroBgImage && (
+          <Box
+            className={styles.heroBg}
+            style={{ backgroundImage: `url(${heroBgImage})` }}
+            aria-hidden
+          />
+        )}
+        <Box className={styles.heroOverlay} aria-hidden />
 
         <Container maxWidth="lg" className={styles.heroInner}>
-          <Typography className={styles.heroLabel}>Photography Portfolio</Typography>
+          <ShinyText
+            text="PHOTOGRAPHY PORTFOLIO"
+            className={styles.heroLabel}
+            color="#b09472"
+            shineColor="#f3e2c8"
+            speed={3.5}
+            spread={120}
+          />
           <Typography variant={isMobile ? 'h3' : 'h1'} component="h1" className={styles.heroTitle}>
-            捕捉光影
-            <br />
-            <span className={styles.titleItalic}>定格瞬间</span>
+            <BlurText
+              text="捕捉光影"
+              animateBy="letters"
+              direction="top"
+              delay={70}
+              stepDuration={0.4}
+              className={styles.heroTitleLine}
+            />
+            <span className={styles.titleItalic}>
+              <BlurText
+                text="定格"
+                animateBy="letters"
+                direction="top"
+                delay={70}
+                stepDuration={0.4}
+                className={styles.heroTitleLine}
+              />
+              <RotatingText
+                texts={['瞬间', '故事', '旅途', '光阴']}
+                rotationInterval={2400}
+                staggerDuration={0.025}
+                staggerFrom="first"
+                mainClassName={styles.titleRotate}
+                splitLevelClassName={styles.titleRotateLevel}
+                transition={{ type: 'spring', damping: 22, stiffness: 280 }}
+                initial={{ y: '100%', opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: '-120%', opacity: 0 }}
+              />
+            </span>
           </Typography>
           <Typography className={styles.heroDesc}>
             用镜头探索世界的纹理与色彩，记录那些转瞬即逝的美好
           </Typography>
-          <Box className={styles.heroMeta}>
-            <PhotoCamera className={styles.metaIcon} />
-            <span>{photos.length} 张作品</span>
-          </Box>
+          <Button
+            onClick={scrollToGallery}
+            className={styles.heroCta}
+            variant="contained"
+            disableElevation
+            endIcon={<ArrowForward />}
+            aria-label="查看作品集"
+          >
+            <PhotoCamera className={styles.ctaIcon} />
+            <span>
+              查看 <CountUp to={photos.length} duration={1.4} /> 张作品
+            </span>
+          </Button>
         </Container>
 
-        <IconButton className={styles.scrollHint} onClick={scrollToGallery}>
+        <IconButton className={styles.scrollHint} onClick={scrollToGallery} aria-label="滚动到作品集">
           <KeyboardArrowDown />
         </IconButton>
       </Box>

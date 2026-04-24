@@ -49,6 +49,8 @@ const PhotoLightbox: React.FC<PhotoLightboxProps> = ({ image, onClose }) => (
     onClose={onClose}
     maxWidth={false}
     PaperProps={{ className: styles.dialogPaper }}
+    classes={{ root: styles.dialogRoot }}
+    transitionDuration={{ enter: 380, exit: 240 }}
   >
     {image && (
       <>
@@ -62,7 +64,7 @@ const PhotoLightbox: React.FC<PhotoLightboxProps> = ({ image, onClose }) => (
             <OpenInNewIcon className={styles.viewOriginalIcon} />
             查看原图
           </a>
-          <IconButton onClick={onClose} className={styles.dialogClose}>
+          <IconButton onClick={onClose} className={styles.dialogClose} aria-label="关闭">
             <CloseIcon />
           </IconButton>
         </Box>

@@ -1,7 +1,7 @@
 /**
  * 压缩 public/photos/ 中的图片，生成缩略图到 public/photos/thumbnails/
  *
- * 用法：node scripts/compress-photos.js
+ * 用法：node scripts/compress-photos.cjs
  * 快捷：npm run photos:compress
  *
  * 策略：

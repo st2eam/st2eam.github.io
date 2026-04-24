@@ -1,7 +1,7 @@
 /**
  * 增量同步 public/photos/ → src/config/photos.ts
  *
- * 用法：node scripts/sync-photos.js
+ * 用法：node scripts/sync-photos.cjs
  *
  * 行为：
  *   - 扫描 public/photos/（忽略 thumbnails 子目录）
@@ -208,7 +208,7 @@ async function run() {
     .join('\n');
 
   const output = `/**
- * 摄影作品配置（由 scripts/sync-photos.js 自动生成）
+ * 摄影作品配置（由 scripts/sync-photos.cjs 自动生成）
  *
  * 重新生成：npm run photos
  * 手动编辑后可自由调整 alt / tags，再次同步不会覆盖

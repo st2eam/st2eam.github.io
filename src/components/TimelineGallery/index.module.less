@@ -59,6 +59,27 @@
   flex-shrink: 0;
   position: relative;
   z-index: 1;
+  transition: transform 0.4s @ease-spring, box-shadow 0.4s ease;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: fade(@accent, 35%);
+    z-index: -1;
+    animation: pulse-ring 2.6s ease-out infinite;
+  }
+
+  &::after {
+    animation-delay: 1.3s;
+  }
+
+  .group:hover & {
+    transform: scale(1.3);
+    box-shadow: 0 0 0 4px fade(@accent, 35%);
+  }
 
   @media @mobile {
     width: 9px;
@@ -132,17 +153,17 @@
   width: 320px;
   scroll-snap-align: start;
   cursor: pointer;
-  transition: all 0.45s @ease-out-expo;
+  transition: transform 0.55s @ease-spring;
 
   &:hover {
-    transform: translateY(-4px);
+    transform: translateY(-6px) rotate(-0.6deg);
 
     .cardImgWrap {
       box-shadow: @shadow-lg;
     }
 
     .cardImg {
-      transform: scale(1.05);
+      transform: scale(1.07);
     }
 
     .cardOverlay {

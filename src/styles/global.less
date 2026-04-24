@@ -42,6 +42,13 @@
 
 @ease-out-expo:   cubic-bezier(0.16, 1, 0.3, 1);
 @ease-out-quart:  cubic-bezier(0.25, 1, 0.5, 1);
+@ease-spring:     cubic-bezier(0.34, 1.56, 0.64, 1);
+@ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+
+@dur-fast:    0.2s;
+@dur-base:    0.35s;
+@dur-slow:    0.6s;
+@dur-slower:  0.9s;
 
 * {
   margin: 0;
@@ -108,4 +115,47 @@ img {
   backdrop-filter: blur(32px) saturate(1.6);
   -webkit-backdrop-filter: blur(32px) saturate(1.6);
   border: 1px solid rgba(255, 255, 255, 0.45);
+}
+
+// ── Animation utilities ──
+.shimmer-bg() {
+  background: linear-gradient(
+    110deg,
+    transparent 30%,
+    fade(@accent, 18%) 50%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2.4s linear infinite;
+}
+
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+
+@keyframes pulse-ring {
+  0%   { transform: scale(0.8); opacity: 0.7; }
+  70%  { transform: scale(2);   opacity: 0; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+@keyframes border-trail {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Respect reduced motion
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

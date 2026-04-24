@@ -3,6 +3,7 @@ import Masonry from 'react-masonry-css';
 import { Box, Card, Fade, Skeleton, Typography } from '@mui/material';
 import { PhotoConfig } from '@/config/photos';
 import PhotoLightbox from '@/components/PhotoLightbox';
+import GlareHover from '@/components/reactbits/GlareHover/GlareHover';
 import styles from './index.module.less';
 
 interface MasonryGalleryProps {
@@ -39,37 +40,54 @@ const AutoImage: React.FC<{
 
   return (
     <Fade in timeout={600} style={{ transitionDelay: `${delay}ms` }}>
-      <Card className={styles.card} onClick={onClick}>
-        <Box
-          className={styles.imgWrap}
-          style={ratio > 0 ? { aspectRatio: `${ratio}` } : { minHeight: 240 }}
+      <Box className={styles.cardOuter} onClick={onClick}>
+        <GlareHover
+          width="100%"
+          height="100%"
+          background="transparent"
+          borderRadius="20px"
+          borderColor="transparent"
+          glareColor="#ffffff"
+          glareOpacity={0.18}
+          glareAngle={-45}
+          glareSize={220}
+          transitionDuration={750}
+          className={styles.glareWrap}
         >
-          <img
-            ref={imgRef}
-            src={previewSrc}
-            alt={image.alt}
-            loading="lazy"
-            className={`${styles.img} ${loaded ? styles.imgLoaded : ''}`}
-            onLoad={() => {
-              if (ratio === 0 && imgRef.current) {
-                setRatio(imgRef.current.naturalWidth / imgRef.current.naturalHeight);
-              }
-              setLoaded(true);
-            }}
-          />
-          {!loaded && (
-            <Skeleton variant="rectangular" className={styles.imgSkeleton} animation="wave" />
-          )}
-        </Box>
-        <Box className={styles.overlay}>
-          <Box className={styles.overlayInner}>
-            <Typography className={styles.imgTitle}>{image.alt}</Typography>
-            {image.tags && image.tags.length > 0 && (
-              <Typography className={styles.imgCat}>{image.tags.join(' · ')}</Typography>
-            )}
-          </Box>
-        </Box>
-      </Card>
+          <Card className={styles.card}>
+            <Box className={styles.borderTrail} aria-hidden />
+            <Box
+              className={styles.imgWrap}
+              style={ratio > 0 ? { aspectRatio: `${ratio}` } : { minHeight: 240 }}
+            >
+              <img
+                ref={imgRef}
+                src={previewSrc}
+                alt={image.alt}
+                loading="lazy"
+                className={`${styles.img} ${loaded ? styles.imgLoaded : ''}`}
+                onLoad={() => {
+                  if (ratio === 0 && imgRef.current) {
+                    setRatio(imgRef.current.naturalWidth / imgRef.current.naturalHeight);
+                  }
+                  setLoaded(true);
+                }}
+              />
+              {!loaded && (
+                <Skeleton variant="rectangular" className={styles.imgSkeleton} animation="wave" />
+              )}
+            </Box>
+            <Box className={styles.overlay}>
+              <Box className={styles.overlayInner}>
+                <Typography className={styles.imgTitle}>{image.alt}</Typography>
+                {image.tags && image.tags.length > 0 && (
+                  <Typography className={styles.imgCat}>{image.tags.join(' · ')}</Typography>
+                )}
+              </Box>
+            </Box>
+          </Card>
+        </GlareHover>
+      </Box>
     </Fade>
   );
 };
