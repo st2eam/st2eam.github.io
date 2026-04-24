@@ -1,172 +1,123 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Masonry from 'react-masonry-css';
-import {
-  Box,
-  Card,
-  CardMedia,
-  Fade,
-  Skeleton,
-  Dialog,
-  DialogContent,
-  IconButton,
-  Typography,
-} from '@mui/material';
-import { Close as CloseIcon } from '@mui/icons-material';
+import { Box, Card, Fade, Skeleton, Typography } from '@mui/material';
+import { PhotoConfig } from '@/config/photos';
+import PhotoLightbox from '@/components/PhotoLightbox';
 import styles from './index.module.less';
 
-interface ImageItem {
-  id: string;
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
-  category?: string;
-}
-
 interface MasonryGalleryProps {
-  images: ImageItem[];
+  images: PhotoConfig[];
   loading?: boolean;
 }
 
-const MasonryGallery: React.FC<MasonryGalleryProps> = ({ images, loading = false }) => {
-  const [selectedImage, setSelectedImage] = useState<ImageItem | null>(null);
+const breakpointColumns = {
+  default: 4,
+  1400: 3,
+  900: 2,
+  600: 1,
+};
 
-  // 响应式瀑布流列数配置
-  const breakpointColumnsObj = {
-    default: 4,
-    1400: 3,
-    1100: 2,
-    700: 1,
-  };
+const AutoImage: React.FC<{
+  image: PhotoConfig;
+  onClick: () => void;
+  delay: number;
+}> = ({ image, onClick, delay }) => {
+  const [ratio, setRatio] = useState(image.width && image.height ? image.width / image.height : 0);
+  const [loaded, setLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
 
-  const handleImageClick = (image: ImageItem) => {
-    setSelectedImage(image);
-  };
+  const previewSrc = image.thumbnail || image.src;
 
-  const handleCloseModal = () => {
-    setSelectedImage(null);
-  };
+  useEffect(() => {
+    if (ratio > 0) return;
+    const img = new Image();
+    img.onload = () => {
+      setRatio(img.naturalWidth / img.naturalHeight);
+    };
+    img.src = previewSrc;
+  }, [previewSrc, ratio]);
 
-  const renderSkeletons = () => {
-    return Array.from({ length: 8 }).map((_, index) => (
-      <Card key={`skeleton-${index}`} className={styles.galleryItem}>
-        <Skeleton variant="rectangular" height={Math.random() * 200 + 200} animation="wave" />
+  return (
+    <Fade in timeout={600} style={{ transitionDelay: `${delay}ms` }}>
+      <Card className={styles.card} onClick={onClick}>
+        <Box
+          className={styles.imgWrap}
+          style={ratio > 0 ? { aspectRatio: `${ratio}` } : { minHeight: 240 }}
+        >
+          <img
+            ref={imgRef}
+            src={previewSrc}
+            alt={image.alt}
+            loading="lazy"
+            className={`${styles.img} ${loaded ? styles.imgLoaded : ''}`}
+            onLoad={() => {
+              if (ratio === 0 && imgRef.current) {
+                setRatio(imgRef.current.naturalWidth / imgRef.current.naturalHeight);
+              }
+              setLoaded(true);
+            }}
+          />
+          {!loaded && (
+            <Skeleton variant="rectangular" className={styles.imgSkeleton} animation="wave" />
+          )}
+        </Box>
+        <Box className={styles.overlay}>
+          <Box className={styles.overlayInner}>
+            <Typography className={styles.imgTitle}>{image.alt}</Typography>
+            {image.tags && image.tags.length > 0 && (
+              <Typography className={styles.imgCat}>{image.tags.join(' · ')}</Typography>
+            )}
+          </Box>
+        </Box>
       </Card>
-    ));
-  };
+    </Fade>
+  );
+};
+
+const MasonryGallery: React.FC<MasonryGalleryProps> = ({ images, loading = false }) => {
+  const [selectedImage, setSelectedImage] = useState<PhotoConfig | null>(null);
 
   if (loading) {
     return (
-      <Box className={styles.masonryGallery}>
+      <Box className={styles.gallery}>
         <Masonry
-          breakpointCols={breakpointColumnsObj}
-          className={styles.masonryGrid}
-          columnClassName={styles.masonryGridColumn}
+          breakpointCols={breakpointColumns}
+          className={styles.grid}
+          columnClassName={styles.column}
         >
-          {renderSkeletons()}
+          {Array.from({ length: 8 }).map((_, i) => (
+            <Card key={`sk-${i}`} className={styles.skeletonCard}>
+              <Skeleton
+                variant="rectangular"
+                height={220 + Math.random() * 160}
+                animation="wave"
+                sx={{ borderRadius: '16px' }}
+              />
+            </Card>
+          ))}
         </Masonry>
       </Box>
     );
   }
 
   return (
-    <Box className={styles.masonryGallery}>
+    <Box className={styles.gallery}>
       <Masonry
-        breakpointCols={breakpointColumnsObj}
-        className={styles.masonryGrid}
-        columnClassName={styles.masonryGridColumn}
+        breakpointCols={breakpointColumns}
+        className={styles.grid}
+        columnClassName={styles.column}
       >
-        {images.map((image, index) => (
-          <Fade
-            in={true}
-            timeout={500}
-            style={{ transitionDelay: `${index * 100}ms` }}
-            key={image.id}
-          >
-            <Card className={styles.galleryItem} onClick={() => handleImageClick(image)}>
-              <CardMedia
-                component="img"
-                image={image.src}
-                alt={image.alt}
-                loading="lazy"
-                className={styles.galleryImage}
-                style={{
-                  aspectRatio: `${image.width} / ${image.height}`,
-                }}
-              />
-              <Box className={styles.imageOverlay}>
-                <Box className={styles.imageInfo}>
-                  <span className={styles.imageTitle}>{image.alt}</span>
-                  {image.category && <span className={styles.imageCategory}>{image.category}</span>}
-                </Box>
-              </Box>
-            </Card>
-          </Fade>
+        {images.map((img, i) => (
+          <AutoImage
+            key={img.id}
+            image={img}
+            onClick={() => setSelectedImage(img)}
+            delay={Math.min(i * 60, 600)}
+          />
         ))}
       </Masonry>
 
-      {/* 图片预览模态框 */}
-      <Dialog
-        open={!!selectedImage}
-        onClose={handleCloseModal}
-        maxWidth="lg"
-        fullWidth
-        PaperProps={{
-          style: {
-            backgroundColor: 'transparent',
-            boxShadow: 'none',
-            overflow: 'hidden',
-          },
-        }}
-      >
-        <DialogContent style={{ padding: 0, position: 'relative' }}>
-          <IconButton
-            onClick={handleCloseModal}
-            style={{
-              position: 'absolute',
-              top: 16,
-              right: 16,
-              color: 'white',
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              zIndex: 1,
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-          {selectedImage && (
-            <Box>
-              <img
-                src={selectedImage.src}
-                alt={selectedImage.alt}
-                style={{
-                  width: '100%',
-                  height: 'auto',
-                  display: 'block',
-                  borderRadius: 8,
-                }}
-              />
-              <Box
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
-                  color: 'white',
-                  padding: '20px',
-                }}
-              >
-                <Typography variant="h6">{selectedImage.alt}</Typography>
-                {selectedImage.category && (
-                  <Typography variant="body2" style={{ opacity: 0.8 }}>
-                    {selectedImage.category}
-                  </Typography>
-                )}
-              </Box>
-            </Box>
-          )}
-        </DialogContent>
-      </Dialog>
+      <PhotoLightbox image={selectedImage} onClose={() => setSelectedImage(null)} />
     </Box>
   );
 };

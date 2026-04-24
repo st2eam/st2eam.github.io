@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Box } from '@mui/material';
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import Home from '@/pages/Home';
 import Notes from '@/pages/Notes';
 import About from '@/pages/About';
@@ -18,6 +19,7 @@ const App: React.FC = () => {
           <Route path="/about" element={<About />} />
         </Routes>
       </Box>
+      <Footer />
     </Box>
   );
 };

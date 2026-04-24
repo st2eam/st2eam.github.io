@@ -1,0 +1,161 @@
+@import '../../styles/global.less';
+
+.projectsPage {
+  min-height: calc(100vh - 64px);
+}
+
+.pageHeader {
+  background: linear-gradient(165deg, #0f172a 0%, #1e293b 60%, #334155 100%);
+  padding: 64px 0 48px;
+  color: @white;
+
+  @media @mobile {
+    padding: 48px 0 36px;
+  }
+
+  .headerContent {
+    .headerIcon {
+      font-size: 32px;
+      color: @accent-light;
+      margin-bottom: 12px;
+    }
+
+    .pageTitle {
+      font-weight: 700;
+      margin-bottom: 8px;
+
+      @media @mobile {
+        font-size: 1.8rem;
+      }
+    }
+
+    .pageDesc {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 1.05rem;
+    }
+  }
+}
+
+.content {
+  padding: 48px 24px 80px;
+
+  @media @mobile {
+    padding: 32px 16px 60px;
+  }
+}
+
+.tagFilter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 36px;
+
+  .filterChip {
+    font-weight: 500;
+    font-size: 13px;
+    transition: all 0.25s ease;
+    border-radius: 8px;
+
+    &:hover {
+      transform: translateY(-1px);
+    }
+  }
+}
+
+.projectGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+
+  @media @mobile {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+.projectCard {
+  border: 1px solid @border-color;
+  border-radius: @border-radius;
+  box-shadow: @shadow-sm;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: @surface-color;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: @shadow-lg;
+    border-color: fade(@accent-color, 20%);
+  }
+
+  &.featured {
+    border-left: 3px solid @accent-color;
+  }
+
+  .cardContent {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    .projectTitle {
+      font-weight: 600;
+      font-size: 17px;
+      color: @primary-color;
+    }
+
+    .cardActions {
+      display: flex;
+      gap: 4px;
+      flex-shrink: 0;
+
+      .iconBtn {
+        color: @text-light;
+        transition: all 0.2s ease;
+
+        &:hover {
+          color: @accent-color;
+          background: fade(@accent-color, 8%);
+        }
+      }
+    }
+  }
+
+  .projectDesc {
+    color: @text-light;
+    line-height: 1.7;
+    font-size: 14px;
+  }
+
+  .projectTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+
+    .tagChip {
+      font-family: @font-mono;
+      font-size: 12px;
+      height: 26px;
+      border-color: @border-color;
+      color: @text-muted;
+    }
+  }
+
+  .demoBtn {
+    align-self: flex-start;
+    text-transform: none;
+    font-weight: 500;
+    font-size: 13px;
+    color: @accent-color;
+    padding: 4px 12px;
+    border-radius: @border-radius-sm;
+
+    &:hover {
+      background: fade(@accent-color, 8%);
+    }
+  }
+}

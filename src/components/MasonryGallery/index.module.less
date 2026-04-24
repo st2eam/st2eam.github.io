@@ -1,100 +1,138 @@
 @import '@/styles/global.less';
 
-.masonryGallery {
-  padding: 24px;
-  max-width: 1400px;
-  margin: 0 auto;
+.gallery {
+  padding: 0 24px;
 
   @media @mobile {
-    padding: 16px;
+    padding: 0 12px;
   }
 }
 
-.masonryGrid {
+.grid {
   display: flex;
-  margin-left: -16px;
+  margin-left: -20px;
   width: auto;
+
+  @media @mobile {
+    margin-left: -12px;
+  }
 }
 
-.masonryGridColumn {
-  padding-left: 16px;
+.column {
+  padding-left: 20px;
   background-clip: padding-box;
 
-  .galleryItem {
-    margin-bottom: 16px;
-    break-inside: avoid;
-    position: relative;
-    border-radius: @border-radius;
-    overflow: hidden;
-    box-shadow: @shadow;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
+  @media @mobile {
+    padding-left: 12px;
+  }
+}
 
-    &:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+.skeletonCard {
+  margin-bottom: 20px;
+  border-radius: @radius;
+  overflow: hidden;
+  background: transparent;
+  box-shadow: none;
+}
 
-      .imageOverlay {
-        opacity: 1;
-      }
+.card {
+  margin-bottom: 20px;
+  position: relative;
+  border-radius: @radius;
+  overflow: hidden;
+  cursor: pointer;
+  background: @surface-solid;
+  border: 1px solid @border;
+  box-shadow: @shadow-xs;
+  transition: all 0.5s @ease-out-expo;
 
-      .galleryImage {
-        transform: scale(1.05);
-      }
+  @media @mobile {
+    margin-bottom: 12px;
+    border-radius: 16px;
+  }
+
+  &:hover {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: @shadow-lg;
+    border-color: transparent;
+
+    .img {
+      transform: scale(1.06);
     }
 
-    .galleryImage {
-      width: 100%;
-      height: auto;
-      display: block;
-      transition: transform 0.3s ease;
-      object-fit: cover;
-    }
-
-    .imageOverlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(
-        to bottom,
-        transparent 0%,
-        transparent 50%,
-        rgba(0, 0, 0, 0.7) 100%
-      );
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      display: flex;
-      align-items: flex-end;
-      padding: 16px;
-
-      .imageInfo {
-        color: @white;
-
-        .imageTitle {
-          display: block;
-          font-size: 14px;
-          font-weight: 500;
-          margin-bottom: 4px;
-        }
-
-        .imageCategory {
-          display: block;
-          font-size: 12px;
-          opacity: 0.8;
-          background: rgba(255, 255, 255, 0.2);
-          padding: 2px 8px;
-          border-radius: 12px;
-          display: inline-block;
-        }
-      }
+    .overlay {
+      opacity: 1;
     }
   }
 }
 
-// 骨架屏样式
-.MuiSkeleton-root {
-  transform: none;
-  border-radius: @border-radius;
+.imgWrap {
+  position: relative;
+  overflow: hidden;
+  background: fade(@text-muted, 6%);
 }
+
+.img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.7s @ease-out-expo;
+
+  &.imgLoaded {
+    opacity: 1;
+  }
+}
+
+.imgSkeleton {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 0;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.08) 40%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  display: flex;
+  align-items: flex-end;
+  padding: 24px;
+}
+
+.overlayInner {
+  transform: translateY(8px);
+  transition: transform 0.5s @ease-out-expo;
+
+  .card:hover & {
+    transform: translateY(0);
+  }
+}
+
+.imgTitle {
+  font-family: @font-body;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 4px;
+  letter-spacing: 0.3px;
+}
+
+.imgCat {
+  font-family: @font-mono;
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+

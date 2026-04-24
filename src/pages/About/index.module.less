@@ -1,201 +1,225 @@
 @import '../../styles/global.less';
 
 .aboutPage {
-  min-height: 100vh;
-  background: @background-color;
-  padding: 40px 0;
+  min-height: calc(100vh - 64px);
+  background: @bg;
+}
+
+// ══ Header ══
+.header {
+  padding: 100px 0 80px;
+  text-align: center;
 
   @media @mobile {
-    padding: 24px 0;
+    padding: 64px 0 48px;
+  }
+}
+
+.profileWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logoMark {
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 28px;
+  border: 2px solid fade(@accent, 30%);
+  border-radius: 50%;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1px solid fade(@accent, 10%);
   }
 
-  .aboutHero {
-    text-align: center;
-    padding: 60px 0;
-    margin-bottom: 48px;
+  .logoIcon {
+    font-size: 28px;
+    color: @accent;
+  }
+
+  @media @mobile {
+    width: 60px;
+    height: 60px;
+
+    .logoIcon {
+      font-size: 24px;
+    }
+  }
+}
+
+.name {
+  font-family: @font-display;
+  font-weight: 600;
+  letter-spacing: -1px;
+  color: @text;
+  margin-bottom: 8px;
+
+  @media @mobile {
+    font-size: 2rem;
+  }
+}
+
+.tagline {
+  font-size: 15px;
+  color: @text-secondary;
+  letter-spacing: 1px;
+  margin-bottom: 24px;
+}
+
+.socialRow {
+  display: flex;
+  gap: 10px;
+}
+
+.socialBtn {
+  width: 44px;
+  height: 44px;
+  color: @text-muted;
+  border: 1px solid @border;
+  transition: all 0.35s @ease-out-quart;
+
+  &:hover {
+    color: @accent-dark;
+    border-color: fade(@accent, 30%);
+    background: fade(@accent, 5%);
+    transform: translateY(-2px);
+  }
+}
+
+// ══ Content ══
+.content {
+  padding: 0 24px 120px;
+
+  @media @mobile {
+    padding: 0 16px 80px;
+  }
+}
+
+.glassCard {
+  .glass();
+  border-radius: @radius;
+  box-shadow: @shadow;
+  transition: all 0.5s @ease-out-expo;
+  height: 100%;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: @shadow-lg;
+    background: @surface-hover;
+  }
+
+  .cardInner {
+    padding: 36px;
 
     @media @mobile {
-      padding: 40px 0;
-      margin-bottom: 32px;
-    }
-
-    .profileAvatar {
-      width: 150px;
-      height: 150px;
-      margin: 0 auto 24px;
-      border: 4px solid @white;
-      box-shadow: @shadow;
-
-      @media @mobile {
-        width: 120px;
-        height: 120px;
-      }
-    }
-
-    .profileName {
-      color: @primary-color;
-      font-weight: 700;
-      margin-bottom: 8px;
-
-      @media @mobile {
-        font-size: 2rem;
-      }
-    }
-
-    .profileTitle {
-      color: @text-light;
-      font-weight: 300;
-      margin-bottom: 32px;
-
-      @media @mobile {
-        font-size: 1rem;
-        margin-bottom: 24px;
-      }
-    }
-
-    .contactLinks {
-      display: flex;
-      justify-content: center;
-      gap: 32px;
-      margin-bottom: 24px;
-
-      @media @mobile {
-        flex-direction: column;
-        gap: 16px;
-        align-items: center;
-      }
-
-      .contactItem {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        color: @text-light;
-        font-size: 16px;
-
-        .MuiSvgIcon-root {
-          color: @primary-color;
-        }
-      }
-    }
-
-    .socialLinks {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-
-      .socialIcon {
-        width: 40px;
-        height: 40px;
-        color: @text-light;
-        cursor: pointer;
-        transition: all 0.3s ease;
-
-        &:hover {
-          color: @primary-color;
-          transform: translateY(-2px);
-        }
-      }
+      padding: 24px;
     }
   }
+}
 
-  .aboutContent {
-    .bioCard,
-    .skillsCard,
-    .equipmentCard,
-    .philosophyCard {
-      border-radius: @border-radius;
-      box-shadow: @shadow;
-      transition: all 0.3s ease;
+.cardLabel {
+  font-family: @font-mono;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: @accent;
+  margin-bottom: 8px;
+}
 
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-      }
+.cardTitle {
+  font-weight: 600;
+  color: @text;
+  margin-bottom: 20px;
+}
 
-      .sectionTitle {
-        color: @primary-color;
-        font-weight: 600;
-        margin-bottom: 20px;
-      }
-    }
+.bodyText {
+  font-size: 15px;
+  line-height: 1.85;
+  color: @text-secondary;
+  margin-bottom: 14px;
 
-    .bioCard {
-      .bioText {
-        line-height: 1.8;
-        margin-bottom: 16px;
-        color: @text-color;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
 
-        &:last-child {
-          margin-bottom: 0;
-        }
-      }
-    }
+.quote {
+  font-family: @font-display;
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.9;
+  color: @text;
+  opacity: 0.75;
+}
 
-    .skillsCard {
-      .skillsList {
-        padding: 0;
+.divider {
+  margin: 24px 0;
+  border-color: @border;
+}
 
-        .skillItem {
-          padding: 12px 0;
+// ══ Skills ══
+.skillRow {
+  padding: 10px 0;
+}
 
-          .skillIcon {
-            color: @primary-color;
-            min-width: 40px;
-          }
+.skillIcon {
+  min-width: 36px;
+  color: @accent;
 
-          .skillProgress {
-            width: 100%;
-            height: 6px;
-            background: #e0e0e0;
-            border-radius: 3px;
-            margin-top: 8px;
-            overflow: hidden;
+  .MuiSvgIcon-root {
+    font-size: 20px;
+  }
+}
 
-            .progressBar {
-              height: 100%;
-              background: linear-gradient(90deg, @primary-color, lighten(@primary-color, 20%));
-              border-radius: 3px;
-              transition: width 1s ease;
-            }
-          }
-        }
-      }
-    }
+.skillName {
+  font-size: 14px;
+  font-weight: 500;
+  color: @text;
+}
 
-    .equipmentCard {
-      .equipmentList {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
+.barTrack {
+  width: 100%;
+  height: 4px;
+  background: fade(@text-muted, 15%);
+  border-radius: 4px;
+  margin-top: 8px;
+  overflow: hidden;
+}
 
-        .equipmentChip {
-          font-weight: 500;
-          transition: all 0.3s ease;
+.barFill {
+  height: 100%;
+  background: linear-gradient(90deg, @accent-dark, @accent-light);
+  border-radius: 4px;
+  transition: width 1.2s @ease-out-expo;
+}
 
-          &:hover {
-            background: rgba(44, 62, 80, 0.1);
-            transform: translateY(-1px);
-          }
-        }
-      }
-    }
+// ══ Equipment ══
+.chipWrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 
-    .philosophyCard {
-      .philosophyText {
-        line-height: 1.8;
-        color: @text-color;
-        margin-bottom: 20px;
-        font-style: italic;
+.eqChip {
+  font-size: 13px;
+  font-weight: 500;
+  border-color: @border;
+  color: @text-secondary;
+  border-radius: @radius-full;
+  transition: all 0.3s ease;
 
-        &:last-child {
-          margin-bottom: 0;
-        }
-      }
-
-      .divider {
-        margin: 24px 0;
-        background: rgba(44, 62, 80, 0.1);
-      }
-    }
+  &:hover {
+    border-color: fade(@accent, 25%);
+    color: @accent-dark;
+    background: fade(@accent, 4%);
   }
 }
