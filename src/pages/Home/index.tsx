@@ -49,6 +49,9 @@ const generatePlaceholders = (count: number): PhotoConfig[] => {
     const w = 300 + Math.random() * 200;
     const ratios = [0.6, 0.75, 1, 1.25, 1.5, 1.8];
     const h = w / ratios[Math.floor(Math.random() * ratios.length)];
+    const daysAgo = Math.floor(Math.random() * 90);
+    const d = new Date(Date.now() - daysAgo * 86400000);
+    const date = d.toISOString().split('T')[0];
     return {
       id: (i + 1).toString(),
       src: `https://picsum.photos/${Math.floor(w)}/${Math.floor(h)}?random=${i + 1}`,
@@ -56,6 +59,7 @@ const generatePlaceholders = (count: number): PhotoConfig[] => {
       width: Math.floor(w),
       height: Math.floor(h),
       tags: [cats[Math.floor(Math.random() * cats.length)]],
+      exif: { date },
     };
   });
 };
