@@ -3,7 +3,7 @@ import styles from './index.module.less';
 
 const Notes: React.FC = () => {
   return (
-    <iframe className={styles.notesPage} title="notes" src="https://st2eam.github.io/notes/?embed=true" />
+    <iframe className={styles.notesPage} title="notes" src="https://st2eam.github.io/notes/Web/?embed=true" />
   );
 };
 
