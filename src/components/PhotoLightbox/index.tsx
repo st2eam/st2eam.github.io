@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Dialog, IconButton, Typography } from '@mui/material';
 import {
   Close as CloseIcon,
@@ -43,50 +43,97 @@ interface PhotoLightboxProps {
   onClose: () => void;
 }
 
-const PhotoLightbox: React.FC<PhotoLightboxProps> = ({ image, onClose }) => (
-  <Dialog
-    open={!!image}
-    onClose={onClose}
-    maxWidth={false}
-    PaperProps={{ className: styles.dialogPaper }}
-    classes={{ root: styles.dialogRoot }}
-    transitionDuration={{ enter: 380, exit: 240 }}
-  >
-    {image && (
-      <>
-        <Box className={styles.dialogActions}>
-          <a
-            className={styles.viewOriginal}
-            href={image.src}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <OpenInNewIcon className={styles.viewOriginalIcon} />
-            查看原图
-          </a>
-          <IconButton onClick={onClose} className={styles.dialogClose} aria-label="关闭">
-            <CloseIcon />
-          </IconButton>
-        </Box>
-        <Box className={styles.dialogContent}>
-          <img src={image.src} alt={image.alt} className={styles.dialogImg} />
-          <Box className={styles.dialogMeta}>
-            <Box className={styles.dialogMetaTop}>
-              <Box>
-                <Typography className={styles.dialogTitle}>{image.alt}</Typography>
-                {image.tags && image.tags.length > 0 && (
-                  <Typography className={styles.dialogCat}>
-                    {image.tags.join(' · ')}
-                  </Typography>
-                )}
-              </Box>
-            </Box>
-            {image.exif && <ExifBar exif={image.exif} />}
+const PhotoLightbox: React.FC<PhotoLightboxProps> = ({ image, onClose }) => {
+  const [fullLoaded, setFullLoaded] = useState(false);
+
+  useEffect(() => {
+    if (!image) {
+      setFullLoaded(false);
+      return;
+    }
+    setFullLoaded(false);
+    const fullSrc = image.src;
+    const preloader = new Image();
+    preloader.decoding = 'async';
+    preloader.src = fullSrc;
+    let cancelled = false;
+    const onDone = () => {
+      if (!cancelled) setFullLoaded(true);
+    };
+    if (preloader.complete && preloader.naturalWidth > 0) {
+      onDone();
+    } else {
+      preloader.onload = onDone;
+      preloader.onerror = onDone;
+    }
+    return () => {
+      cancelled = true;
+      preloader.onload = null;
+      preloader.onerror = null;
+    };
+  }, [image]);
+
+  const displaySrc = image
+    ? fullLoaded
+      ? image.src
+      : image.thumbnail || image.src
+    : '';
+
+  return (
+    <Dialog
+      open={!!image}
+      onClose={onClose}
+      maxWidth={false}
+      PaperProps={{ className: styles.dialogPaper }}
+      classes={{ root: styles.dialogRoot }}
+      transitionDuration={{ enter: 240, exit: 180 }}
+    >
+      {image && (
+        <>
+          <Box className={styles.dialogActions}>
+            <a
+              className={styles.viewOriginal}
+              href={image.src}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <OpenInNewIcon className={styles.viewOriginalIcon} />
+              查看原图
+            </a>
+            <IconButton onClick={onClose} className={styles.dialogClose} aria-label="关闭">
+              <CloseIcon />
+            </IconButton>
           </Box>
-        </Box>
-      </>
-    )}
-  </Dialog>
-);
+          <Box className={styles.dialogContent}>
+            <img
+              key={image.id}
+              src={displaySrc}
+              alt={image.alt}
+              decoding="async"
+              loading="eager"
+              fetchPriority="high"
+              className={`${styles.dialogImg} ${
+                fullLoaded ? styles.dialogImgReady : styles.dialogImgLoading
+              }`}
+            />
+            <Box className={styles.dialogMeta}>
+              <Box className={styles.dialogMetaTop}>
+                <Box>
+                  <Typography className={styles.dialogTitle}>{image.alt}</Typography>
+                  {image.tags && image.tags.length > 0 && (
+                    <Typography className={styles.dialogCat}>
+                      {image.tags.join(' · ')}
+                    </Typography>
+                  )}
+                </Box>
+              </Box>
+              {image.exif && <ExifBar exif={image.exif} />}
+            </Box>
+          </Box>
+        </>
+      )}
+    </Dialog>
+  );
+};
 
 export default PhotoLightbox;

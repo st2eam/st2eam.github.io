@@ -2,25 +2,22 @@
 
 .dialogRoot {
   :global(.MuiBackdrop-root) {
-    background-color: rgba(15, 15, 25, 0.78) !important;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background-color: rgba(12, 10, 8, 0.86) !important;
   }
 }
 
 .dialogPaper {
-  background: rgba(0, 0, 0, 0.92);
-  backdrop-filter: blur(40px);
+  background: #0a0807;
   border-radius: @radius;
   overflow: hidden;
-  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
   max-height: 92vh;
   width: auto !important;
   max-width: 95vw !important;
   margin: auto;
   transition:
-    transform 380ms @ease-spring,
-    opacity 320ms @ease-out-expo !important;
+    transform 260ms @ease-spring,
+    opacity 220ms @ease-out-expo !important;
 
   &:global(.MuiDialog-paper) {
     transform-origin: center center;
@@ -28,68 +25,131 @@
 }
 
 .dialogImg {
-  animation: imgZoomIn 0.55s @ease-out-expo;
+  animation: imgFadeIn 0.32s @ease-out-expo;
 }
 
-@keyframes imgZoomIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+.dialogImgLoading {
+  filter: blur(14px);
+  transform: scale(1.02);
+}
+
+.dialogImgReady {
+  filter: blur(0);
+  transform: scale(1);
+  transition: filter 0.4s @ease-out-expo, transform 0.5s @ease-out-expo;
+}
+
+@keyframes imgFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .dialogActions {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  z-index: 2;
+  top: 18px;
+  right: 18px;
+  z-index: 5;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(-4px);
+  animation: actionsIn 0.32s @ease-out-expo 0.05s forwards;
+
+  @media @mobile {
+    top: 12px;
+    right: 12px;
+    gap: 8px;
+  }
+}
+
+@keyframes actionsIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .viewOriginal {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  color: rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.92) !important;
+  background: rgba(20, 20, 20, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: @radius-full;
-  padding: 8px 18px;
+  padding: 9px 18px;
   font-size: 13px;
   font-family: @font-body;
   font-weight: 500;
   text-decoration: none;
   letter-spacing: 0.3px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease,
+    transform 0.35s @ease-spring;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.2);
-    color: #fff;
+    background: fade(@accent, 90%);
+    border-color: fade(@accent, 100%);
+    color: #fff !important;
+    transform: translateY(-2px);
+
+    .viewOriginalIcon {
+      transform: translate(2px, -2px);
+    }
+  }
+
+  @media @mobile {
+    padding: 8px 14px;
+    font-size: 12px;
   }
 }
 
 .viewOriginalIcon {
   font-size: 16px !important;
+  transition: transform 0.35s @ease-spring;
 }
 
 .dialogClose {
-  color: rgba(255, 255, 255, 0.7);
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  width: 40px;
-  height: 40px;
-  transition: all 0.3s ease;
+  color: #fff !important;
+  background: rgba(20, 20, 20, 0.7) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  width: 40px !important;
+  height: 40px !important;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease,
+    transform 0.45s @ease-spring,
+    box-shadow 0.4s ease !important;
+
+  svg {
+    color: #fff !important;
+    fill: currentColor !important;
+    transition: transform 0.45s @ease-spring;
+  }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.15);
-    color: #fff;
+    background: fade(@accent, 90%) !important;
+    border-color: fade(@accent, 100%) !important;
+    transform: scale(1.08);
+    box-shadow: 0 6px 22px fade(@accent, 50%);
+
+    svg {
+      transform: rotate(90deg);
+    }
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+
+  @media @mobile {
+    width: 36px !important;
+    height: 36px !important;
   }
 }
 

@@ -73,10 +73,14 @@
 .heroInner {
   position: relative;
   z-index: 1;
-  padding: 0 40px;
+  padding: 96px 56px !important;
+
+  @media (max-width: 1024px) {
+    padding: 80px 40px !important;
+  }
 
   @media @mobile {
-    padding: 0 24px;
+    padding: 64px 24px !important;
   }
 }
 
@@ -85,9 +89,13 @@
   font-size: 12px;
   font-weight: 400;
   letter-spacing: 3px;
-  margin-bottom: 28px;
+  margin-bottom: 56px;
   display: inline-block;
   position: relative;
+
+  @media @mobile {
+    margin-bottom: 36px;
+  }
 
   &::after {
     content: '';
@@ -108,15 +116,22 @@
 .heroTitle {
   font-family: @font-display;
   font-weight: 600;
-  font-size: 4.5rem;
-  line-height: 1.12;
+  font-size: 4.8rem;
+  line-height: 1.24;
   color: @text;
   letter-spacing: -2px;
-  margin-bottom: 28px;
+  margin-bottom: 56px;
+
+  @media (max-width: 1024px) {
+    font-size: 3.8rem;
+    margin-bottom: 44px;
+  }
 
   @media @mobile {
     font-size: 2.5rem;
     letter-spacing: -1px;
+    line-height: 1.2;
+    margin-bottom: 36px;
   }
 
   .heroTitleLine {
@@ -154,14 +169,21 @@
 .heroDesc {
   font-size: 17px;
   color: @text-secondary;
-  max-width: 420px;
-  line-height: 1.8;
-  margin-bottom: 36px;
+  max-width: 580px;
+  line-height: 2;
+  margin-bottom: 64px;
   opacity: 0;
   animation: fadeUp 1s @ease-out-expo 1.0s forwards;
+  letter-spacing: 0.2px;
+
+  @media (max-width: 1024px) {
+    margin-bottom: 52px;
+  }
 
   @media @mobile {
     font-size: 15px;
+    line-height: 1.85;
+    margin-bottom: 44px;
   }
 }
 
