@@ -130,19 +130,16 @@
 .timelineCard {
   flex-shrink: 0;
   width: 320px;
-  border-radius: @radius;
-  overflow: hidden;
-  cursor: pointer;
-  background: @surface-solid;
-  border: 1px solid @border;
-  box-shadow: @shadow-xs;
   scroll-snap-align: start;
+  cursor: pointer;
   transition: all 0.45s @ease-out-expo;
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: @shadow-lg;
-    border-color: transparent;
+
+    .cardImgWrap {
+      box-shadow: @shadow-lg;
+    }
 
     .cardImg {
       transform: scale(1.05);
@@ -162,6 +159,9 @@
   position: relative;
   overflow: hidden;
   background: fade(@text-muted, 6%);
+  display: block;
+  border-radius: @radius;
+  box-shadow: @shadow-xs;
 }
 
 .cardImg {
