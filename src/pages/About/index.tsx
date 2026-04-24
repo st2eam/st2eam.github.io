@@ -16,6 +16,9 @@ import {
 } from '@mui/material';
 import { PhotoCamera, Email, GitHub, Camera, Palette, Code, CameraAlt } from '@mui/icons-material';
 import ScrollReveal from '@/components/ScrollReveal';
+import CountUp from '@/components/reactbits/CountUp/CountUp';
+import Magnet from '@/components/reactbits/Magnet/Magnet';
+import { photos as realPhotos } from '@/config/photos';
 import styles from './index.module.less';
 
 const skills = [
@@ -31,6 +34,17 @@ const equipment = [
   'Sony FE 55mm f/1.8',
   'Adobe Lightroom',
   'Adobe Photoshop',
+];
+
+const photoCount = realPhotos.length || 28;
+const uniqueCameras = new Set(realPhotos.map(p => p.exif?.model).filter(Boolean)).size || 2;
+const uniqueLenses = new Set(realPhotos.map(p => p.exif?.lens).filter(Boolean)).size || 3;
+
+const stats = [
+  { label: 'Photos', value: photoCount, suffix: '+' },
+  { label: 'Cameras', value: uniqueCameras, suffix: '' },
+  { label: 'Lenses', value: uniqueLenses, suffix: '' },
+  { label: 'Years', value: 5, suffix: '+' },
 ];
 
 const About: React.FC = () => {
@@ -49,18 +63,41 @@ const About: React.FC = () => {
               </Typography>
               <Typography className={styles.tagline}>摄影师 · 视觉艺术家 · 前端开发者</Typography>
               <Box className={styles.socialRow}>
-                <IconButton
-                  href="https://github.com/st2eam"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.socialBtn}
-                >
-                  <GitHub />
-                </IconButton>
-                <IconButton href="mailto:379403404@qq.com" className={styles.socialBtn}>
-                  <Email />
-                </IconButton>
+                <Magnet padding={70} magnetStrength={2.5}>
+                  <IconButton
+                    href="https://github.com/st2eam"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.socialBtn}
+                    aria-label="GitHub"
+                  >
+                    <GitHub />
+                  </IconButton>
+                </Magnet>
+                <Magnet padding={70} magnetStrength={2.5}>
+                  <IconButton
+                    href="mailto:379403404@qq.com"
+                    className={styles.socialBtn}
+                    aria-label="Email"
+                  >
+                    <Email />
+                  </IconButton>
+                </Magnet>
               </Box>
+            </Box>
+          </ScrollReveal>
+
+          <ScrollReveal delay={140}>
+            <Box className={styles.statsGrid}>
+              {stats.map((s, i) => (
+                <Box key={s.label} className={styles.statCell} style={{ transitionDelay: `${i * 60}ms` }}>
+                  <Typography className={styles.statValue}>
+                    <CountUp to={s.value} duration={1.6} />
+                    <span className={styles.statSuffix}>{s.suffix}</span>
+                  </Typography>
+                  <Typography className={styles.statLabel}>{s.label}</Typography>
+                </Box>
+              ))}
             </Box>
           </ScrollReveal>
         </Container>

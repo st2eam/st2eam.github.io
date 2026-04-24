@@ -1,9 +1,49 @@
 @import '@/styles/global.less';
 
 .footer {
-  padding: 48px 0;
+  padding: 0 0 48px;
   border-top: 1px solid @border;
   background: @bg;
+}
+
+.marqueeWrap {
+  padding: 24px 0;
+  border-bottom: 1px solid @border;
+  margin-bottom: 32px;
+}
+
+.tagItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: @font-mono;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: @text-secondary;
+  transition: color 0.3s ease, transform 0.3s @ease-spring;
+  white-space: nowrap;
+
+  &::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: @accent;
+    opacity: 0.55;
+    flex-shrink: 0;
+    transition: transform 0.3s @ease-spring, opacity 0.3s ease;
+  }
+
+  &:hover {
+    color: @accent;
+    transform: translateY(-2px);
+
+    &::before {
+      opacity: 1;
+      transform: scale(1.4);
+    }
+  }
 }
 
 .inner {
@@ -52,9 +92,29 @@
   text-decoration: none;
   transition: color 0.3s ease;
   letter-spacing: 0.3px;
+  position: relative;
+  padding-bottom: 2px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.45s @ease-out-expo;
+  }
 
   &:hover {
     color: @text;
+
+    &::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
   }
 }
 
@@ -67,10 +127,11 @@
   color: @text-muted;
   width: 36px;
   height: 36px;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease, background 0.3s ease, transform 0.4s @ease-spring;
 
   &:hover {
     color: @accent-dark;
     background: fade(@accent, 6%);
+    transform: translateY(-3px) rotate(-8deg);
   }
 }
