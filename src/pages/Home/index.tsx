@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Typography,
@@ -27,6 +27,7 @@ import RotatingText from '@/components/reactbits/RotatingText/RotatingText';
 import ShinyText from '@/components/reactbits/ShinyText/ShinyText';
 import CountUp from '@/components/reactbits/CountUp/CountUp';
 import { PhotoConfig, photos as realPhotos, categories } from '@/config/photos';
+import { sortPhotosByDateDesc } from '@/utils/sortPhotosByDate';
 import styles from './index.module.less';
 
 const generatePlaceholders = (count: number): PhotoConfig[] => {
@@ -71,7 +72,7 @@ const generatePlaceholders = (count: number): PhotoConfig[] => {
 };
 
 const useRealPhotos = realPhotos.length > 0;
-const initialPhotos = useRealPhotos ? realPhotos : generatePlaceholders(24);
+const initialPhotos = sortPhotosByDateDesc(useRealPhotos ? realPhotos : generatePlaceholders(24));
 
 type ViewMode = 'masonry' | 'timeline';
 
@@ -90,7 +91,7 @@ const Home: React.FC = () => {
     if (useRealPhotos) return;
     setLoading(true);
     setTimeout(() => {
-      setPhotos(generatePlaceholders(24));
+      setPhotos(sortPhotosByDateDesc(generatePlaceholders(24)));
       setLoading(false);
     }, 1200);
   };
@@ -99,10 +100,12 @@ const Home: React.FC = () => {
     document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const heroBgImage = useMemo(() => {
-    const first = realPhotos[0];
-    return first ? first.src : '';
-  }, []);
+  const [heroBgImage] = useState(() => {
+    const pool = useRealPhotos ? realPhotos : initialPhotos;
+    if (pool.length === 0) return '';
+    const pick = pool[Math.floor(Math.random() * pool.length)];
+    return pick.src;
+  });
 
   return (
     <Box className={styles.homePage}>
