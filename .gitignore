@@ -2,9 +2,10 @@
 node_modules/
 package-lock.json
 
-# 临时构建目录（保留docs/用于GitHub Pages）
+# 构建产物（由 GitHub Actions 自动部署）
 build/
 dist/
+docs/
 
 # 开发环境配置
 .vscode/
