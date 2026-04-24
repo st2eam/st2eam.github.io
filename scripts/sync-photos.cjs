@@ -197,6 +197,18 @@ async function run() {
 
   removed = existingSrcs.size;
 
+  photosArr.sort((a, b) => {
+    const da = a.exif?.date;
+    const db = b.exif?.date;
+    if (!da && !db) return 0;
+    if (!da) return 1;
+    if (!db) return -1;
+    return db.localeCompare(da);
+  });
+  photosArr.forEach((p, i) => {
+    p.id = String(i + 1);
+  });
+
   const photosCode = photosArr
     .map(p => {
       const parts = [`id: '${p.id}'`, `src: '${p.src}'`, `alt: '${p.alt}'`];
@@ -212,6 +224,8 @@ async function run() {
  *
  * 重新生成：npm run photos
  * 手动编辑后可自由调整 alt / tags，再次同步不会覆盖
+ *
+ * 列表顺序：按拍摄日期新→旧（无 EXIF 日期的条目排在末尾）
  */
 
 export interface ExifData {

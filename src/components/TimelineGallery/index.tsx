@@ -20,8 +20,8 @@ function groupByDate(photos: PhotoConfig[]): DateGroup[] {
   const map = new Map<string, PhotoConfig[]>();
 
   const sorted = [...photos].sort((a, b) => {
-    const da = a.exif?.date || '9999-99-99';
-    const db = b.exif?.date || '9999-99-99';
+    const da = a.exif?.date || '0000-00-00';
+    const db = b.exif?.date || '0000-00-00';
     return db.localeCompare(da);
   });
 
