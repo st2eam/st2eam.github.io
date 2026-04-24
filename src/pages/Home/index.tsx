@@ -1,21 +1,30 @@
 import React, { useState } from 'react';
-import { Container, Typography, Box, Chip, Button, useMediaQuery, useTheme } from '@mui/material';
-import { PhotoCamera, Refresh } from '@mui/icons-material';
+import {
+  Container,
+  Typography,
+  Box,
+  Chip,
+  IconButton,
+  useMediaQuery,
+  useTheme,
+  ToggleButtonGroup,
+  ToggleButton,
+} from '@mui/material';
+import {
+  PhotoCamera,
+  Refresh,
+  KeyboardArrowDown,
+  ViewQuilt,
+  Timeline,
+} from '@mui/icons-material';
 import MasonryGallery from '@/components/MasonryGallery';
+import TimelineGallery from '@/components/TimelineGallery';
+import ScrollReveal from '@/components/ScrollReveal';
+import { PhotoConfig, photos as realPhotos, categories } from '@/config/photos';
 import styles from './index.module.less';
 
-// 生成随机尺寸的摄影作品数据
-const generateRandomPhotos = (count: number) => {
-  const categories = [
-    '城市摄影',
-    '风景摄影',
-    '人像摄影',
-    '建筑摄影',
-    '街头摄影',
-    '自然摄影',
-    '抽象艺术',
-    '黑白摄影',
-  ];
+const generatePlaceholders = (count: number): PhotoConfig[] => {
+  const cats = ['城市', '风景', '人像', '建筑', '街头', '自然', '抽象', '黑白'];
   const titles = [
     '城市夜景',
     '自然风光',
@@ -36,124 +45,142 @@ const generateRandomPhotos = (count: number) => {
     '动态瞬间',
     '诗意空间',
   ];
-
-  return Array.from({ length: count }, (_, index) => {
-    // 生成随机宽度和高度，让图片更加灵动
-    const baseWidth = 300 + Math.random() * 200; // 300-500px
-    const aspectRatios = [0.6, 0.75, 1, 1.25, 1.5, 1.8]; // 不同的宽高比
-    const aspectRatio = aspectRatios[Math.floor(Math.random() * aspectRatios.length)];
-    const height = baseWidth / aspectRatio;
-
+  return Array.from({ length: count }, (_, i) => {
+    const w = 300 + Math.random() * 200;
+    const ratios = [0.6, 0.75, 1, 1.25, 1.5, 1.8];
+    const h = w / ratios[Math.floor(Math.random() * ratios.length)];
     return {
-      id: (index + 1).toString(),
-      src: `https://picsum.photos/${Math.floor(baseWidth)}/${Math.floor(height)}?random=${index + 1}`,
+      id: (i + 1).toString(),
+      src: `https://picsum.photos/${Math.floor(w)}/${Math.floor(h)}?random=${i + 1}`,
       alt: titles[Math.floor(Math.random() * titles.length)],
-      width: Math.floor(baseWidth),
-      height: Math.floor(height),
-      category: categories[Math.floor(Math.random() * categories.length)],
+      width: Math.floor(w),
+      height: Math.floor(h),
+      tags: [cats[Math.floor(Math.random() * cats.length)]],
     };
   });
 };
 
-const mockPhotos = generateRandomPhotos(24);
+const useRealPhotos = realPhotos.length > 0;
+const initialPhotos = useRealPhotos ? realPhotos : generatePlaceholders(24);
 
-const categories = [
-  '全部',
-  '城市摄影',
-  '风景摄影',
-  '人像摄影',
-  '建筑摄影',
-  '街头摄影',
-  '自然摄影',
-  '抽象艺术',
-  '黑白摄影',
-];
+type ViewMode = 'masonry' | 'timeline';
 
 const Home: React.FC = () => {
-  const [photos, setPhotos] = useState(mockPhotos);
+  const [photos, setPhotos] = useState(initialPhotos);
   const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('全部');
+  const [viewMode, setViewMode] = useState<ViewMode>('masonry');
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const filteredPhotos =
-    selectedCategory === '全部'
-      ? photos
-      : photos.filter(photo => photo.category === selectedCategory);
-
-  const handleCategoryChange = (category: string) => {
-    setSelectedCategory(category);
-  };
+    selectedCategory === '全部' ? photos : photos.filter(p => p.tags?.includes(selectedCategory));
 
   const handleRefresh = () => {
+    if (useRealPhotos) return;
     setLoading(true);
-    // 生成新的随机图片
     setTimeout(() => {
-      const newPhotos = generateRandomPhotos(24);
-      setPhotos(newPhotos);
+      setPhotos(generatePlaceholders(24));
       setLoading(false);
-    }, 1500);
+    }, 1200);
+  };
+
+  const scrollToGallery = () => {
+    document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <Box className={styles.homePage}>
-      {/* Hero Section */}
-      <Box className={styles.heroSection}>
-        <Container maxWidth="lg">
-          <Box className={styles.heroContent}>
-            <Typography
-              variant={isMobile ? 'h3' : 'h2'}
-              component="h1"
-              className={styles.heroTitle}
-            >
-              stream 个人小站
-            </Typography>
-            <Typography variant="h6" className={styles.heroSubtitle}>
-              所有内容均由AI生成，网站有待完善，不代表本人真实想法以及水平
-            </Typography>
-            <Box className={styles.heroStats}>
-              <Box className={styles.statItem}>
-                <PhotoCamera />
-                <span>{photos.length} 张作品</span>
-              </Box>
-            </Box>
-          </Box>
-        </Container>
-      </Box>
-
-      {/* Gallery Section */}
-      <Container maxWidth="xl" className={styles.gallerySection}>
-        {/* Category Filter */}
-        <Box className={styles.categoryFilter}>
-          <Typography variant="h5" className={styles.sectionTitle}>
-            作品展示
-          </Typography>
-          <Box className={styles.filterChips}>
-            {categories.map(category => (
-              <Chip
-                key={category}
-                label={category}
-                onClick={() => handleCategoryChange(category)}
-                color={selectedCategory === category ? 'primary' : 'default'}
-                variant={selectedCategory === category ? 'filled' : 'outlined'}
-                className={styles.categoryChip}
-              />
-            ))}
-          </Box>
-          <Button
-            variant="outlined"
-            startIcon={<Refresh />}
-            onClick={handleRefresh}
-            disabled={loading}
-            className={styles.refreshButton}
-          >
-            {loading ? '加载中...' : '刷新图片'}
-          </Button>
+      <Box className={styles.hero}>
+        <Box className={styles.heroOrbs}>
+          <Box className={styles.orb1} />
+          <Box className={styles.orb2} />
+          <Box className={styles.orb3} />
         </Box>
 
-        {/* Photo Gallery */}
-        <MasonryGallery images={filteredPhotos} loading={loading} />
-      </Container>
+        <Container maxWidth="lg" className={styles.heroInner}>
+          <Typography className={styles.heroLabel}>Photography Portfolio</Typography>
+          <Typography variant={isMobile ? 'h3' : 'h1'} component="h1" className={styles.heroTitle}>
+            捕捉光影
+            <br />
+            <span className={styles.titleItalic}>定格瞬间</span>
+          </Typography>
+          <Typography className={styles.heroDesc}>
+            用镜头探索世界的纹理与色彩，记录那些转瞬即逝的美好
+          </Typography>
+          <Box className={styles.heroMeta}>
+            <PhotoCamera className={styles.metaIcon} />
+            <span>{photos.length} 张作品</span>
+          </Box>
+        </Container>
+
+        <IconButton className={styles.scrollHint} onClick={scrollToGallery}>
+          <KeyboardArrowDown />
+        </IconButton>
+      </Box>
+
+      <Box id="gallery" className={styles.galleryWrap}>
+        <Container maxWidth="xl">
+          <ScrollReveal>
+            <Box className={styles.galleryHeader}>
+              <Box>
+                <Typography variant="h4" className={styles.galleryTitle}>
+                  作品集
+                </Typography>
+                <Typography className={styles.gallerySubtitle}>Selected Works</Typography>
+              </Box>
+              <Box className={styles.headerActions}>
+                <ToggleButtonGroup
+                  value={viewMode}
+                  exclusive
+                  onChange={(_, v) => v && setViewMode(v as ViewMode)}
+                  className={styles.viewToggle}
+                  size="small"
+                >
+                  <ToggleButton value="masonry" className={styles.toggleBtn}>
+                    <ViewQuilt />
+                  </ToggleButton>
+                  <ToggleButton value="timeline" className={styles.toggleBtn}>
+                    <Timeline />
+                  </ToggleButton>
+                </ToggleButtonGroup>
+                {!useRealPhotos && (
+                  <IconButton
+                    onClick={handleRefresh}
+                    disabled={loading}
+                    className={styles.refreshBtn}
+                  >
+                    <Refresh className={loading ? styles.spinning : ''} />
+                  </IconButton>
+                )}
+              </Box>
+            </Box>
+          </ScrollReveal>
+
+          {viewMode === 'masonry' && (
+            <ScrollReveal delay={120}>
+              <Box className={styles.filterBar}>
+                {categories.map(cat => (
+                  <Chip
+                    key={cat}
+                    label={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`${styles.filterChip} ${selectedCategory === cat ? styles.chipActive : ''}`}
+                  />
+                ))}
+              </Box>
+            </ScrollReveal>
+          )}
+
+          <ScrollReveal delay={200}>
+            {viewMode === 'masonry' ? (
+              <MasonryGallery images={filteredPhotos} loading={loading} />
+            ) : (
+              <TimelineGallery images={filteredPhotos} loading={loading} />
+            )}
+          </ScrollReveal>
+        </Container>
+      </Box>
     </Box>
   );
 };

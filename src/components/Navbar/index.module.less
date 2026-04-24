@@ -1,102 +1,137 @@
 @import '@/styles/global.less';
 
 .navbar {
-  background: linear-gradient(135deg, @primary-color 0%, lighten(@primary-color, 10%) 100%);
-  box-shadow: @shadow;
+  background: transparent;
+  transition: all 0.5s @ease-out-expo;
+
+  &.scrolled {
+    .glass-strong();
+    box-shadow: @shadow-sm;
+  }
+
+  .toolbar {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 40px;
+    min-height: 72px;
+
+    @media @mobile {
+      padding: 0 20px;
+      min-height: 60px;
+    }
+  }
 
   .logo {
+    font-family: @font-display;
     font-weight: 700;
-    letter-spacing: 1px;
-    transition: all 0.3s ease;
+    font-size: 22px;
+    letter-spacing: 2.5px;
+    color: @text;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
 
     &:hover {
-      transform: scale(1.05);
+      opacity: 0.7;
     }
+  }
+
+  .menuBtn {
+    color: @text;
   }
 
   .navLinks {
     display: flex;
-    gap: 16px;
+    gap: 6px;
+    margin-left: auto;
+  }
 
-    .MuiButton-root {
-      position: relative;
-      font-weight: 500;
-      transition: all 0.3s ease;
+  .navLink {
+    font-family: @font-body;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.3px;
+    text-transform: none;
+    color: @text;
+    opacity: 0.55;
+    padding: 8px 20px;
+    border-radius: @radius-full;
+    transition: all 0.35s @ease-out-quart;
+    position: relative;
 
-      &:after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        width: 0;
-        height: 2px;
-        background: @white;
-        transition: all 0.3s ease;
-        transform: translateX(-50%);
-      }
+    &:hover {
+      opacity: 1;
+      background: fade(@text, 5%);
+    }
 
-      &:hover,
-      &.active {
-        &:after {
-          width: 80%;
-        }
-      }
-
-      &.active {
-        background: rgba(255, 255, 255, 0.1);
-      }
+    &.active {
+      opacity: 1;
+      color: @text;
+      background: fade(@text, 7%);
     }
   }
 }
 
-.mobileDrawerContainer {
+.drawerRoot {
   .MuiDrawer-paper {
-    width: 280px;
-    background: @white;
+    width: 300px;
+    background: @bg;
+    border-left: none;
+    box-shadow: -20px 0 60px rgba(0, 0, 0, 0.08);
   }
 }
 
 .mobileDrawer {
   height: 100%;
+  padding: 8px 0;
+}
 
-  .drawerHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 24px;
-    border-bottom: 1px solid #eee;
+.drawerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 28px;
+  margin-bottom: 8px;
 
-    .MuiTypography-root {
-      font-weight: 700;
-      color: @primary-color;
-    }
+  .drawerLogo {
+    font-family: @font-display;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: @text;
   }
 
-  .MuiList-root {
-    padding: 16px 0;
+  .closeBtn {
+    color: @text-muted;
+    width: 36px;
+    height: 36px;
+  }
+}
 
-    .MuiListItem-root {
-      padding: 12px 24px;
-      margin: 4px 16px;
-      border-radius: @border-radius;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      color: @text-color;
+.drawerList {
+  padding: 0 16px;
+}
 
-      &:hover {
-        background: rgba(44, 62, 80, 0.05);
-        transform: translateX(4px);
-      }
+.drawerItem {
+  padding: 14px 20px;
+  margin-bottom: 2px;
+  border-radius: @radius-sm;
+  text-decoration: none;
+  color: @text-secondary;
+  transition: all 0.3s ease;
 
-      &.active {
-        background: rgba(44, 62, 80, 0.1);
-        color: @primary-color;
-        font-weight: 600;
-      }
+  &:hover {
+    background: fade(@accent, 6%);
+    color: @text;
+  }
 
-      .MuiListItemText-primary {
-        font-size: 16px;
-      }
-    }
+  &.active {
+    background: fade(@accent, 10%);
+    color: @accent-dark;
+  }
+
+  .drawerItemText {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
   }
 }

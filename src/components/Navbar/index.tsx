@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -17,69 +17,42 @@ import { Menu as MenuIcon, Close as CloseIcon } from '@mui/icons-material';
 import { Link, useLocation } from 'react-router-dom';
 import styles from './index.module.less';
 
+const navItems = [
+  { name: '作品', path: '/' },
+  { name: '笔记', path: '/notes' },
+  { name: '关于', path: '/about' },
+];
+
 const Navbar: React.FC = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const location = useLocation();
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
-  const navItems = [
-    { name: '主页', path: '/' },
-    { name: '笔记', path: '/notes' },
-    { name: '关于', path: '/about' },
-  ];
-
-  const drawer = (
-    <Box className={styles.mobileDrawer}>
-      <Box className={styles.drawerHeader}>
-        <Typography variant="h6" component="div">
-          ST2EAM
-        </Typography>
-        <IconButton onClick={handleDrawerToggle}>
-          <CloseIcon />
-        </IconButton>
-      </Box>
-      <List>
-        {navItems.map(item => (
-          <ListItem
-            key={item.name}
-            component={Link}
-            to={item.path}
-            onClick={handleDrawerToggle}
-            className={location.pathname === item.path ? styles.active : ''}
-          >
-            <ListItemText primary={item.name} />
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
+  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
   return (
     <>
-      <AppBar position="fixed" className={styles.navbar}>
-        <Toolbar>
-          <Typography
-            variant="h6"
-            component={Link}
-            to="/"
-            className={styles.logo}
-            sx={{ flexGrow: 1, textDecoration: 'none', color: 'inherit' }}
-          >
+      <AppBar
+        position="fixed"
+        className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}
+        elevation={0}
+        sx={{ backgroundColor: 'transparent', backgroundImage: 'none' }}
+      >
+        <Toolbar className={styles.toolbar}>
+          <Typography variant="h6" component={Link} to="/" className={styles.logo}>
             ST2EAM
           </Typography>
 
           {isMobile ? (
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleDrawerToggle}
-            >
+            <IconButton onClick={handleDrawerToggle} className={styles.menuBtn}>
               <MenuIcon />
             </IconButton>
           ) : (
@@ -87,10 +60,10 @@ const Navbar: React.FC = () => {
               {navItems.map(item => (
                 <Button
                   key={item.name}
-                  color="inherit"
                   component={Link}
                   to={item.path}
-                  className={location.pathname === item.path ? styles.active : ''}
+                  className={`${styles.navLink} ${location.pathname === item.path ? styles.active : ''}`}
+                  disableRipple
                 >
                   {item.name}
                 </Button>
@@ -105,12 +78,34 @@ const Navbar: React.FC = () => {
         anchor="right"
         open={mobileOpen}
         onClose={handleDrawerToggle}
-        ModalProps={{
-          keepMounted: true,
-        }}
-        className={styles.mobileDrawerContainer}
+        className={styles.drawerRoot}
       >
-        {drawer}
+        <Box className={styles.mobileDrawer}>
+          <Box className={styles.drawerHeader}>
+            <Typography variant="h6" className={styles.drawerLogo}>
+              ST2EAM
+            </Typography>
+            <IconButton onClick={handleDrawerToggle} className={styles.closeBtn}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+          <List className={styles.drawerList}>
+            {navItems.map(item => (
+              <ListItem
+                key={item.name}
+                component={Link}
+                to={item.path}
+                onClick={handleDrawerToggle}
+                className={`${styles.drawerItem} ${location.pathname === item.path ? styles.active : ''}`}
+              >
+                <ListItemText
+                  primary={item.name}
+                  primaryTypographyProps={{ className: styles.drawerItemText }}
+                />
+              </ListItem>
+            ))}
+          </List>
+        </Box>
       </Drawer>
     </>
   );

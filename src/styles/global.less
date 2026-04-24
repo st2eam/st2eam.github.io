@@ -1,17 +1,47 @@
-// 全局样式变量
-@primary-color: #2c3e50;
-@secondary-color: #e74c3c;
-@text-color: #333;
-@text-light: #666;
-@background-color: #f8f9fa;
-@white: #ffffff;
-@shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-@border-radius: 8px;
+// ═══════════════════════════════════════════
+// Design System — Dribbble-tier Photography Portfolio
+// ═══════════════════════════════════════════
 
-// 响应式断点
-@mobile: ~'(max-width: 768px)';
-@tablet: ~'(max-width: 1024px)';
+// Palette: warm neutrals + muted gold accent
+@bg:              #f8f6f2;
+@bg-warm:         #f3efe9;
+@bg-hero:         #1a1a2e;
+@surface:         rgba(255, 255, 255, 0.55);
+@surface-solid:   #ffffff;
+@surface-hover:   rgba(255, 255, 255, 0.78);
+
+@text:            #1a1a1a;
+@text-secondary:  #6e6e73;
+@text-muted:      #a1a1a6;
+
+@accent:          #b09472;
+@accent-light:    #c8ae8e;
+@accent-dark:     #8a7458;
+
+@border:          rgba(0, 0, 0, 0.06);
+@glass-border:    rgba(255, 255, 255, 0.35);
+
+@shadow-xs:       0 1px 2px rgba(0, 0, 0, 0.04);
+@shadow-sm:       0 2px 8px rgba(0, 0, 0, 0.05);
+@shadow:          0 8px 32px rgba(0, 0, 0, 0.06);
+@shadow-lg:       0 16px 48px rgba(0, 0, 0, 0.08);
+@shadow-glow:     0 8px 40px rgba(176, 148, 114, 0.12);
+
+@radius:          20px;
+@radius-sm:       12px;
+@radius-xs:       8px;
+@radius-full:     9999px;
+
+@font-display:    'Playfair Display', Georgia, 'Songti SC', serif;
+@font-body:       'DM Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+@font-mono:       'Space Mono', 'Consolas', monospace;
+
+@mobile:  ~'(max-width: 768px)';
+@tablet:  ~'(max-width: 1024px)';
 @desktop: ~'(min-width: 1025px)';
+
+@ease-out-expo:   cubic-bezier(0.16, 1, 0.3, 1);
+@ease-out-quart:  cubic-bezier(0.25, 1, 0.5, 1);
 
 * {
   margin: 0;
@@ -19,58 +49,63 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  font-family: 'Roboto', 'Helvetica', 'Arial', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  line-height: 1.6;
-  color: @text-color;
-  background-color: @background-color;
+  font-family: @font-body;
+  font-size: 15px;
+  line-height: 1.65;
+  color: @text;
+  background: @bg;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
-// 滚动条样式
+::selection {
+  background: fade(@accent, 18%);
+  color: @text;
+}
+
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 5px;
 }
-
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: transparent;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 4px;
+  background: fade(@text-muted, 40%);
+  border-radius: 10px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
+  background: fade(@text-muted, 60%);
 }
 
-// 通用工具类
-.text-center {
-  text-align: center;
+a {
+  color: @accent-dark;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  &:hover { color: @accent; }
 }
 
-.mb-1 {
-  margin-bottom: 8px;
-}
-.mb-2 {
-  margin-bottom: 16px;
-}
-.mb-3 {
-  margin-bottom: 24px;
-}
-.mb-4 {
-  margin-bottom: 32px;
+img {
+  display: block;
+  max-width: 100%;
 }
 
-.mt-1 {
-  margin-top: 8px;
+// Glass mixin
+.glass() {
+  background: @surface;
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border: 1px solid @glass-border;
 }
-.mt-2 {
-  margin-top: 16px;
-}
-.mt-3 {
-  margin-top: 24px;
-}
-.mt-4 {
-  margin-top: 32px;
+
+.glass-strong() {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(32px) saturate(1.6);
+  -webkit-backdrop-filter: blur(32px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, 0.45);
 }

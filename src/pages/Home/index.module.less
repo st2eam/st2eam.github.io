@@ -1,124 +1,331 @@
 @import '../../styles/global.less';
 
 .homePage {
-  .heroSection {
-    background: linear-gradient(135deg, @primary-color 0%, darken(@primary-color, 10%) 100%);
-    color: @white;
-    padding: 80px 0 60px;
-    position: relative;
-    overflow: hidden;
+  min-height: 100vh;
+}
 
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.05"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-      pointer-events: none;
-    }
+// ════════════ Hero ════════════
+.hero {
+  position: relative;
+  min-height: calc(100vh - 72px);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: @bg;
+
+  @media @mobile {
+    min-height: calc(100vh - 60px);
+  }
+}
+
+.heroOrbs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  .orb1 {
+    position: absolute;
+    top: -15%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, fade(@accent, 12%) 0%, transparent 70%);
+    filter: blur(80px);
+    animation: drift 12s ease-in-out infinite;
 
     @media @mobile {
-      padding: 60px 0 40px;
-    }
-
-    .heroContent {
-      text-align: center;
-      position: relative;
-      z-index: 1;
-
-      .heroTitle {
-        font-weight: 700;
-        margin-bottom: 16px;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-
-        @media @mobile {
-          font-size: 2rem;
-        }
-      }
-
-      .heroSubtitle {
-        margin-bottom: 32px;
-        opacity: 0.9;
-        font-weight: 300;
-
-        @media @mobile {
-          font-size: 1.1rem;
-          margin-bottom: 24px;
-        }
-      }
-
-      .heroStats {
-        display: flex;
-        justify-content: center;
-        gap: 32px;
-
-        @media @mobile {
-          gap: 16px;
-        }
-
-        .statItem {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          font-size: 18px;
-          font-weight: 500;
-
-          @media @mobile {
-            font-size: 16px;
-          }
-
-          .MuiSvgIcon-root {
-            font-size: 24px;
-          }
-        }
-      }
+      width: 320px;
+      height: 320px;
     }
   }
 
-  .gallerySection {
-    padding: 60px 24px;
+  .orb2 {
+    position: absolute;
+    bottom: -20%;
+    left: -8%;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, fade(#d4bfa6, 10%) 0%, transparent 70%);
+    filter: blur(80px);
+    animation: drift 16s ease-in-out infinite reverse;
+
+    @media @mobile {
+      width: 280px;
+      height: 280px;
+    }
   }
 
-  .categoryFilter {
-    margin-bottom: 40px;
-    text-align: center;
+  .orb3 {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, fade(#a8c5d6, 6%) 0%, transparent 70%);
+    filter: blur(60px);
+    animation: drift 14s ease-in-out 2s infinite;
 
-    .sectionTitle {
-      margin-bottom: 24px;
-      color: @primary-color;
-      font-weight: 600;
+    @media @mobile {
+      display: none;
+    }
+  }
+}
+
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.05); }
+  66% { transform: translate(-15px, 15px) scale(0.98); }
+}
+
+.heroInner {
+  position: relative;
+  z-index: 1;
+  padding: 0 40px;
+
+  @media @mobile {
+    padding: 0 24px;
+  }
+}
+
+.heroLabel {
+  font-family: @font-mono;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: @accent;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 1s @ease-out-expo 0.3s forwards;
+}
+
+.heroTitle {
+  font-family: @font-display;
+  font-weight: 600;
+  font-size: 4.5rem;
+  line-height: 1.12;
+  color: @text;
+  letter-spacing: -2px;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 1s @ease-out-expo 0.5s forwards;
+
+  @media @mobile {
+    font-size: 2.5rem;
+    letter-spacing: -1px;
+  }
+
+  .titleItalic {
+    font-style: italic;
+    color: @accent;
+  }
+}
+
+.heroDesc {
+  font-size: 17px;
+  color: @text-secondary;
+  max-width: 420px;
+  line-height: 1.8;
+  margin-bottom: 36px;
+  opacity: 0;
+  animation: fadeUp 1s @ease-out-expo 0.7s forwards;
+
+  @media @mobile {
+    font-size: 15px;
+  }
+}
+
+.heroMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  .glass();
+  padding: 10px 20px;
+  border-radius: @radius-full;
+  font-size: 14px;
+  font-weight: 500;
+  color: @text-secondary;
+  opacity: 0;
+  animation: fadeUp 1s @ease-out-expo 0.9s forwards;
+
+  .metaIcon {
+    font-size: 16px;
+    color: @accent;
+  }
+}
+
+.scrollHint {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: @text-muted;
+  animation: bob 2.5s ease-in-out infinite;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ════════════ Gallery ════════════
+.galleryWrap {
+  padding: 100px 0 120px;
+  background: @bg;
+
+  @media @mobile {
+    padding: 60px 0 80px;
+  }
+}
+
+.galleryHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 48px;
+  padding: 0 24px;
+
+  @media @mobile {
+    padding: 0 16px;
+    margin-bottom: 32px;
+  }
+
+  .galleryTitle {
+    font-family: @font-display;
+    font-weight: 600;
+    color: @text;
+    margin-bottom: 4px;
+  }
+
+  .gallerySubtitle {
+    font-family: @font-mono;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: @text-muted;
+  }
+
+  .headerActions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .refreshBtn {
+    width: 44px;
+    height: 44px;
+    .glass();
+    border-radius: @radius-sm;
+    color: @text-secondary;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: @surface-hover;
+      color: @accent;
     }
 
-    .filterChips {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 24px;
-
-      .categoryChip {
-        font-weight: 500;
-        transition: all 0.3s ease;
-
-        &:hover {
-          transform: translateY(-2px);
-          box-shadow: @shadow;
-        }
-      }
+    .spinning {
+      animation: spin 0.8s linear infinite;
     }
+  }
+}
 
-    .refreshButton {
-      border-radius: 24px;
-      padding: 8px 24px;
-      font-weight: 500;
-      text-transform: none;
+.viewToggle {
+  .glass();
+  border-radius: @radius-sm !important;
+  overflow: hidden;
+  border: none !important;
+}
 
-      &:hover {
-        transform: translateY(-1px);
-        box-shadow: @shadow;
-      }
+.toggleBtn {
+  border: none !important;
+  color: @text-muted !important;
+  padding: 8px 12px !important;
+  transition: all 0.3s ease !important;
+
+  svg {
+    font-size: 20px;
+  }
+
+  &:hover {
+    color: @text-secondary !important;
+    background: fade(@text, 4%) !important;
+  }
+
+  &.Mui-selected {
+    color: @accent !important;
+    background: fade(@accent, 10%) !important;
+
+    &:hover {
+      background: fade(@accent, 14%) !important;
+    }
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.filterBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 24px;
+  margin-bottom: 48px;
+
+  @media @mobile {
+    padding: 0 16px;
+    gap: 6px;
+    margin-bottom: 32px;
+  }
+}
+
+.filterChip {
+  font-family: @font-body;
+  font-size: 13px;
+  font-weight: 500;
+  height: 36px;
+  border-radius: @radius-full;
+  border: 1px solid @border;
+  background: transparent;
+  color: @text-secondary;
+  transition: all 0.35s @ease-out-quart;
+  cursor: pointer;
+
+  &:hover {
+    background: fade(@accent, 6%);
+    border-color: fade(@accent, 20%);
+    color: @accent-dark;
+  }
+
+  &.chipActive {
+    background: @text;
+    color: @bg;
+    border-color: @text;
+
+    &:hover {
+      background: fade(@text, 85%);
     }
   }
 }
