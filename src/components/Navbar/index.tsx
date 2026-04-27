@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -36,7 +36,7 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
+  const handleDrawerToggle = useCallback(() => setMobileOpen(prev => !prev), []);
 
   return (
     <>

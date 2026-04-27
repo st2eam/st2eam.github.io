@@ -30,6 +30,12 @@ import { PhotoConfig, photos as realPhotos, categories } from '@/config/photos';
 import { sortPhotosByDateDesc } from '@/utils/sortPhotosByDate';
 import styles from './index.module.less';
 
+const ROTATE_TEXTS = ['瞬间', '故事', '旅途', '光阴'];
+const ROTATE_TRANSITION = { type: 'spring' as const, damping: 22, stiffness: 280 };
+const ROTATE_INITIAL = { y: '100%', opacity: 0 };
+const ROTATE_ANIMATE = { y: 0, opacity: 1 };
+const ROTATE_EXIT = { y: '-120%', opacity: 0 };
+
 const generatePlaceholders = (count: number): PhotoConfig[] => {
   const cats = ['城市', '风景', '人像', '建筑', '街头', '自然', '抽象', '黑白'];
   const titles = [
@@ -147,16 +153,16 @@ const Home: React.FC = () => {
                 className={styles.heroTitleLine}
               />
               <RotatingText
-                texts={['瞬间', '故事', '旅途', '光阴']}
+                texts={ROTATE_TEXTS}
                 rotationInterval={2400}
                 staggerDuration={0.025}
                 staggerFrom="first"
                 mainClassName={styles.titleRotate}
                 splitLevelClassName={styles.titleRotateLevel}
-                transition={{ type: 'spring', damping: 22, stiffness: 280 }}
-                initial={{ y: '100%', opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: '-120%', opacity: 0 }}
+                transition={ROTATE_TRANSITION}
+                initial={ROTATE_INITIAL}
+                animate={ROTATE_ANIMATE}
+                exit={ROTATE_EXIT}
               />
             </span>
           </Typography>
