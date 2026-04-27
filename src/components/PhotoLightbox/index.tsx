@@ -1,14 +1,15 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Box, Dialog, IconButton, Typography, Button, CircularProgress } from '@mui/material';
 import {
   Close as CloseIcon,
-  OpenInNew as OpenInNewIcon,
   CameraAlt,
   Camera,
   Iso,
   ShutterSpeed,
   CalendarToday,
   Refresh as RefreshIcon,
+  PhotoSizeSelectActual as OriginalIcon,
+  Check as CheckIcon,
 } from '@mui/icons-material';
 import { PhotoConfig, ExifData } from '@/config/photos';
 import styles from './index.module.less';
@@ -48,57 +49,67 @@ interface PhotoLightboxProps {
   onClose: () => void;
 }
 
+type OriginalState = 'idle' | 'loading' | 'loaded' | 'error';
+
 const PhotoLightbox: React.FC<PhotoLightboxProps> = ({ image, onClose }) => {
-  const [fullLoaded, setFullLoaded] = useState(false);
-  const [loadError, setLoadError] = useState(false);
-  const [retryKey, setRetryKey] = useState(0);
+  const [originalState, setOriginalState] = useState<OriginalState>('idle');
+  const preloaderRef = useRef<HTMLImageElement | null>(null);
 
   const previewSrc = image ? (image.thumbnail || image.src) : '';
-  const fullSrc = image ? image.thumbnail || image.src : '';
+  const fullSrc = image ? image.src : '';
+  const hasThumbnail = image ? !!image.thumbnail : false;
 
   useEffect(() => {
     if (!image) {
-      setFullLoaded(false);
-      setLoadError(false);
-      return;
-    }
-    setFullLoaded(false);
-    setLoadError(false);
-    const preloader = new Image();
-    preloader.decoding = 'async';
-    preloader.src = fullSrc;
-    let cancelled = false;
-    const onSuccess = () => {
-      if (!cancelled) setFullLoaded(true);
-    };
-    const onFail = () => {
-      if (!cancelled) {
-        setLoadError(true);
-        setFullLoaded(true);
+      setOriginalState('idle');
+      if (preloaderRef.current) {
+        preloaderRef.current.onload = null;
+        preloaderRef.current.onerror = null;
+        preloaderRef.current = null;
       }
-    };
-    if (preloader.complete && preloader.naturalWidth > 0) {
-      onSuccess();
-    } else {
-      preloader.onload = onSuccess;
-      preloader.onerror = onFail;
     }
-    return () => {
-      cancelled = true;
-      preloader.onload = null;
-      preloader.onerror = null;
-    };
-  }, [image, fullSrc, retryKey]);
+  }, [image]);
+
+  const handleLoadOriginal = useCallback(() => {
+    if (originalState !== 'idle' || !image) return;
+    setOriginalState('loading');
+
+    const preloader = new Image();
+    preloaderRef.current = preloader;
+    preloader.decoding = 'async';
+    preloader.onload = () => setOriginalState('loaded');
+    preloader.onerror = () => setOriginalState('error');
+    preloader.src = fullSrc;
+
+    if (preloader.complete && preloader.naturalWidth > 0) {
+      setOriginalState('loaded');
+    }
+  }, [originalState, image, fullSrc]);
 
   const handleRetry = useCallback(() => {
-    setRetryKey(k => k + 1);
-  }, []);
+    setOriginalState('idle');
+    setTimeout(() => {
+      setOriginalState('loading');
+      const preloader = new Image();
+      preloaderRef.current = preloader;
+      preloader.decoding = 'async';
+      preloader.onload = () => setOriginalState('loaded');
+      preloader.onerror = () => setOriginalState('error');
+      preloader.src = fullSrc + (fullSrc.includes('?') ? '&' : '?') + '_r=' + Date.now();
+    }, 0);
+  }, [fullSrc]);
 
-  const displaySrc = image
-    ? fullLoaded && !loadError
-      ? fullSrc
-      : previewSrc
-    : '';
+  const showOriginal = originalState === 'loaded';
+  const displaySrc = showOriginal ? fullSrc : previewSrc;
+
+  const originalBtnLabel = (() => {
+    switch (originalState) {
+      case 'idle': return '查看原图';
+      case 'loading': return '加载中…';
+      case 'loaded': return '已加载原图';
+      case 'error': return '加载失败';
+    }
+  })();
 
   return (
     <Dialog
@@ -112,55 +123,48 @@ const PhotoLightbox: React.FC<PhotoLightboxProps> = ({ image, onClose }) => {
       {image && (
         <>
           <Box className={styles.dialogActions}>
-            <a
-              className={styles.viewOriginal}
-              href={image.src}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <OpenInNewIcon className={styles.viewOriginalIcon} />
-              查看原图
-            </a>
+            {hasThumbnail && (
+              originalState === 'error' ? (
+                <button className={styles.viewOriginal} onClick={handleRetry}>
+                  <RefreshIcon className={styles.viewOriginalIcon} />
+                  重试加载原图
+                </button>
+              ) : (
+                <button
+                  className={`${styles.viewOriginal} ${showOriginal ? styles.viewOriginalDone : ''}`}
+                  onClick={handleLoadOriginal}
+                  disabled={originalState !== 'idle'}
+                >
+                  {originalState === 'loading' ? (
+                    <CircularProgress size={14} sx={{ color: 'inherit' }} />
+                  ) : showOriginal ? (
+                    <CheckIcon className={styles.viewOriginalIcon} />
+                  ) : (
+                    <OriginalIcon className={styles.viewOriginalIcon} />
+                  )}
+                  {originalBtnLabel}
+                </button>
+              )
+            )}
             <IconButton onClick={onClose} className={styles.dialogClose} aria-label="关闭">
               <CloseIcon />
             </IconButton>
           </Box>
           <Box className={styles.dialogContent}>
             <img
-              key={`${image.id}-${retryKey}`}
+              key={image.id}
               src={displaySrc}
               alt={image.alt}
               decoding="async"
               loading="eager"
               fetchPriority="high"
               className={`${styles.dialogImg} ${
-                fullLoaded && !loadError ? styles.dialogImgReady : styles.dialogImgLoading
+                originalState === 'loading' ? styles.dialogImgLoading : styles.dialogImgReady
               }`}
-              onError={() => setLoadError(true)}
             />
-            {!fullLoaded && (
+            {originalState === 'loading' && (
               <Box className={styles.loadingOverlay}>
                 <CircularProgress size={32} sx={{ color: 'rgba(255,255,255,0.5)' }} />
-              </Box>
-            )}
-            {loadError && (
-              <Box className={styles.errorOverlay}>
-                <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.7)', mb: 1 }}>
-                  图片加载失败
-                </Typography>
-                <Button
-                  variant="outlined"
-                  size="small"
-                  startIcon={<RefreshIcon />}
-                  onClick={handleRetry}
-                  sx={{
-                    color: 'rgba(255,255,255,0.8)',
-                    borderColor: 'rgba(255,255,255,0.3)',
-                    '&:hover': { borderColor: 'rgba(255,255,255,0.6)' },
-                  }}
-                >
-                  重试
-                </Button>
               </Box>
             )}
             <Box className={styles.dialogMeta}>

@@ -7,7 +7,7 @@
 }
 
 .dialogPaper {
-  background: #0a0807;
+  background: #0a0807 !important;
   border-radius: @radius;
   overflow: hidden;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
@@ -30,13 +30,11 @@
 
 .dialogImgLoading {
   filter: blur(14px);
-  transform: scale(1.02);
 }
 
 .dialogImgReady {
   filter: blur(0);
-  transform: scale(1);
-  transition: filter 0.4s @ease-out-expo, transform 0.5s @ease-out-expo;
+  transition: filter 0.4s @ease-out-expo;
 }
 
 @keyframes imgFadeIn {
@@ -74,7 +72,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: rgba(255, 255, 255, 0.92) !important;
+  color: rgba(255, 255, 255, 0.92);
   background: rgba(20, 20, 20, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: @radius-full;
@@ -89,23 +87,31 @@
     background 0.3s ease,
     border-color 0.3s ease,
     color 0.3s ease,
-    transform 0.35s @ease-spring;
+    transform 0.35s @ease-spring,
+    opacity 0.3s ease;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: fade(@accent, 90%);
     border-color: fade(@accent, 100%);
-    color: #fff !important;
+    color: #fff;
     transform: translateY(-2px);
+  }
 
-    .viewOriginalIcon {
-      transform: translate(2px, -2px);
-    }
+  &:disabled {
+    cursor: default;
+    opacity: 0.7;
   }
 
   @media @mobile {
     padding: 8px 14px;
     font-size: 12px;
   }
+}
+
+.viewOriginalDone {
+  background: rgba(46, 125, 50, 0.7);
+  border-color: rgba(46, 125, 50, 0.5);
+  cursor: default;
 }
 
 .viewOriginalIcon {
