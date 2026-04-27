@@ -20,6 +20,26 @@ const breakpointColumns = {
 
 const MAX_RETRY = 2;
 
+function useInView(ref: React.RefObject<HTMLElement | null>, rootMargin = '200px') {
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [ref, rootMargin]);
+  return inView;
+}
+
 const AutoImage: React.FC<{
   image: PhotoConfig;
   onClick: () => void;
@@ -30,17 +50,19 @@ const AutoImage: React.FC<{
   const [errored, setErrored] = useState(false);
   const retryCount = useRef(0);
   const imgRef = useRef<HTMLImageElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(wrapRef);
 
   const previewSrc = image.thumbnail || image.src;
 
   useEffect(() => {
-    if (ratio > 0) return;
+    if (!inView || ratio > 0) return;
     const img = new Image();
     img.onload = () => {
       setRatio(img.naturalWidth / img.naturalHeight);
     };
     img.src = previewSrc;
-  }, [previewSrc, ratio]);
+  }, [previewSrc, ratio, inView]);
 
   const handleError = () => {
     if (retryCount.current < MAX_RETRY) {
@@ -58,7 +80,7 @@ const AutoImage: React.FC<{
 
   return (
     <Fade in timeout={600} style={{ transitionDelay: `${delay}ms` }}>
-      <Box className={styles.cardOuter} onClick={onClick}>
+      <Box className={styles.cardOuter} onClick={onClick} ref={wrapRef}>
         <GlareHover
           width="100%"
           height="100%"
@@ -84,12 +106,11 @@ const AutoImage: React.FC<{
                     加载失败
                   </Typography>
                 </Box>
-              ) : (
+              ) : inView ? (
                 <img
                   ref={imgRef}
                   src={previewSrc}
                   alt={image.alt}
-                  loading="lazy"
                   className={`${styles.img} ${loaded ? styles.imgLoaded : ''}`}
                   onLoad={() => {
                     if (ratio === 0 && imgRef.current) {
@@ -99,7 +120,7 @@ const AutoImage: React.FC<{
                   }}
                   onError={handleError}
                 />
-              )}
+              ) : null}
               {!loaded && (
                 <Skeleton variant="rectangular" className={styles.imgSkeleton} animation="wave" />
               )}
