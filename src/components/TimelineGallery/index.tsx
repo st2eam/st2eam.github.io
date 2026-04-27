@@ -51,6 +51,26 @@ function formatDateLabel(date: string): string {
 
 const MAX_RETRY = 2;
 
+function useInView(ref: React.RefObject<HTMLElement | null>, rootMargin = '200px') {
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [ref, rootMargin]);
+  return inView;
+}
+
 const TimelineImage: React.FC<{
   image: PhotoConfig;
   onClick: () => void;
@@ -60,13 +80,16 @@ const TimelineImage: React.FC<{
   const [ratio, setRatio] = useState(0);
   const retryCount = useRef(0);
   const imgRef = useRef<HTMLImageElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(wrapRef);
   const previewSrc = image.thumbnail || image.src;
 
   useEffect(() => {
+    if (!inView) return;
     const img = new Image();
     img.onload = () => setRatio(img.naturalWidth / img.naturalHeight);
     img.src = previewSrc;
-  }, [previewSrc]);
+  }, [previewSrc, inView]);
 
   const handleError = () => {
     if (retryCount.current < MAX_RETRY) {
@@ -83,7 +106,7 @@ const TimelineImage: React.FC<{
   };
 
   return (
-    <Box className={styles.timelineCard} onClick={onClick}>
+    <Box className={styles.timelineCard} onClick={onClick} ref={wrapRef}>
       <Box
         className={styles.cardImgWrap}
         style={ratio > 0 ? { aspectRatio: `${ratio}` } : { paddingBottom: '66%' }}
@@ -94,12 +117,11 @@ const TimelineImage: React.FC<{
               加载失败
             </Typography>
           </Box>
-        ) : (
+        ) : inView ? (
           <img
             ref={imgRef}
             src={previewSrc}
             alt={image.alt}
-            loading="lazy"
             className={`${styles.cardImg} ${loaded ? styles.cardImgLoaded : ''}`}
             onLoad={() => {
               if (ratio === 0 && imgRef.current) {
@@ -109,7 +131,7 @@ const TimelineImage: React.FC<{
             }}
             onError={handleError}
           />
-        )}
+        ) : null}
         {!loaded && (
           <Skeleton
             variant="rectangular"
