@@ -146,7 +146,7 @@ const About: React.FC = () => {
                         <ListItemIcon className={styles.skillIcon}>{skill.icon}</ListItemIcon>
                         <ListItemText
                           primary={skill.name}
-                          primaryTypographyProps={{ className: styles.skillName }}
+                          slotProps={{ primary: { className: styles.skillName } }}
                           secondary={
                             <Box className={styles.barTrack}>
                               <Box
