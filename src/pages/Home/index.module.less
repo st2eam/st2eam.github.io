@@ -377,18 +377,36 @@
   to { transform: rotate(360deg); }
 }
 
+.filterSection {
+  padding: 0 24px;
+  margin-bottom: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  @media @mobile {
+    padding: 0 16px;
+    margin-bottom: 32px;
+    gap: 8px;
+  }
+}
+
 .filterBar {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  padding: 0 24px;
-  margin-bottom: 48px;
+  align-items: center;
 
   @media @mobile {
-    padding: 0 16px;
     gap: 6px;
-    margin-bottom: 32px;
   }
+}
+
+.filterIcon {
+  font-size: 18px;
+  color: @text-secondary;
+  opacity: 0.5;
+  margin-right: 2px;
 }
 
 .filterChip {
@@ -416,6 +434,23 @@
 
     &:hover {
       background: fade(@text, 85%);
+    }
+  }
+}
+
+.filterChipLocation {
+  height: 30px;
+  font-size: 12px;
+  border-style: dashed;
+
+  &.chipLocationActive {
+    background: @accent;
+    color: #fff;
+    border-color: @accent;
+    border-style: solid;
+
+    &:hover {
+      background: fade(@accent, 85%);
     }
   }
 }

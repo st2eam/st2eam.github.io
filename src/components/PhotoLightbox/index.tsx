@@ -7,6 +7,8 @@ import {
   Iso,
   ShutterSpeed,
   CalendarToday,
+  LocationOn as LocationOnIcon,
+  LocalOffer as TagIcon,
   Refresh as RefreshIcon,
   PhotoSizeSelectActual as OriginalIcon,
   Check as CheckIcon,
@@ -173,7 +175,14 @@ const PhotoLightbox: React.FC<PhotoLightboxProps> = ({ image, onClose }) => {
                   <Typography className={styles.dialogTitle}>{image.alt}</Typography>
                   {image.tags && image.tags.length > 0 && (
                     <Typography className={styles.dialogCat}>
+                      <TagIcon sx={{ fontSize: 14, mr: 0.5 }} />
                       {image.tags.join(' · ')}
+                    </Typography>
+                  )}
+                  {image.location && (
+                    <Typography className={styles.dialogLocation}>
+                      <LocationOnIcon sx={{ fontSize: 15, mr: 0.5 }} />
+                      {[image.location.province, image.location.city].filter(Boolean).join(' · ')}
                     </Typography>
                   )}
                 </Box>

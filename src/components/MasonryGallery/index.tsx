@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo } from 'react';
 import Masonry from '@mui/lab/Masonry';
 import { Box, Card, Fade, Skeleton, Typography } from '@mui/material';
+import { LocationOn as LocationOnIcon, LocalOffer as TagIcon } from '@mui/icons-material';
 import { PhotoConfig } from '@/config/photos';
 import PhotoLightbox from '@/components/PhotoLightbox';
 import styles from './index.module.less';
@@ -88,7 +89,16 @@ const AutoImage = React.memo<AutoImageProps>(({ image, onSelect, delay }) => {
             <Box className={styles.overlayInner}>
               <Typography className={styles.imgTitle}>{image.alt}</Typography>
               {image.tags && image.tags.length > 0 && (
-                <Typography className={styles.imgCat}>{image.tags.join(' · ')}</Typography>
+                <Typography className={styles.imgCat}>
+                  <TagIcon sx={{ fontSize: 13, mr: 0.5 }} />
+                  {image.tags.join(' · ')}
+                </Typography>
+              )}
+              {image.location && (
+                <Typography className={styles.imgLocation}>
+                  <LocationOnIcon sx={{ fontSize: 14, mr: 0.5 }} />
+                  {[image.location.province, image.location.city].filter(Boolean).join(' · ')}
+                </Typography>
               )}
             </Box>
           </Box>
