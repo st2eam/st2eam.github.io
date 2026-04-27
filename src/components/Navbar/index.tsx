@@ -100,7 +100,7 @@ const Navbar: React.FC = () => {
               >
                 <ListItemText
                   primary={item.name}
-                  primaryTypographyProps={{ className: styles.drawerItemText }}
+                  slotProps={{ primary: { className: styles.drawerItemText } }}
                 />
               </ListItem>
             ))}
