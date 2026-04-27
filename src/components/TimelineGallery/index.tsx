@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { Box, Typography, Skeleton } from '@mui/material';
 import { PhotoConfig } from '@/config/photos';
 import PhotoLightbox from '@/components/PhotoLightbox';
@@ -71,10 +71,12 @@ function useInView(ref: React.RefObject<HTMLElement | null>, rootMargin = '200px
   return inView;
 }
 
-const TimelineImage: React.FC<{
+interface TimelineImageProps {
   image: PhotoConfig;
-  onClick: () => void;
-}> = ({ image, onClick }) => {
+  onSelect: (img: PhotoConfig) => void;
+}
+
+const TimelineImage = React.memo<TimelineImageProps>(({ image, onSelect }) => {
   const [loaded, setLoaded] = useState(false);
   const [errored, setErrored] = useState(false);
   const [ratio, setRatio] = useState(0);
@@ -105,12 +107,16 @@ const TimelineImage: React.FC<{
     }
   };
 
+  const handleClick = useCallback(() => onSelect(image), [onSelect, image]);
+
+  const wrapStyle = useMemo(
+    () => (ratio > 0 ? { aspectRatio: `${ratio}` } : { paddingBottom: '66%' }),
+    [ratio],
+  );
+
   return (
-    <Box className={styles.timelineCard} onClick={onClick} ref={wrapRef}>
-      <Box
-        className={styles.cardImgWrap}
-        style={ratio > 0 ? { aspectRatio: `${ratio}` } : { paddingBottom: '66%' }}
-      >
+    <Box className={styles.timelineCard} onClick={handleClick} ref={wrapRef}>
+      <Box className={styles.cardImgWrap} style={wrapStyle}>
         {errored ? (
           <Box className={styles.cardError}>
             <Typography variant="caption" color="textSecondary">
@@ -152,17 +158,24 @@ const TimelineImage: React.FC<{
       </Box>
     </Box>
   );
-};
+});
+
+const SKELETON_MB = { mb: 2 };
 
 const TimelineGallery: React.FC<TimelineGalleryProps> = ({ images, loading = false }) => {
   const [selectedImage, setSelectedImage] = useState<PhotoConfig | null>(null);
+
+  const handleSelect = useCallback((img: PhotoConfig) => setSelectedImage(img), []);
+  const handleClose = useCallback(() => setSelectedImage(null), []);
+
+  const groups = useMemo(() => groupByDate(images), [images]);
 
   if (loading) {
     return (
       <Box className={styles.timeline}>
         {[1, 2].map(i => (
           <Box key={i} className={styles.group}>
-            <Skeleton width={160} height={28} sx={{ mb: 2 }} />
+            <Skeleton width={160} height={28} sx={SKELETON_MB} />
             <Box className={styles.photoRow}>
               {[1, 2, 3].map(j => (
                 <Skeleton
@@ -178,8 +191,6 @@ const TimelineGallery: React.FC<TimelineGalleryProps> = ({ images, loading = fal
       </Box>
     );
   }
-
-  const groups = groupByDate(images);
 
   return (
     <Box className={styles.timeline}>
@@ -203,7 +214,7 @@ const TimelineGallery: React.FC<TimelineGalleryProps> = ({ images, loading = fal
                 <TimelineImage
                   key={photo.id}
                   image={photo}
-                  onClick={() => setSelectedImage(photo)}
+                  onSelect={handleSelect}
                 />
               ))}
             </Box>
@@ -211,7 +222,7 @@ const TimelineGallery: React.FC<TimelineGalleryProps> = ({ images, loading = fal
         </ScrollReveal>
       ))}
 
-      <PhotoLightbox image={selectedImage} onClose={() => setSelectedImage(null)} />
+      <PhotoLightbox image={selectedImage} onClose={handleClose} />
     </Box>
   );
 };

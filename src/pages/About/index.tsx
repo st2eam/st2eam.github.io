@@ -106,7 +106,7 @@ const About: React.FC = () => {
       {/* ── Content ── */}
       <Container maxWidth="lg" className={styles.content}>
         <Grid container spacing={4}>
-          <Grid item xs={12} md={7}>
+          <Grid size={{ xs: 12, md: 7 }}>
             <ScrollReveal>
               <Card className={styles.glassCard}>
                 <CardContent className={styles.cardInner}>
@@ -132,7 +132,7 @@ const About: React.FC = () => {
             </ScrollReveal>
           </Grid>
 
-          <Grid item xs={12} md={5}>
+          <Grid size={{ xs: 12, md: 5 }}>
             <ScrollReveal delay={100}>
               <Card className={styles.glassCard}>
                 <CardContent className={styles.cardInner}>
@@ -164,7 +164,7 @@ const About: React.FC = () => {
             </ScrollReveal>
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <ScrollReveal delay={80}>
               <Card className={styles.glassCard}>
                 <CardContent className={styles.cardInner}>
@@ -182,7 +182,7 @@ const About: React.FC = () => {
             </ScrollReveal>
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <ScrollReveal delay={160}>
               <Card className={styles.glassCard}>
                 <CardContent className={styles.cardInner}>

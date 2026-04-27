@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { Box } from '@mui/material';
 
 interface ScrollRevealProps {
@@ -50,17 +50,15 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
     return () => observer.disconnect();
   }, []);
 
+  const sx = useMemo(() => ({
+    opacity: isVisible ? 1 : 0,
+    transform: getTransform(direction, distance, isVisible),
+    transition: `opacity ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
+    willChange: 'opacity, transform',
+  }), [isVisible, direction, distance, duration, delay]);
+
   return (
-    <Box
-      ref={ref}
-      className={className}
-      sx={{
-        opacity: isVisible ? 1 : 0,
-        transform: getTransform(direction, distance, isVisible),
-        transition: `opacity ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
-        willChange: 'opacity, transform',
-      }}
-    >
+    <Box ref={ref} className={className} sx={sx}>
       {children}
     </Box>
   );

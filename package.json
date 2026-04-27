@@ -18,10 +18,11 @@
     "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,less,md}\""
   },
   "dependencies": {
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
-    "@mui/icons-material": "^5.15.15",
-    "@mui/material": "^5.15.15",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^9.0.0",
+    "@mui/lab": "^9.0.0-beta.2",
+    "@mui/material": "^9.0.0",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.0",
     "@types/react": "^19.2.14",
@@ -29,7 +30,6 @@
     "motion": "^12.38.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "react-masonry-css": "^1.0.16",
     "react-router-dom": "^6.22.3",
     "three": "^0.184.0"
   },

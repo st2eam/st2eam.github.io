@@ -13,6 +13,10 @@ import {
 import { PhotoConfig, ExifData } from '@/config/photos';
 import styles from './index.module.less';
 
+const DIALOG_SLOT_PROPS = { paper: { className: styles.dialogPaper } };
+const DIALOG_CLASSES = { root: styles.dialogRoot };
+const DIALOG_TRANSITION = { enter: 240, exit: 180 };
+
 const ExifBar: React.FC<{ exif: ExifData }> = ({ exif }) => {
   const items: { icon: React.ReactNode; label: string }[] = [];
 
@@ -101,9 +105,9 @@ const PhotoLightbox: React.FC<PhotoLightboxProps> = ({ image, onClose }) => {
       open={!!image}
       onClose={onClose}
       maxWidth={false}
-      PaperProps={{ className: styles.dialogPaper }}
-      classes={{ root: styles.dialogRoot }}
-      transitionDuration={{ enter: 240, exit: 180 }}
+      slotProps={DIALOG_SLOT_PROPS}
+      classes={DIALOG_CLASSES}
+      transitionDuration={DIALOG_TRANSITION}
     >
       {image && (
         <>

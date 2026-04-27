@@ -8,19 +8,25 @@ interface PageTransitionProps {
 
 const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
   const { pathname } = useLocation();
-  const [displayed, setDisplayed] = useState({ pathname, children });
+  const [displayedChildren, setDisplayedChildren] = useState(children);
+  const [displayedPath, setDisplayedPath] = useState(pathname);
   const [phase, setPhase] = useState<'in' | 'out'>('in');
   const timerRef = useRef<number | null>(null);
+  const childrenRef = useRef(children);
+  childrenRef.current = children;
+
+  if (pathname === displayedPath && children !== displayedChildren) {
+    setDisplayedChildren(children);
+  }
 
   useEffect(() => {
-    if (pathname === displayed.pathname) {
-      setDisplayed({ pathname, children });
-      return;
-    }
+    if (pathname === displayedPath) return;
+
     setPhase('out');
     if (timerRef.current !== null) window.clearTimeout(timerRef.current);
     timerRef.current = window.setTimeout(() => {
-      setDisplayed({ pathname, children });
+      setDisplayedChildren(childrenRef.current);
+      setDisplayedPath(pathname);
       setPhase('in');
       window.scrollTo({ top: 0, behavior: 'auto' });
     }, 220);
@@ -28,11 +34,11 @@ const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
     return () => {
       if (timerRef.current !== null) window.clearTimeout(timerRef.current);
     };
-  }, [pathname, children, displayed.pathname]);
+  }, [pathname, displayedPath]);
 
   return (
     <div className={`${styles.transition} ${phase === 'in' ? styles.in : styles.out}`}>
-      {displayed.children}
+      {displayedChildren}
     </div>
   );
 };

@@ -8,27 +8,7 @@
   }
 }
 
-.grid {
-  display: flex;
-  margin-left: -20px;
-  width: auto;
-
-  @media @mobile {
-    margin-left: -12px;
-  }
-}
-
-.column {
-  padding-left: 20px;
-  background-clip: padding-box;
-
-  @media @mobile {
-    padding-left: 12px;
-  }
-}
-
 .skeletonCard {
-  margin-bottom: 20px;
   border-radius: @radius;
   overflow: hidden;
   background: transparent;
@@ -36,27 +16,7 @@
 }
 
 .cardOuter {
-  margin-bottom: 20px;
   cursor: pointer;
-
-  @media @mobile {
-    margin-bottom: 12px;
-  }
-}
-
-.glareWrap {
-  width: 100% !important;
-  height: 100% !important;
-  display: block !important;
-  border-radius: @radius !important;
-  overflow: hidden !important;
-  border: none !important;
-  background: transparent !important;
-  place-items: stretch !important;
-
-  @media @mobile {
-    border-radius: 16px !important;
-  }
 }
 
 .card {
@@ -85,41 +45,6 @@
     .overlay {
       opacity: 1;
     }
-
-    .borderTrail {
-      opacity: 1;
-    }
-  }
-}
-
-.borderTrail {
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  padding: 1px;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    fade(@accent, 70%) 60deg,
-    transparent 120deg,
-    transparent 360deg
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0;
-  animation: border-trail 4s linear infinite;
-  transition: opacity 0.5s ease;
-  pointer-events: none;
-  z-index: 3;
-
-  @media @mobile {
-    display: none;
   }
 }
 
@@ -201,4 +126,3 @@
   letter-spacing: 1px;
   text-transform: uppercase;
 }
-
