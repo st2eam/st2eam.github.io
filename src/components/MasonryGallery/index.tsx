@@ -18,6 +18,8 @@ const breakpointColumns = {
   600: 1,
 };
 
+const MAX_RETRY = 2;
+
 const AutoImage: React.FC<{
   image: PhotoConfig;
   onClick: () => void;
@@ -25,6 +27,8 @@ const AutoImage: React.FC<{
 }> = ({ image, onClick, delay }) => {
   const [ratio, setRatio] = useState(image.width && image.height ? image.width / image.height : 0);
   const [loaded, setLoaded] = useState(false);
+  const [errored, setErrored] = useState(false);
+  const retryCount = useRef(0);
   const imgRef = useRef<HTMLImageElement>(null);
 
   const previewSrc = image.thumbnail || image.src;
@@ -37,6 +41,20 @@ const AutoImage: React.FC<{
     };
     img.src = previewSrc;
   }, [previewSrc, ratio]);
+
+  const handleError = () => {
+    if (retryCount.current < MAX_RETRY) {
+      retryCount.current += 1;
+      const el = imgRef.current;
+      if (el) {
+        const sep = previewSrc.includes('?') ? '&' : '?';
+        el.src = `${previewSrc}${sep}_r=${retryCount.current}`;
+      }
+    } else {
+      setErrored(true);
+      setLoaded(true);
+    }
+  };
 
   return (
     <Fade in timeout={600} style={{ transitionDelay: `${delay}ms` }}>
@@ -60,19 +78,28 @@ const AutoImage: React.FC<{
               className={styles.imgWrap}
               style={ratio > 0 ? { aspectRatio: `${ratio}` } : { minHeight: 240 }}
             >
-              <img
-                ref={imgRef}
-                src={previewSrc}
-                alt={image.alt}
-                loading="lazy"
-                className={`${styles.img} ${loaded ? styles.imgLoaded : ''}`}
-                onLoad={() => {
-                  if (ratio === 0 && imgRef.current) {
-                    setRatio(imgRef.current.naturalWidth / imgRef.current.naturalHeight);
-                  }
-                  setLoaded(true);
-                }}
-              />
+              {errored ? (
+                <Box className={styles.imgError}>
+                  <Typography variant="caption" color="textSecondary">
+                    加载失败
+                  </Typography>
+                </Box>
+              ) : (
+                <img
+                  ref={imgRef}
+                  src={previewSrc}
+                  alt={image.alt}
+                  loading="lazy"
+                  className={`${styles.img} ${loaded ? styles.imgLoaded : ''}`}
+                  onLoad={() => {
+                    if (ratio === 0 && imgRef.current) {
+                      setRatio(imgRef.current.naturalWidth / imgRef.current.naturalHeight);
+                    }
+                    setLoaded(true);
+                  }}
+                  onError={handleError}
+                />
+              )}
               {!loaded && (
                 <Skeleton variant="rectangular" className={styles.imgSkeleton} animation="wave" />
               )}

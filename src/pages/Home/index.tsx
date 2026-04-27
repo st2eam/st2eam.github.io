@@ -104,7 +104,7 @@ const Home: React.FC = () => {
     const pool = useRealPhotos ? realPhotos : initialPhotos;
     if (pool.length === 0) return '';
     const pick = pool[Math.floor(Math.random() * pool.length)];
-    return pick.src;
+    return pick.thumbnail || pick.src;
   });
 
   return (

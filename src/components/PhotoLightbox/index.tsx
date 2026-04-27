@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Dialog, IconButton, Typography } from '@mui/material';
+import React, { useEffect, useState, useCallback } from 'react';
+import { Box, Dialog, IconButton, Typography, Button, CircularProgress } from '@mui/material';
 import {
   Close as CloseIcon,
   OpenInNew as OpenInNewIcon,
@@ -8,6 +8,7 @@ import {
   Iso,
   ShutterSpeed,
   CalendarToday,
+  Refresh as RefreshIcon,
 } from '@mui/icons-material';
 import { PhotoConfig, ExifData } from '@/config/photos';
 import styles from './index.module.less';
@@ -45,38 +46,54 @@ interface PhotoLightboxProps {
 
 const PhotoLightbox: React.FC<PhotoLightboxProps> = ({ image, onClose }) => {
   const [fullLoaded, setFullLoaded] = useState(false);
+  const [loadError, setLoadError] = useState(false);
+  const [retryKey, setRetryKey] = useState(0);
+
+  const previewSrc = image ? (image.thumbnail || image.src) : '';
+  const fullSrc = image ? image.thumbnail || image.src : '';
 
   useEffect(() => {
     if (!image) {
       setFullLoaded(false);
+      setLoadError(false);
       return;
     }
     setFullLoaded(false);
-    const fullSrc = image.src;
+    setLoadError(false);
     const preloader = new Image();
     preloader.decoding = 'async';
     preloader.src = fullSrc;
     let cancelled = false;
-    const onDone = () => {
+    const onSuccess = () => {
       if (!cancelled) setFullLoaded(true);
     };
+    const onFail = () => {
+      if (!cancelled) {
+        setLoadError(true);
+        setFullLoaded(true);
+      }
+    };
     if (preloader.complete && preloader.naturalWidth > 0) {
-      onDone();
+      onSuccess();
     } else {
-      preloader.onload = onDone;
-      preloader.onerror = onDone;
+      preloader.onload = onSuccess;
+      preloader.onerror = onFail;
     }
     return () => {
       cancelled = true;
       preloader.onload = null;
       preloader.onerror = null;
     };
-  }, [image]);
+  }, [image, fullSrc, retryKey]);
+
+  const handleRetry = useCallback(() => {
+    setRetryKey(k => k + 1);
+  }, []);
 
   const displaySrc = image
-    ? fullLoaded
-      ? image.src
-      : image.thumbnail || image.src
+    ? fullLoaded && !loadError
+      ? fullSrc
+      : previewSrc
     : '';
 
   return (
@@ -106,16 +123,42 @@ const PhotoLightbox: React.FC<PhotoLightboxProps> = ({ image, onClose }) => {
           </Box>
           <Box className={styles.dialogContent}>
             <img
-              key={image.id}
+              key={`${image.id}-${retryKey}`}
               src={displaySrc}
               alt={image.alt}
               decoding="async"
               loading="eager"
               fetchPriority="high"
               className={`${styles.dialogImg} ${
-                fullLoaded ? styles.dialogImgReady : styles.dialogImgLoading
+                fullLoaded && !loadError ? styles.dialogImgReady : styles.dialogImgLoading
               }`}
+              onError={() => setLoadError(true)}
             />
+            {!fullLoaded && (
+              <Box className={styles.loadingOverlay}>
+                <CircularProgress size={32} sx={{ color: 'rgba(255,255,255,0.5)' }} />
+              </Box>
+            )}
+            {loadError && (
+              <Box className={styles.errorOverlay}>
+                <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.7)', mb: 1 }}>
+                  图片加载失败
+                </Typography>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  startIcon={<RefreshIcon />}
+                  onClick={handleRetry}
+                  sx={{
+                    color: 'rgba(255,255,255,0.8)',
+                    borderColor: 'rgba(255,255,255,0.3)',
+                    '&:hover': { borderColor: 'rgba(255,255,255,0.6)' },
+                  }}
+                >
+                  重试
+                </Button>
+              </Box>
+            )}
             <Box className={styles.dialogMeta}>
               <Box className={styles.dialogMetaTop}>
                 <Box>

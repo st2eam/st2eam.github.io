@@ -49,12 +49,16 @@ function formatDateLabel(date: string): string {
   return `${d.getFullYear()} · ${months[d.getMonth()]} ${d.getDate()}日`;
 }
 
+const MAX_RETRY = 2;
+
 const TimelineImage: React.FC<{
   image: PhotoConfig;
   onClick: () => void;
 }> = ({ image, onClick }) => {
   const [loaded, setLoaded] = useState(false);
+  const [errored, setErrored] = useState(false);
   const [ratio, setRatio] = useState(0);
+  const retryCount = useRef(0);
   const imgRef = useRef<HTMLImageElement>(null);
   const previewSrc = image.thumbnail || image.src;
 
@@ -64,25 +68,48 @@ const TimelineImage: React.FC<{
     img.src = previewSrc;
   }, [previewSrc]);
 
+  const handleError = () => {
+    if (retryCount.current < MAX_RETRY) {
+      retryCount.current += 1;
+      const el = imgRef.current;
+      if (el) {
+        const sep = previewSrc.includes('?') ? '&' : '?';
+        el.src = `${previewSrc}${sep}_r=${retryCount.current}`;
+      }
+    } else {
+      setErrored(true);
+      setLoaded(true);
+    }
+  };
+
   return (
     <Box className={styles.timelineCard} onClick={onClick}>
       <Box
         className={styles.cardImgWrap}
         style={ratio > 0 ? { aspectRatio: `${ratio}` } : { paddingBottom: '66%' }}
       >
-        <img
-          ref={imgRef}
-          src={previewSrc}
-          alt={image.alt}
-          loading="lazy"
-          className={`${styles.cardImg} ${loaded ? styles.cardImgLoaded : ''}`}
-          onLoad={() => {
-            if (ratio === 0 && imgRef.current) {
-              setRatio(imgRef.current.naturalWidth / imgRef.current.naturalHeight);
-            }
-            setLoaded(true);
-          }}
-        />
+        {errored ? (
+          <Box className={styles.cardError}>
+            <Typography variant="caption" color="textSecondary">
+              加载失败
+            </Typography>
+          </Box>
+        ) : (
+          <img
+            ref={imgRef}
+            src={previewSrc}
+            alt={image.alt}
+            loading="lazy"
+            className={`${styles.cardImg} ${loaded ? styles.cardImgLoaded : ''}`}
+            onLoad={() => {
+              if (ratio === 0 && imgRef.current) {
+                setRatio(imgRef.current.naturalWidth / imgRef.current.naturalHeight);
+              }
+              setLoaded(true);
+            }}
+            onError={handleError}
+          />
+        )}
         {!loaded && (
           <Skeleton
             variant="rectangular"
