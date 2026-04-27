@@ -1,15 +1,17 @@
 # ST2EAM 摄影作品集
 
-基于 React + TypeScript + Material UI 构建的个人摄影作品集网站，采用 Dribbble 风格设计，部署于 GitHub Pages。
+基于 React 19 + TypeScript + Material UI v9 构建的个人摄影作品集网站，采用 Dribbble 风格设计，部署于 GitHub Pages。
 
 ## 功能
 
-- 瀑布流 / 时间轴双模式展示摄影作品
+- 瀑布流（MUI Masonry）/ 时间轴双模式展示摄影作品
 - 按标签筛选作品分类
-- 灯箱查看大图 + 查看原图按钮
+- 灯箱查看大图 + 按需加载原图（缩略图 → 原图渐进式替换）
 - EXIF 拍摄参数自动提取展示（相机、镜头、光圈、快门、ISO、日期）
 - 图片自动压缩，预览加载缩略图
 - 增量同步脚本，照片丢进目录即可管理
+- 页面切换过渡动画（淡入淡出 + 滚动复位）
+- 点击火花、文字旋转、模糊渐入等交互动效
 - 技术笔记（集成外部笔记站点）
 - 个人介绍与联系方式
 - 响应式设计，适配移动端
@@ -18,13 +20,15 @@
 
 | 分类 | 技术 | 说明 |
 |------|------|------|
-| 框架 | React 18 + TypeScript 4.9 | 函数组件 + Hooks |
-| UI 库 | Material UI v5 + Emotion | 主题系统、响应式组件 |
+| 框架 | React 19 + TypeScript 5.6 | 函数组件 + Hooks |
+| UI 库 | Material UI v9 + Emotion | 主题系统、响应式组件 |
 | 样式 | Less + CSS Modules | 组件级隔离 + 全局设计变量 |
 | 路由 | React Router v6 | `BrowserRouter` + `Routes` |
-| 瀑布流 | react-masonry-css | 响应式瀑布流布局 |
+| 瀑布流 | @mui/lab Masonry | 响应式瀑布流布局 |
+| 动画 | Motion (Framer Motion) | 文字旋转、弹性过渡 |
+| 3D | @react-three/fiber + drei | Hero 区域视觉效果 |
 | 图片处理 | sharp + exifr | 压缩（仅开发时）+ EXIF 提取 |
-| 构建 | Create React App + CRACO | 自定义 Webpack/Less 配置 |
+| 构建 | Vite 6 | 快速 HMR + Rollup 打包 |
 | 部署 | GitHub Actions → GitHub Pages | 自动 CI/CD |
 | 字体 | Playfair Display + DM Sans + Space Mono | Google Fonts |
 
@@ -41,19 +45,24 @@
 │              .github/workflows/deploy.yml                   │
 │         npm install → npm run build → upload docs/          │
 └────────────────────────────┬────────────────────────────────┘
-                             │ build (CRACO → docs/)
+                             │ build (Vite → docs/)
 ┌────────────────────────────┴────────────────────────────────┐
 │                     React SPA 应用层                         │
 │                                                             │
 │  index.tsx ─── ThemeProvider + BrowserRouter                 │
-│      └── App.tsx ─── Navbar + Routes + Footer               │
-│              ├── /        → Home (画廊)                      │
-│              ├── /notes   → Notes (iframe 嵌入)              │
-│              └── /about   → About (个人介绍)                 │
+│      └── App.tsx ─── ClickSpark                             │
+│              ├── Navbar                                      │
+│              ├── PageTransition                              │
+│              │   └── Routes                                  │
+│              │       ├── /        → Home (画廊)              │
+│              │       ├── /notes   → Notes (iframe 嵌入)      │
+│              │       └── /about   → About (个人介绍)         │
+│              └── Footer                                      │
 │                                                             │
 │  ┌─────────────┐  ┌──────────────┐  ┌────────────────┐     │
 │  │MasonryGallery│  │TimelineGallery│  │ PhotoLightbox  │     │
-│  │  瀑布流模式  │  │  时间轴模式   │  │   灯箱大图     │     │
+│  │  瀑布流模式  │  │  时间轴模式   │  │ 灯箱 + 原图加载│     │
+│  │ (MUI Masonry)│  │(IntersObserver)│  │  (MUI Dialog)  │     │
 │  └──────┬──────┘  └──────┬───────┘  └────────────────┘     │
 │         │                │                                   │
 │         └────────┬───────┘                                   │
@@ -66,10 +75,10 @@
 │                                                             │
 │  public/photos/*.jpg                                        │
 │      │                                                      │
-│      ├─ compress-photos.js ──→ public/photos/thumbnails/    │
+│      ├─ compress-photos.cjs ──→ public/photos/thumbnails/   │
 │      │   (sharp: 长边 1200px, JPEG q82)                     │
 │      │                                                      │
-│      └─ sync-photos.js ─────→ src/config/photos.ts          │
+│      └─ sync-photos.cjs ─────→ src/config/photos.ts         │
 │          (exifr: EXIF 提取, 增量合并 alt/tags)               │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -81,37 +90,44 @@ st2eam.github.io/
 ├── .github/workflows/
 │   └── deploy.yml               # CI/CD：push master → build → deploy Pages
 ├── scripts/
-│   ├── compress-photos.js       # 图片压缩（sharp，增量跳过已有缩略图）
-│   └── sync-photos.js           # 照片配置同步（EXIF + 标签推测 + 增量合并）
+│   ├── compress-photos.cjs      # 图片压缩（sharp，增量跳过已有缩略图）
+│   └── sync-photos.cjs          # 照片配置同步（EXIF + 标签推测 + 增量合并）
 ├── public/
 │   ├── index.html               # HTML 入口（Google Fonts CDN）
-│   ├── manifest.json            # PWA 清单
 │   └── photos/                  # 原始照片目录（未纳入 Git）
 │       └── thumbnails/          # 压缩缩略图（自动生成）
 ├── src/
-│   ├── index.tsx                # 应用入口：MUI 主题 + BrowserRouter
-│   ├── App.tsx                  # 布局骨架：Navbar + Routes + Footer
-│   ├── react-app-env.d.ts       # CRA 类型声明 + Less/masonry 模块声明
+│   ├── index.tsx                # 应用入口：MUI v9 主题 + BrowserRouter
+│   ├── App.tsx                  # 布局骨架：ClickSpark + Navbar + PageTransition + Footer
 │   ├── config/
-│   │   └── photos.ts            # 照片数据（sync-photos.js 自动生成）
+│   │   └── photos.ts            # 照片数据（sync-photos.cjs 自动生成）
 │   ├── components/
 │   │   ├── Navbar/              # 毛玻璃悬浮导航（滚动变色 + 移动端 Drawer）
 │   │   ├── Footer/              # 极简页脚（品牌 + 快捷链接 + 社交）
-│   │   ├── MasonryGallery/      # 瀑布流画廊（懒加载 + Skeleton + 灯箱）
-│   │   ├── TimelineGallery/     # 时间轴画廊（按拍摄日期分组 + ScrollReveal）
-│   │   ├── PhotoLightbox/       # 灯箱组件（MUI Dialog + EXIF 参数展示）
-│   │   └── ScrollReveal/        # 滚动渐入动画（IntersectionObserver）
+│   │   ├── MasonryGallery/      # 瀑布流画廊（MUI Masonry + React.memo + Skeleton）
+│   │   ├── TimelineGallery/     # 时间轴画廊（按日期分组 + IntersectionObserver 懒加载）
+│   │   ├── PhotoLightbox/       # 灯箱组件（MUI Dialog + 按需加载原图 + EXIF 展示）
+│   │   ├── PageTransition/      # 路由切换过渡（淡入淡出 + pathname 驱动）
+│   │   ├── ScrollReveal/        # 滚动渐入动画（IntersectionObserver + useMemo sx）
+│   │   └── reactbits/           # 第三方动效组件集
+│   │       ├── ClickSpark/      # 点击火花效果（Canvas）
+│   │       ├── RotatingText/    # 文字旋转动画（Motion）
+│   │       ├── BlurText/        # 模糊渐入文字
+│   │       ├── ShinyText/       # 光泽文字效果
+│   │       ├── CountUp/         # 数字递增动画
+│   │       ├── Magnet/          # 磁吸跟随效果
+│   │       └── LogoLoop/        # Logo 轮播
 │   ├── pages/
 │   │   ├── Home/                # 首页：Hero + 分类筛选 + 瀑布流/时间轴切换
 │   │   ├── Notes/               # 技术笔记：iframe 嵌入外部笔记站
-│   │   ├── About/               # 关于：技能/器材/理念 + ScrollReveal
+│   │   ├── About/               # 关于：技能/器材/理念 + Grid v2 布局
 │   │   └── Projects/            # 项目展示（已实现，未挂载路由）
 │   ├── styles/
 │   │   ├── global.less          # 设计系统：色板/阴影/圆角/字体/响应式断点/Glass Mixin
 │   │   └── App.less             # 布局样式
-│   └── types/
-│       └── global.d.ts          # 全局类型（预留）
-├── craco.config.js              # CRACO：Less 插件 + Webpack 别名 + 输出到 docs/
+│   └── utils/
+│       └── sortPhotosByDate.ts  # 照片按日期降序排序
+├── vite.config.ts               # Vite 配置：Less + 路径别名 + manualChunks
 ├── tsconfig.json                # TS 配置：strict + 路径别名
 ├── package.json                 # 依赖 + 脚本
 └── README.md
@@ -123,24 +139,30 @@ st2eam.github.io/
 
 ```
 index.tsx
-└── ThemeProvider (MUI 主题)
+└── ThemeProvider (MUI v9 主题)
     └── BrowserRouter
         └── App
-            ├── Navbar                    # 固定顶部，导航链接
-            ├── main.main-content
-            │   └── Routes
-            │       ├── / → Home
-            │       │   ├── Hero 区域（动态光球背景）
-            │       │   ├── 分类筛选 Chips
-            │       │   ├── 视图切换按钮（瀑布流 / 时间轴）
-            │       │   ├── MasonryGallery ──→ PhotoLightbox
-            │       │   └── TimelineGallery
-            │       │       ├── ScrollReveal (每个日期分组)
-            │       │       └── PhotoLightbox
-            │       ├── /notes → Notes (iframe)
-            │       └── /about → About
-            │           └── ScrollReveal (各内容区块)
-            └── Footer
+            └── ClickSpark (点击火花效果)
+                ├── Navbar                    # 固定顶部，导航链接
+                ├── main.main-content
+                │   └── PageTransition        # 路由切换过渡动画
+                │       └── Routes
+                │           ├── / → Home
+                │           │   ├── Hero 区域（BlurText + RotatingText + ShinyText + CountUp）
+                │           │   ├── 分类筛选 Chips
+                │           │   ├── 视图切换按钮（瀑布流 / 时间轴）
+                │           │   ├── MasonryGallery
+                │           │   │   ├── AutoImage (React.memo)
+                │           │   │   └── PhotoLightbox
+                │           │   └── TimelineGallery
+                │           │       ├── ScrollReveal (每个日期分组)
+                │           │       ├── TimelineImage (React.memo)
+                │           │       └── PhotoLightbox
+                │           ├── /notes → Notes (iframe)
+                │           └── /about → About
+                │               ├── Grid (MUI v9, size prop)
+                │               └── ScrollReveal (各内容区块)
+                └── Footer
 ```
 
 ### 数据流
@@ -151,16 +173,49 @@ photos.ts (数据源)
     ▼
 Home (筛选 category → 过滤 photos[])
     │
-    ├──→ MasonryGallery (photos[], onImageClick)
-    │        └── PhotoLightbox (selectedPhoto, exif)
+    ├──→ MasonryGallery
+    │        ├── handleSelect (useCallback, 稳定引用)
+    │        ├── AutoImage (React.memo, 接收 onSelect)
+    │        └── PhotoLightbox (selectedPhoto, 按需加载原图)
     │
-    └──→ TimelineGallery (photos[], grouped by exif.date)
-             └── PhotoLightbox (selectedPhoto, exif)
+    └──→ TimelineGallery
+             ├── groups = useMemo(groupByDate(images))
+             ├── handleSelect (useCallback, 稳定引用)
+             ├── TimelineImage (React.memo, IntersectionObserver 懒加载)
+             └── PhotoLightbox (selectedPhoto, 按需加载原图)
 ```
 
 - 照片无数据时，`Home` 自动使用 Picsum 占位图
 - 组件间通过 props 传递数据，无全局状态管理
 - `PhotoLightbox` 由父组件控制打开/关闭状态
+- 灯箱默认显示缩略图，用户点击"查看原图"后按需加载原图替换
+
+## 性能优化
+
+基于 Vercel React Best Practices 进行的优化：
+
+| 规则 | 组件 | 优化内容 |
+|------|------|----------|
+| rerender-memo | MasonryGallery | `AutoImage` 包裹 `React.memo`，避免列表项不必要重渲染 |
+| rerender-memo | TimelineGallery | `TimelineImage` 包裹 `React.memo` |
+| rerender-functional-setstate | Navbar | `setMobileOpen(prev => !prev)` + `useCallback` |
+| rerender-memo-with-default-value | Home | RotatingText 的 motion props 提升为模块级常量 |
+| rerender-memo-with-default-value | MasonryGallery | `MASONRY_COLUMNS`/`MASONRY_SPACING`/`SKELETON_SX` 提升为模块级常量 |
+| rerender-memo-with-default-value | PhotoLightbox | Dialog 的 `slotProps`/`classes`/`transitionDuration` 提升为模块级常量 |
+| rerender-derived-state-no-effect | PageTransition | `children` 从 useEffect deps 移除，仅以 `pathname` 驱动转场 |
+| rendering-hoist-jsx | MasonryGallery | 骨架屏高度预生成固定数组，替代 `Math.random()` |
+| rerender-memo | ScrollReveal | `sx` 对象用 `useMemo` 缓存，避免 MUI sx 重复解析 |
+
+### Bundle 分包策略
+
+在 `vite.config.ts` 中配置 `manualChunks`：
+
+| Chunk | 包含 | 大小 (gzip) |
+|-------|------|-------------|
+| react | react, react-dom, react-router-dom | ~12 KB |
+| mui | @mui/material, @mui/icons-material, @mui/lab, @emotion/* | ~67 KB |
+| motion | motion (framer-motion) | ~32 KB |
+| index | 应用代码 | ~86 KB |
 
 ## 设计系统
 
@@ -207,10 +262,10 @@ Home (筛选 category → 过滤 photos[])
 
 ```
 npm run build
-    └── craco build
-        ├── TypeScript 编译
+    └── tsc -b && vite build
+        ├── TypeScript 编译检查
         ├── Less → CSS（CSS Modules）
-        ├── Webpack 打包
+        ├── Rollup 打包 + manualChunks 分包
         └── 输出到 docs/ 目录
 ```
 
@@ -220,13 +275,13 @@ npm run build
 push master / workflow_dispatch
     └── GitHub Actions (ubuntu-latest, Node 20)
         ├── npm install --registry=https://registry.npmjs.org
-        ├── npm run build (CI=false 跳过警告)
+        ├── npm run build
         └── deploy-pages → GitHub Pages
 ```
 
 ### 路径别名
 
-在 `tsconfig.json` 和 `craco.config.js` 中同步配置：
+在 `tsconfig.json` 和 `vite.config.ts` 中同步配置：
 
 | 别名 | 映射目录 |
 |------|----------|
@@ -237,8 +292,6 @@ push master / workflow_dispatch
 | `@/utils/*` | `src/utils/*` |
 | `@/hooks/*` | `src/hooks/*` |
 | `@/types/*` | `src/types/*` |
-
-> 注：`src/utils/` 和 `src/hooks/` 目录目前不存在，别名已预留。
 
 ## 照片管理
 
@@ -271,12 +324,12 @@ npm run photos:sync      # 仅同步配置
 ```
 public/photos/风景/001.jpg (原图)
     │
-    ├─ compress-photos.js
+    ├─ compress-photos.cjs
     │   ├── 检查 thumbnails/ 是否已有且更新
     │   ├── sharp: resize 长边 1200px, JPEG quality 82
     │   └── 输出 → public/photos/thumbnails/风景/001.jpg
     │
-    └─ sync-photos.js
+    └─ sync-photos.cjs
         ├── 扫描所有图片文件
         ├── exifr 提取 EXIF 元信息
         ├── 根据目录名/文件名推测标签
@@ -293,15 +346,11 @@ public/photos/风景/001.jpg (原图)
 
 支持的关键词：城市、风景、人像、建筑、街头、自然、抽象、黑白
 
-### 更新个人信息
-
-在 `src/pages/About/index.tsx` 中修改个人介绍、技能和器材列表。
-
 ## 本地开发
 
 ```bash
 npm install
-npm start
+npm run dev
 ```
 
 ## 构建部署
