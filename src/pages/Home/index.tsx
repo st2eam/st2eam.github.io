@@ -18,6 +18,8 @@ import {
   ViewQuilt,
   Timeline,
   ArrowForward,
+  LocationOn,
+  LocalOffer,
 } from '@mui/icons-material';
 import MasonryGallery from '@/components/MasonryGallery';
 import TimelineGallery from '@/components/TimelineGallery';
@@ -26,7 +28,7 @@ import BlurText from '@/components/reactbits/BlurText/BlurText';
 import RotatingText from '@/components/reactbits/RotatingText/RotatingText';
 import ShinyText from '@/components/reactbits/ShinyText/ShinyText';
 import CountUp from '@/components/reactbits/CountUp/CountUp';
-import { PhotoConfig, photos as realPhotos, categories } from '@/config/photos';
+import { PhotoConfig, photos as realPhotos, contentTags, locationTags } from '@/config/photos';
 import { sortPhotosByDateDesc } from '@/utils/sortPhotosByDate';
 import styles from './index.module.less';
 
@@ -86,12 +88,20 @@ const Home: React.FC = () => {
   const [photos, setPhotos] = useState(initialPhotos);
   const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('全部');
+  const [selectedLocation, setSelectedLocation] = useState('全部');
   const [viewMode, setViewMode] = useState<ViewMode>('masonry');
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const filteredPhotos =
-    selectedCategory === '全部' ? photos : photos.filter(p => p.tags?.includes(selectedCategory));
+  const filteredPhotos = photos.filter(p => {
+    if (selectedCategory !== '全部' && !p.tags?.includes(selectedCategory)) return false;
+    if (selectedLocation !== '全部') {
+      const loc = p.location;
+      if (!loc) return false;
+      if (loc.city !== selectedLocation && loc.province !== selectedLocation) return false;
+    }
+    return true;
+  });
 
   const handleRefresh = () => {
     if (useRealPhotos) return;
@@ -229,15 +239,29 @@ const Home: React.FC = () => {
 
           {viewMode === 'masonry' && (
             <ScrollReveal delay={120}>
-              <Box className={styles.filterBar}>
-                {categories.map(cat => (
-                  <Chip
-                    key={cat}
-                    label={cat}
-                    onClick={() => setSelectedCategory(cat)}
-                    className={`${styles.filterChip} ${selectedCategory === cat ? styles.chipActive : ''}`}
-                  />
-                ))}
+              <Box className={styles.filterSection}>
+                <Box className={styles.filterBar}>
+                  <LocalOffer className={styles.filterIcon} />
+                  {contentTags.map(cat => (
+                    <Chip
+                      key={cat}
+                      label={cat}
+                      onClick={() => setSelectedCategory(cat)}
+                      className={`${styles.filterChip} ${selectedCategory === cat ? styles.chipActive : ''}`}
+                    />
+                  ))}
+                </Box>
+                <Box className={styles.filterBar}>
+                  <LocationOn className={styles.filterIcon} />
+                  {locationTags.map(loc => (
+                    <Chip
+                      key={loc}
+                      label={loc}
+                      onClick={() => setSelectedLocation(loc)}
+                      className={`${styles.filterChip} ${styles.filterChipLocation} ${selectedLocation === loc ? styles.chipLocationActive : ''}`}
+                    />
+                  ))}
+                </Box>
               </Box>
             </ScrollReveal>
           )}

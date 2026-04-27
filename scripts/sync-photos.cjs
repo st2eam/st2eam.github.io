@@ -16,6 +16,34 @@ const fs = require('fs');
 const path = require('path');
 const exifr = require('exifr');
 
+// ── 加载 .env ──
+const ENV_FILE = path.resolve(__dirname, '../.env');
+if (fs.existsSync(ENV_FILE)) {
+  for (const line of fs.readFileSync(ENV_FILE, 'utf-8').split('\n')) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const eq = trimmed.indexOf('=');
+    if (eq < 0) continue;
+    const key = trimmed.slice(0, eq).trim();
+    const val = trimmed.slice(eq + 1).trim();
+    if (!process.env[key]) process.env[key] = val;
+  }
+}
+
+// ── 代理支持 ──
+let proxyDispatcher = null;
+function setupProxy() {
+  const proxy = process.env.HTTPS_PROXY || process.env.https_proxy;
+  if (!proxy) return;
+  try {
+    const { ProxyAgent } = require('undici');
+    proxyDispatcher = new ProxyAgent(proxy);
+    console.log(`🌐 使用代理: ${proxy}`);
+  } catch {
+    console.warn('⚠ 未安装 undici，无法使用代理（npm i -D undici）');
+  }
+}
+
 const PHOTOS_DIR = path.resolve(__dirname, '../public/photos');
 const THUMB_DIR = path.resolve(PHOTOS_DIR, 'thumbnails');
 const OUTPUT_FILE = path.resolve(__dirname, '../src/config/photos.ts');
@@ -75,6 +103,7 @@ async function readExif(filePath) {
         'FocalLength', 'FocalLengthIn35mmFormat',
         'FNumber', 'ExposureTime', 'ISO',
         'DateTimeOriginal',
+        'GPSLatitude', 'GPSLatitudeRef', 'GPSLongitude', 'GPSLongitudeRef',
       ],
     });
     if (!data) return undefined;
@@ -98,10 +127,104 @@ async function readExif(filePath) {
       }
     }
 
+    if (data.latitude && data.longitude) {
+      exif.latitude = Math.round(data.latitude * 1e6) / 1e6;
+      exif.longitude = Math.round(data.longitude * 1e6) / 1e6;
+    }
+
     return Object.keys(exif).length > 0 ? exif : undefined;
   } catch {
     return undefined;
   }
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// ── 反向地理编码（Nominatim / OpenStreetMap，免费无需 Key） ──
+
+function parseCityFromDisplay(displayName) {
+  if (!displayName) return null;
+  const parts = displayName.split(',').map(s => s.trim());
+  const cityPart = parts.find(p => /市$/.test(p));
+  if (cityPart) return cityPart.replace(/市$/, '');
+  return null;
+}
+
+async function reverseGeocode(lat, lon) {
+  try {
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=zh&zoom=18`;
+    const fetchOpts = { headers: { 'User-Agent': 'photo-sync-script/1.0' } };
+    if (proxyDispatcher) fetchOpts.dispatcher = proxyDispatcher;
+    const resp = await fetch(url, fetchOpts);
+    if (!resp.ok) return null;
+    const data = await resp.json();
+    const addr = data.address;
+    if (!addr) return null;
+
+    const country = (addr.country || '').replace(/^中国$/, '中国');
+    if (!country) return null;
+
+    const state = addr.state || addr.province || '';
+    const cityFromAddr = addr.city || addr.town || addr.municipality || '';
+    const county = addr.county || '';
+    const cityFromDisplay = parseCityFromDisplay(data.display_name);
+
+    const strip = s => s.replace(/(省|市|壮族自治区|回族自治区|维吾尔自治区|自治区|特别行政区)$/, '');
+
+    let province = '', city = '';
+
+    if (country === '中国') {
+      const isSpecial = /^(香港|澳門|澳门|台湾|台灣)/.test(state);
+      if (isSpecial) {
+        province = state === '澳門' ? '澳门' : state;
+        city = '';
+      } else {
+        province = strip(state);
+        city = cityFromDisplay || strip(cityFromAddr || county);
+      }
+    } else {
+      province = strip(state);
+      city = strip(cityFromAddr || county);
+    }
+
+    return { country, province, city };
+  } catch {
+    return null;
+  }
+}
+
+async function batchGeocode(photosArr) {
+  const coordCache = new Map();
+  let resolved = 0;
+  const needGeo = photosArr.filter(p => p.exif?.latitude);
+  if (needGeo.length === 0) return;
+
+  const regeo = process.argv.includes('--regeo');
+  if (regeo) needGeo.forEach(p => { p.location = undefined; });
+  const toQuery = needGeo.filter(p => !p.location);
+  if (toQuery.length === 0) return;
+
+  console.log(`\n📍 正在为 ${toQuery.length} 张有 GPS 的照片解析地点...`);
+  for (const p of toQuery) {
+    const cacheKey = `${p.exif.latitude.toFixed(2)},${p.exif.longitude.toFixed(2)}`;
+    let result;
+    if (coordCache.has(cacheKey)) {
+      result = coordCache.get(cacheKey);
+    } else {
+      result = await reverseGeocode(p.exif.latitude, p.exif.longitude);
+      coordCache.set(cacheKey, result);
+      await sleep(1100);
+    }
+    if (result) {
+      p.location = result;
+      resolved++;
+      const label = [result.country, result.province, result.city].filter(Boolean).join(' > ');
+      console.log(`  ✓ ${path.basename(p.src)}: ${label}`);
+    }
+  }
+  console.log(`  地点解析完成：${resolved}/${toQuery.length} 成功`);
 }
 
 // ── 读取已有配置（保留 alt / tags） ──
@@ -125,6 +248,16 @@ function readExistingPhotos() {
       if (fm) obj[field] = fm[1];
     }
 
+    const locMatch = body.match(/location:\s*\{([^}]*)\}/);
+    if (locMatch) {
+      const loc = {};
+      for (const f of ['country', 'province', 'city']) {
+        const lm = locMatch[1].match(new RegExp(`${f}:\\s*'([^']*)'`));
+        if (lm) loc[f] = lm[1];
+      }
+      if (Object.keys(loc).length > 0) obj.location = loc;
+    }
+
     const tagsMatch = body.match(/tags:\s*\[([^\]]*)\]/);
     if (tagsMatch && tagsMatch[1].trim()) {
       obj.tags = tagsMatch[1].match(/'([^']*)'/g).map(s => s.replace(/'/g, ''));
@@ -133,6 +266,18 @@ function readExistingPhotos() {
     if (obj.src) map[obj.src] = obj;
   }
   return map;
+}
+
+function isLocationLikeTag(tag) {
+  return /(区|县|市|镇|乡|旗|盟|州|門|门|填海|路氹|澳門|澳门|香港|丽江|武汉|钦州)/.test(tag);
+}
+
+function serializeLocation(loc) {
+  const parts = [];
+  if (loc.country) parts.push(`country: '${loc.country}'`);
+  if (loc.province) parts.push(`province: '${loc.province}'`);
+  if (loc.city) parts.push(`city: '${loc.city}'`);
+  return `{ ${parts.join(', ')} }`;
 }
 
 function serializeExif(exif) {
@@ -145,10 +290,13 @@ function serializeExif(exif) {
   if (exif.shutterSpeed) parts.push(`shutterSpeed: '${exif.shutterSpeed}'`);
   if (exif.iso) parts.push(`iso: ${exif.iso}`);
   if (exif.date) parts.push(`date: '${exif.date}'`);
+  if (exif.latitude) parts.push(`latitude: ${exif.latitude}`);
+  if (exif.longitude) parts.push(`longitude: ${exif.longitude}`);
   return `{ ${parts.join(', ')} }`;
 }
 
 async function run() {
+  setupProxy();
   const files = scanDir(PHOTOS_DIR);
   files.sort((a, b) => a.relativePath.localeCompare(b.relativePath));
 
@@ -179,6 +327,7 @@ async function run() {
         src,
         alt: prev.alt,
         tags: prev.tags || [],
+        location: prev.location,
         thumbnail,
         exif,
       });
@@ -209,10 +358,14 @@ async function run() {
     p.id = String(i + 1);
   });
 
+  await batchGeocode(photosArr);
+
   const photosCode = photosArr
     .map(p => {
       const parts = [`id: '${p.id}'`, `src: '${p.src}'`, `alt: '${p.alt}'`];
-      if (p.tags.length > 0) parts.push(`tags: [${p.tags.map(t => `'${t}'`).join(', ')}]`);
+      const cleanTags = (p.tags || []).filter(t => !isLocationLikeTag(t));
+      if (cleanTags.length > 0) parts.push(`tags: [${cleanTags.map(t => `'${t}'`).join(', ')}]`);
+      if (p.location) parts.push(`location: ${serializeLocation(p.location)}`);
       if (p.thumbnail) parts.push(`thumbnail: '${p.thumbnail}'`);
       if (p.exif) parts.push(`exif: ${serializeExif(p.exif)}`);
       return `  { ${parts.join(', ')} },`;
@@ -237,6 +390,14 @@ export interface ExifData {
   shutterSpeed?: string;
   iso?: number;
   date?: string;
+  latitude?: number;
+  longitude?: number;
+}
+
+export interface LocationData {
+  country?: string;
+  province?: string;
+  city?: string;
 }
 
 export interface PhotoConfig {
@@ -244,6 +405,7 @@ export interface PhotoConfig {
   src: string;
   alt: string;
   tags?: string[];
+  location?: LocationData;
   thumbnail?: string;
   exif?: ExifData;
   width?: number;
@@ -254,7 +416,15 @@ export const photos: PhotoConfig[] = [
 ${photosCode}
 ];
 
-export const categories = ['全部', ...Array.from(new Set(photos.flatMap(p => p.tags ?? [])))];
+export const contentTags = ['全部', ...Array.from(new Set(photos.flatMap(p => p.tags ?? [])))];
+export const locationTags = (() => {
+  const set = new Set<string>();
+  photos.forEach(p => {
+    if (p.location?.province) set.add(p.location.province);
+    if (p.location?.city) set.add(p.location.city);
+  });
+  return ['全部', ...set];
+})();
 `;
 
   fs.writeFileSync(OUTPUT_FILE, output, 'utf-8');
@@ -265,7 +435,9 @@ export const categories = ['全部', ...Array.from(new Set(photos.flatMap(p => p
       ? ` | ${[p.exif.model, p.exif.lens, p.exif.focalLength, p.exif.aperture, p.exif.shutterSpeed, p.exif.iso ? `ISO${p.exif.iso}` : ''].filter(Boolean).join(' ')}`
       : '';
     const status = existing[p.src] ? '  ' : '+ ';
-    console.log(`  ${status}${p.id}. "${p.alt}" [${p.tags.join(', ') || '未分类'}]${exifInfo}`);
+    const cleanTags = (p.tags || []).filter(t => !isLocationLikeTag(t));
+    const locLabel = p.location ? ` 📍 ${[p.location.province, p.location.city].filter(Boolean).join('·')}` : '';
+    console.log(`  ${status}${p.id}. "${p.alt}" [${cleanTags.join(', ') || '未分类'}]${locLabel}${exifInfo}`);
   });
   if (removed > 0) {
     console.log('\n已移除：');
