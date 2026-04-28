@@ -61,7 +61,8 @@ const About: React.FC = () => {
               <Typography variant="h3" component="h1" className={styles.name}>
                 ST2EAM
               </Typography>
-              <Typography className={styles.tagline}>摄影师 · 视觉艺术家 · 前端开发者</Typography>
+              <Typography className={styles.tagline}>AI · 摄影师 · 视觉艺术家</Typography>
+              <Typography className={styles.slogan}>雨涧听溪，山野春行</Typography>
               <Box className={styles.socialRow}>
                 <Magnet padding={70} magnetStrength={2.5}>
                   <IconButton
@@ -116,16 +117,12 @@ const About: React.FC = () => {
                   </Typography>
                   <Typography className={styles.bodyText}>
                     你好！我是
-                    ST2EAM，一位热爱摄影和视觉艺术的创作者。我专注于捕捉生活中的美好瞬间，
-                    通过镜头记录世界的多样性和美丽。
+                    STREAM。喜欢背上相机走进山野，在雨后的山涧旁听溪水潺潺，在春日的田埂上感受风拂过镜头。
+                    对我而言，摄影不是刻意的创作，而是行走途中与光影的一次次不期而遇。
                   </Typography>
                   <Typography className={styles.bodyText}>
-                    在摄影的道路上，我不断探索不同的拍摄风格和技巧，从街头摄影到风景摄影，
-                    从人像写真到建筑艺术，每一次按下快门都是对美的追求和表达。
-                  </Typography>
-                  <Typography className={styles.bodyText}>
-                    除了摄影创作，我也是一名前端开发者，喜欢用代码构建美丽的界面和用户体验。
-                    这个网站就是我技术与艺术结合的作品。
+                    我偏爱自然与人文交织的画面——清晨山谷里的薄雾、老街檐角淌下的雨滴、
+                    黄昏时分远山层叠的轮廓。每一次快门，都是试图留住那些安静而动人的时刻。
                   </Typography>
                 </CardContent>
               </Card>
@@ -191,14 +188,13 @@ const About: React.FC = () => {
                     创作理念
                   </Typography>
                   <Typography className={styles.quote}>
-                    "摄影不仅仅是记录现实，更是表达内心的艺术。每一张照片都承载着拍摄者的情感和观点，
-                    通过光影、构图和色彩的结合，将瞬间的美好永恒化。"
+                    "雨涧听溪，山野春行——最好的照片，往往诞生在脚步慢下来的地方。"
                   </Typography>
                   <Divider className={styles.divider} />
                   <Typography className={styles.bodyText}>
-                    我相信真正的摄影作品应该能够触动人心，让观者产生共鸣。
-                    无论是记录生活的平凡瞬间，还是捕捉自然的壮丽景象，
-                    我都希望通过我的镜头为世界带来更多的美好和思考。
+                    我相信摄影的本质是一种在场：在山间、在雨中、在季节更替的缝隙里，
+                    安静地感受，然后按下快门。不追求完美的构图，只忠于那一刻真实的触动。
+                    希望这些画面，也能让你听见风声、闻到大自然的气息。
                   </Typography>
                 </CardContent>
               </Card>

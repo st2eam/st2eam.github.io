@@ -172,7 +172,44 @@
   font-size: 15px;
   color: @text-secondary;
   letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.slogan {
+  font-family: @font-display;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 4px;
+  color: @accent;
+  opacity: 0.85;
   margin-bottom: 24px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+
+  &::before,
+  &::after {
+    content: '';
+    width: 28px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, @accent);
+    flex-shrink: 0;
+  }
+
+  &::after {
+    background: linear-gradient(90deg, @accent, transparent);
+  }
+
+  @media @mobile {
+    font-size: 16px;
+    letter-spacing: 3px;
+
+    &::before,
+    &::after {
+      width: 20px;
+    }
+  }
 }
 
 .socialRow {
