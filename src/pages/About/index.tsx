@@ -22,10 +22,10 @@ import { photos as realPhotos } from '@/config/photos';
 import styles from './index.module.less';
 
 const skills = [
-  { name: '摄影技巧', icon: <PhotoCamera />, level: 90 },
-  { name: '后期处理', icon: <Palette />, level: 85 },
-  { name: '创意构图', icon: <Camera />, level: 88 },
-  { name: '网站开发', icon: <Code />, level: 80 },
+  { name: '摄影技巧', icon: <PhotoCamera />, level: 80 },
+  { name: '后期处理', icon: <Palette />, level: 65 },
+  { name: '应用开发', icon: <Code />, level: 88 },
+  { name: '创意构图', icon: <Camera />, level: 76 },
 ];
 
 const equipment = [
