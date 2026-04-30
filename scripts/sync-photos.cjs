@@ -6,10 +6,15 @@
  * 行为：
  *   - 扫描 public/photos/（忽略 thumbnails 子目录）
  *   - 读取已有 photos.ts，以 src 为 key 做合并
- *   - 已有照片：保留手动编辑的 alt / tags（不会覆盖）
+ *   - 已有照片：保留手动编辑的 alt / tags / location（不会覆盖）
  *   - 新照片：自动推测 alt / tags，读取 EXIF 元信息，追加到列表
  *   - 已删除的照片：从列表中移除
  *   - thumbnail / exif 字段始终自动更新
+ *
+ * 地点解析（Nominatim，需能访问外网）：
+ *   若「0/N 成功」，多为 DNS 污染（域名解析到错误 IP）、墙内无法直连 OSM，或需代理。
+ *   环境变量：NOMINATIM_BASE_URL、NOMINATIM_USER_AGENT、HTTPS_PROXY（见 reverseGeocode 实现）
+ *   调试：node scripts/sync-photos.cjs --geo-debug
  */
 
 const fs = require('fs');
@@ -142,6 +147,28 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+const GEO_DEBUG = process.argv.includes('--geo-debug');
+
+/** 展开 fetch / undici 的 cause 链（仅打印 message 时往往只有「fetch failed」） */
+function formatFetchError(err) {
+  if (!err) return '';
+  const lines = [];
+  let e = err;
+  for (let i = 0; e && i < 8; i++) {
+    const name = e.name ? `${e.name}: ` : '';
+    const msg = e.message || String(e);
+    const bits = [];
+    if (e.code) bits.push(`code=${e.code}`);
+    if (e.errno !== undefined) bits.push(`errno=${e.errno}`);
+    if (e.syscall) bits.push(`syscall=${e.syscall}`);
+    if (e.address) bits.push(`address=${e.address}${e.port != null ? ':' + e.port : ''}`);
+    const tail = bits.length ? ` (${bits.join(', ')})` : '';
+    lines.push(`  ${name}${msg}${tail}`);
+    e = e.cause;
+  }
+  return lines.join('\n');
+}
+
 // ── 反向地理编码（Nominatim / OpenStreetMap，免费无需 Key） ──
 
 function parseCityFromDisplay(displayName) {
@@ -153,18 +180,36 @@ function parseCityFromDisplay(displayName) {
 }
 
 async function reverseGeocode(lat, lon) {
+  const base = (process.env.NOMINATIM_BASE_URL || 'https://nominatim.openstreetmap.org').replace(/\/$/, '');
+  const ua =
+    process.env.NOMINATIM_USER_AGENT ||
+    'st2eam-photo-sync/1.0 (https://github.com/st2eam/st2eam.github.io)';
   try {
-    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=zh&zoom=18`;
-    const fetchOpts = { headers: { 'User-Agent': 'photo-sync-script/1.0' } };
+    const url = `${base}/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=zh&zoom=18`;
+    const fetchOpts = { headers: { 'User-Agent': ua } };
     if (proxyDispatcher) fetchOpts.dispatcher = proxyDispatcher;
-    const resp = await fetch(url, fetchOpts);
-    if (!resp.ok) return null;
+    // Node 内置 fetch 与 npm undici 的 ProxyAgent 版本不一致会报 UND_ERR_INVALID_ARG，走代理时必须用同包 fetch
+    const doFetch = proxyDispatcher ? require('undici').fetch : globalThis.fetch;
+    const resp = await doFetch(url, fetchOpts);
+    if (!resp.ok) {
+      if (GEO_DEBUG) {
+        const t = await resp.text().catch(() => '');
+        console.warn(`  [geo-debug] HTTP ${resp.status} ${t.slice(0, 240)}`);
+      }
+      return null;
+    }
     const data = await resp.json();
     const addr = data.address;
-    if (!addr) return null;
+    if (!addr) {
+      if (GEO_DEBUG) console.warn(`  [geo-debug] JSON 无 address 字段`, JSON.stringify(data).slice(0, 280));
+      return null;
+    }
 
     const country = (addr.country || '').replace(/^中国$/, '中国');
-    if (!country) return null;
+    if (!country) {
+      if (GEO_DEBUG) console.warn(`  [geo-debug] address 中无 country`, JSON.stringify(addr).slice(0, 280));
+      return null;
+    }
 
     const state = addr.state || addr.province || '';
     const cityFromAddr = addr.city || addr.town || addr.municipality || '';
@@ -190,7 +235,8 @@ async function reverseGeocode(lat, lon) {
     }
 
     return { country, province, city };
-  } catch {
+  } catch (e) {
+    if (GEO_DEBUG) console.warn(`  [geo-debug] 请求异常:\n${formatFetchError(e)}`);
     return null;
   }
 }
@@ -207,6 +253,14 @@ async function batchGeocode(photosArr) {
   if (toQuery.length === 0) return;
 
   console.log(`\n📍 正在为 ${toQuery.length} 张有 GPS 的照片解析地点...`);
+  if (GEO_DEBUG) {
+    const base = (process.env.NOMINATIM_BASE_URL || 'https://nominatim.openstreetmap.org').replace(/\/$/, '');
+    let host = 'nominatim.openstreetmap.org';
+    try {
+      host = new URL(`${base}/`).hostname;
+    } catch (_) {}
+    console.warn(`  [geo-debug] 请求基址: ${base}/  (hostname: ${host})`);
+  }
   for (const p of toQuery) {
     const cacheKey = `${p.exif.latitude.toFixed(2)},${p.exif.longitude.toFixed(2)}`;
     let result;
@@ -225,9 +279,38 @@ async function batchGeocode(photosArr) {
     }
   }
   console.log(`  地点解析完成：${resolved}/${toQuery.length} 成功`);
+  if (resolved === 0 && toQuery.length > 0) {
+    console.warn(`
+⚠ 反向地理编码全部失败。常见原因：
+  1) DNS 污染：在本机执行 nslookup nominatim.openstreetmap.org，若结果不像 OpenStreetMap 官方节点（例如出现 face:b00c 等异常 IPv6），请改用可信 DNS（1.1.1.1 / 8.8.8.8）或开启 VPN 后再同步。
+  2) 网络超时：国内部分网络无法直连 nominatim.openstreetmap.org；可在 .env 中配置 HTTPS_PROXY，或自建 Nominatim 后设置 NOMINATIM_BASE_URL。
+  3) 查看具体错误：node scripts/sync-photos.cjs --geo-debug
+`);
+  }
 }
 
-// ── 读取已有配置（保留 alt / tags） ──
+/** 按括号深度切分 photos 数组内的顶层 `{ ... }`（避免 `exif` / `location` 内 `}` 截断） */
+function splitTopLevelPhotoObjects(arrayInner) {
+  const items = [];
+  let depth = 0;
+  let start = -1;
+  for (let i = 0; i < arrayInner.length; i++) {
+    const c = arrayInner[i];
+    if (c === '{') {
+      if (depth === 0) start = i;
+      depth++;
+    } else if (c === '}') {
+      depth--;
+      if (depth === 0 && start >= 0) {
+        items.push(arrayInner.slice(start, i + 1));
+        start = -1;
+      }
+    }
+  }
+  return items;
+}
+
+// ── 读取已有配置（保留 alt / tags / location） ──
 function readExistingPhotos() {
   if (!fs.existsSync(OUTPUT_FILE)) return {};
   const content = fs.readFileSync(OUTPUT_FILE, 'utf-8');
@@ -236,29 +319,26 @@ function readExistingPhotos() {
   if (!match) return {};
 
   const map = {};
-  const itemRegex = /\{([^}]+)\}/g;
-  let m;
-  while ((m = itemRegex.exec(match[1])) !== null) {
+  for (const block of splitTopLevelPhotoObjects(match[1])) {
     const obj = {};
-    const body = m[1];
 
     for (const field of ['id', 'src', 'alt', 'thumbnail']) {
-      const r = new RegExp(`${field}:\\s*'([^']*)'`);
-      const fm = body.match(r);
+      const r = new RegExp(`\\b${field}:\\s*'([^']*)'`);
+      const fm = block.match(r);
       if (fm) obj[field] = fm[1];
     }
 
-    const locMatch = body.match(/location:\s*\{([^}]*)\}/);
+    const locMatch = block.match(/location:\s*\{([^}]*)\}/);
     if (locMatch) {
       const loc = {};
       for (const f of ['country', 'province', 'city']) {
-        const lm = locMatch[1].match(new RegExp(`${f}:\\s*'([^']*)'`));
+        const lm = locMatch[1].match(new RegExp(`\\b${f}:\\s*'([^']*)'`));
         if (lm) loc[f] = lm[1];
       }
       if (Object.keys(loc).length > 0) obj.location = loc;
     }
 
-    const tagsMatch = body.match(/tags:\s*\[([^\]]*)\]/);
+    const tagsMatch = block.match(/\btags:\s*\[([^\]]*)\]/);
     if (tagsMatch && tagsMatch[1].trim()) {
       obj.tags = tagsMatch[1].match(/'([^']*)'/g).map(s => s.replace(/'/g, ''));
     }
