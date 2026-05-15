@@ -163,10 +163,14 @@ const TimelineImage = React.memo<TimelineImageProps>(({ image, onSelect }) => {
 const SKELETON_MB = { mb: 2 };
 
 const TimelineGallery: React.FC<TimelineGalleryProps> = ({ images, loading = false }) => {
-  const [selectedImage, setSelectedImage] = useState<PhotoConfig | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
 
-  const handleSelect = useCallback((img: PhotoConfig) => setSelectedImage(img), []);
-  const handleClose = useCallback(() => setSelectedImage(null), []);
+  const handleSelect = useCallback((img: PhotoConfig) => {
+    const idx = images.findIndex(i => i.id === img.id);
+    setSelectedIndex(idx);
+  }, [images]);
+  const handleClose = useCallback(() => setSelectedIndex(-1), []);
+  const handleNavigate = useCallback((index: number) => setSelectedIndex(index), []);
 
   const groups = useMemo(() => groupByDate(images), [images]);
 
@@ -222,7 +226,7 @@ const TimelineGallery: React.FC<TimelineGalleryProps> = ({ images, loading = fal
         </ScrollReveal>
       ))}
 
-      <PhotoLightbox image={selectedImage} onClose={handleClose} />
+      <PhotoLightbox images={images} currentIndex={selectedIndex} onNavigate={handleNavigate} onClose={handleClose} />
     </Box>
   );
 };

@@ -1,64 +1,112 @@
 @import '@/styles/global.less';
 
+// ═══════════════════════════════════════════
+//  PhotoLightbox — Immersive Full-screen Viewer
+// ═══════════════════════════════════════════
+
 .dialogRoot {
   :global(.MuiBackdrop-root) {
-    background-color: rgba(12, 10, 8, 0.86) !important;
+    background-color: rgba(8, 6, 4, 0.92) !important;
+    transition: opacity 0.3s @ease-out-expo !important;
   }
 }
 
 .dialogPaper {
-  background: #0a0807 !important;
-  border-radius: @radius;
-  overflow: hidden;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
-  max-height: 92vh;
-  width: auto !important;
-  max-width: 95vw !important;
-  margin: auto;
-  transition:
-    transform 260ms @ease-spring,
-    opacity 220ms @ease-out-expo !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  overflow: visible;
+  box-shadow: none !important;
+  max-height: 100vh;
+  max-width: 100vw !important;
+  width: 100vw !important;
+  height: 100vh;
+  margin: 0 !important;
+}
 
-  &:global(.MuiDialog-paper) {
-    transform-origin: center center;
+// ── Container ──
+.dialogContent {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  user-select: none;
+  -webkit-user-select: none;
+  overflow: hidden;
+}
+
+// ── Image container ──
+.imgContainer {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  max-width: 92vw;
+  max-height: 88vh;
+  border-radius: @radius-xs;
+  overflow: hidden;
+
+  @media @mobile {
+    max-width: 100vw;
+    max-height: 80vh;
+    border-radius: 0;
   }
 }
 
+// ── Image ──
 .dialogImg {
-  animation: imgFadeIn 0.32s @ease-out-expo;
+  max-width: 100%;
+  max-height: 88vh;
+  width: auto;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  animation: imgFadeIn 0.35s @ease-out-expo;
+  transition: filter 0.4s @ease-out-expo, opacity 0.25s ease;
+  will-change: filter, opacity;
+
+  @media @mobile {
+    max-height: 80vh;
+  }
 }
 
 .dialogImgLoading {
-  filter: blur(14px);
+  filter: blur(14px) brightness(0.85);
 }
 
 .dialogImgReady {
-  filter: blur(0);
-  transition: filter 0.4s @ease-out-expo;
+  filter: none;
 }
 
 @keyframes imgFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
+// ── Toolbar (top-right) ──
 .dialogActions {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  z-index: 5;
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 20;
   display: flex;
   align-items: center;
   gap: 10px;
   opacity: 0;
-  transform: translateY(-4px);
-  animation: actionsIn 0.32s @ease-out-expo 0.05s forwards;
+  transform: translateY(-6px);
+  animation: actionsIn 0.35s @ease-out-expo 0.08s forwards;
+  transition: opacity 0.3s ease;
 
   @media @mobile {
-    top: 12px;
+    top: env(safe-area-inset-top, 12px);
     right: 12px;
     gap: 8px;
   }
+}
+
+.controlsHidden .dialogActions {
+  opacity: 0 !important;
+  pointer-events: none;
 }
 
 @keyframes actionsIn {
@@ -68,38 +116,38 @@
   }
 }
 
+// ── View Original button ──
 .viewOriginal {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   color: rgba(255, 255, 255, 0.92);
-  background: rgba(20, 20, 20, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: @radius-full;
   padding: 9px 18px;
   font-size: 13px;
   font-family: @font-body;
   font-weight: 500;
-  text-decoration: none;
   letter-spacing: 0.3px;
   cursor: pointer;
-  transition:
-    background 0.3s ease,
-    border-color 0.3s ease,
-    color 0.3s ease,
-    transform 0.35s @ease-spring,
-    opacity 0.3s ease;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.35s @ease-spring;
 
   &:hover:not(:disabled) {
-    background: fade(@accent, 90%);
-    border-color: fade(@accent, 100%);
-    color: #fff;
-    transform: translateY(-2px);
+    background: rgba(0, 0, 0, 0.6);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
   }
 
   &:disabled {
     cursor: default;
-    opacity: 0.7;
+    opacity: 0.65;
   }
 
   @media @mobile {
@@ -109,40 +157,34 @@
 }
 
 .viewOriginalDone {
-  background: rgba(46, 125, 50, 0.7);
-  border-color: rgba(46, 125, 50, 0.5);
+  background: rgba(46, 125, 50, 0.55);
+  border-color: rgba(46, 125, 50, 0.4);
   cursor: default;
 }
 
 .viewOriginalIcon {
   font-size: 16px !important;
-  transition: transform 0.35s @ease-spring;
 }
 
+// ── Close button ──
 .dialogClose {
-  color: #fff !important;
-  background: rgba(20, 20, 20, 0.7) !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  background: rgba(0, 0, 0, 0.45) !important;
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
   width: 40px !important;
   height: 40px !important;
-  transition:
-    background 0.3s ease,
-    border-color 0.3s ease,
-    color 0.3s ease,
-    transform 0.45s @ease-spring,
-    box-shadow 0.4s ease !important;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.35s @ease-spring !important;
 
   svg {
-    color: #fff !important;
-    fill: currentColor !important;
-    transition: transform 0.45s @ease-spring;
+    font-size: 20px;
+    transition: transform 0.4s @ease-spring;
   }
 
   &:hover {
-    background: fade(@accent, 90%) !important;
-    border-color: fade(@accent, 100%) !important;
-    transform: scale(1.08);
-    box-shadow: 0 6px 22px fade(@accent, 50%);
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
 
     svg {
       transform: rotate(90deg);
@@ -150,7 +192,7 @@
   }
 
   &:active {
-    transform: scale(0.96);
+    transform: scale(0.92);
   }
 
   @media @mobile {
@@ -159,23 +201,100 @@
   }
 }
 
-.dialogContent {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #000;
+@keyframes navIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-.dialogImg {
-  max-width: 100%;
-  max-height: 85vh;
-  width: auto;
-  height: auto;
-  display: block;
-  object-fit: contain;
+// ── Navigation buttons ──
+.navBtn {
+  position: fixed !important;
+  top: 50% !important;
+  transform: translateY(-50%);
+  z-index: 20;
+  color: rgba(255, 255, 255, 0.85) !important;
+  background: rgba(0, 0, 0, 0.35) !important;
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  width: 48px !important;
+  height: 48px !important;
+  opacity: 0;
+  animation: navIn 0.35s @ease-out-expo 0.15s forwards;
+  transition: background 0.25s ease, border-color 0.25s ease !important;
+
+  svg {
+    font-size: 28px;
+  }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.55) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+  }
+
+  &:active {
+    opacity: 0.7;
+  }
+
+  @media @mobile {
+    width: 40px !important;
+    height: 40px !important;
+
+    svg {
+      font-size: 24px;
+    }
+  }
 }
 
+.navPrev {
+  left: 20px !important;
+  right: auto !important;
+
+  @media @mobile {
+    left: 8px !important;
+  }
+}
+
+.navNext {
+  right: 20px !important;
+  left: auto !important;
+
+  @media @mobile {
+    right: 8px !important;
+  }
+}
+
+// ── Position indicator ──
+.positionIndicator {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  font-family: @font-mono;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: @radius-full;
+  padding: 6px 16px;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+
+  @media @mobile {
+    bottom: auto;
+    top: env(safe-area-inset-top, 14px);
+    left: 50%;
+    font-size: 11px;
+    padding: 5px 14px;
+  }
+}
+
+// ── Loading overlay ──
 .loadingOverlay {
   position: absolute;
   inset: 0;
@@ -183,46 +302,64 @@
   align-items: center;
   justify-content: center;
   pointer-events: none;
-  z-index: 2;
+  z-index: 10;
 }
 
-.errorOverlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-  background: rgba(0, 0, 0, 0.4);
-}
-
+// ── Metadata panel ──
 .dialogMeta {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 24px 32px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 70%, transparent 100%);
+  padding: 40px 24px 20px;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.35) 55%,
+    transparent 100%
+  );
+  z-index: 12;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.3s ease, transform 0.35s @ease-out-expo;
+  pointer-events: none;
+
+  @media @mobile {
+    padding: 36px 16px 16px;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+}
+
+.imgContainer:hover .dialogMeta {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .dialogMetaTop {
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .dialogTitle {
   font-family: @font-display;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 500;
   color: #fff;
   margin-bottom: 4px;
+  letter-spacing: 0.3px;
+
+  @media @mobile {
+    font-size: 17px;
+  }
 }
 
 .dialogCat {
   display: flex;
   align-items: center;
   font-family: @font-mono;
-  font-size: 12px;
+  font-size: 11px;
   color: rgba(255, 255, 255, 0.5);
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -232,17 +369,18 @@
   font-family: @font-body;
   font-size: 12px;
   color: rgba(255, 255, 255, 0.45);
-  margin-top: 4px;
+  margin-top: 3px;
   display: flex;
   align-items: center;
 }
 
+// ── EXIF bar ──
 .exifBar {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 
   @media @mobile {
     gap: 10px;
@@ -253,7 +391,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.55);
   font-family: @font-mono;
   font-size: 11px;
   letter-spacing: 0.5px;
@@ -261,7 +399,7 @@
 
   svg {
     font-size: 14px !important;
-    opacity: 0.5;
+    opacity: 0.45;
   }
 
   @media @mobile {
@@ -271,4 +409,15 @@
       font-size: 12px !important;
     }
   }
+}
+
+// ── Error overlay ──
+.errorOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
 }

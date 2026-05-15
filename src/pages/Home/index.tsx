@@ -266,13 +266,11 @@ const Home: React.FC = () => {
             </ScrollReveal>
           )}
 
-          <ScrollReveal delay={200}>
-            {viewMode === 'masonry' ? (
-              <MasonryGallery images={filteredPhotos} loading={loading} />
-            ) : (
-              <TimelineGallery images={filteredPhotos} loading={loading} />
-            )}
-          </ScrollReveal>
+          {viewMode === 'masonry' ? (
+            <MasonryGallery images={filteredPhotos} loading={loading} />
+          ) : (
+            <TimelineGallery images={filteredPhotos} loading={loading} />
+          )}
         </Container>
       </Box>
     </Box>

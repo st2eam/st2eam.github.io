@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="14" fill="#1a1a1a"/>
+  <!-- 相机机身 -->
+  <rect x="12" y="22" width="40" height="26" rx="5" fill="#b09472"/>
+  <!-- 取景器凸起 -->
+  <rect x="23" y="16" width="18" height="8" rx="3" fill="#b09472"/>
+  <!-- 镜头外圈 -->
+  <circle cx="32" cy="35" r="10" fill="#1a1a1a"/>
+  <!-- 镜头内圈 -->
+  <circle cx="32" cy="35" r="6.5" fill="#2a2520"/>
+  <!-- 镜头高光 -->
+  <circle cx="32" cy="35" r="3.5" fill="#b09472" opacity="0.5"/>
+  <!-- 闪光灯 -->
+  <circle cx="44" cy="26" r="2" fill="#f3e2c8"/>
+</svg>

@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { Box, Dialog, IconButton, Typography, Button, CircularProgress } from '@mui/material';
+import { Box, Dialog, IconButton, Typography, CircularProgress } from '@mui/material';
 import {
   Close as CloseIcon,
+  ChevronLeft,
+  ChevronRight,
   CameraAlt,
   Camera,
   Iso,
@@ -18,7 +20,8 @@ import styles from './index.module.less';
 
 const DIALOG_SLOT_PROPS = { paper: { className: styles.dialogPaper } };
 const DIALOG_CLASSES = { root: styles.dialogRoot };
-const DIALOG_TRANSITION = { enter: 240, exit: 180 };
+const DIALOG_TRANSITION = { enter: 280, exit: 200 };
+const SWIPE_THRESHOLD = 50;
 
 const ExifBar: React.FC<{ exif: ExifData }> = ({ exif }) => {
   const items: { icon: React.ReactNode; label: string }[] = [];
@@ -47,30 +50,49 @@ const ExifBar: React.FC<{ exif: ExifData }> = ({ exif }) => {
 };
 
 interface PhotoLightboxProps {
-  image: PhotoConfig | null;
+  images: PhotoConfig[];
+  currentIndex: number;
+  onNavigate: (index: number) => void;
   onClose: () => void;
 }
 
 type OriginalState = 'idle' | 'loading' | 'loaded' | 'error';
 
-const PhotoLightbox: React.FC<PhotoLightboxProps> = ({ image, onClose }) => {
+const PhotoLightbox: React.FC<PhotoLightboxProps> = ({ images, currentIndex, onNavigate, onClose }) => {
   const [originalState, setOriginalState] = useState<OriginalState>('idle');
   const preloaderRef = useRef<HTMLImageElement | null>(null);
+  const touchStartRef = useRef<{ x: number; y: number; t: number } | null>(null);
+
+  const open = currentIndex >= 0 && images.length > 0;
+  const image = open ? images[currentIndex] ?? null : null;
 
   const previewSrc = image ? (image.thumbnail || image.src) : '';
   const fullSrc = image ? image.src : '';
   const hasThumbnail = image ? !!image.thumbnail : false;
 
   useEffect(() => {
-    if (!image) {
-      setOriginalState('idle');
-      if (preloaderRef.current) {
-        preloaderRef.current.onload = null;
-        preloaderRef.current.onerror = null;
-        preloaderRef.current = null;
-      }
+    setOriginalState('idle');
+    if (preloaderRef.current) {
+      preloaderRef.current.onload = null;
+      preloaderRef.current.onerror = null;
+      preloaderRef.current = null;
     }
-  }, [image]);
+  }, [image?.id]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft' && currentIndex > 0) {
+        e.preventDefault();
+        onNavigate(currentIndex - 1);
+      } else if (e.key === 'ArrowRight' && currentIndex < images.length - 1) {
+        e.preventDefault();
+        onNavigate(currentIndex + 1);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [open, currentIndex, images.length, onNavigate]);
 
   const handleLoadOriginal = useCallback(() => {
     if (originalState !== 'idle' || !image) return;
@@ -101,6 +123,33 @@ const PhotoLightbox: React.FC<PhotoLightboxProps> = ({ image, onClose }) => {
     }, 0);
   }, [fullSrc]);
 
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (e.touches.length !== 1) return;
+    touchStartRef.current = {
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY,
+      t: Date.now(),
+    };
+  }, []);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    const start = touchStartRef.current;
+    if (!start) return;
+    touchStartRef.current = null;
+
+    const dx = e.changedTouches[0].clientX - start.x;
+    const dy = e.changedTouches[0].clientY - start.y;
+    const dt = Date.now() - start.t;
+
+    if (Math.abs(dx) < SWIPE_THRESHOLD || Math.abs(dy) > Math.abs(dx) || dt > 500) return;
+
+    if (dx < 0 && currentIndex < images.length - 1) {
+      onNavigate(currentIndex + 1);
+    } else if (dx > 0 && currentIndex > 0) {
+      onNavigate(currentIndex - 1);
+    }
+  }, [currentIndex, images.length, onNavigate]);
+
   const showOriginal = originalState === 'loaded';
   const displaySrc = showOriginal ? fullSrc : previewSrc;
 
@@ -115,7 +164,7 @@ const PhotoLightbox: React.FC<PhotoLightboxProps> = ({ image, onClose }) => {
 
   return (
     <Dialog
-      open={!!image}
+      open={open}
       onClose={onClose}
       maxWidth={false}
       slotProps={DIALOG_SLOT_PROPS}
@@ -152,43 +201,78 @@ const PhotoLightbox: React.FC<PhotoLightboxProps> = ({ image, onClose }) => {
               <CloseIcon />
             </IconButton>
           </Box>
-          <Box className={styles.dialogContent}>
-            <img
-              key={image.id}
-              src={displaySrc}
-              alt={image.alt}
-              decoding="async"
-              loading="eager"
-              fetchPriority="high"
-              className={`${styles.dialogImg} ${
-                originalState === 'loading' ? styles.dialogImgLoading : styles.dialogImgReady
-              }`}
-            />
-            {originalState === 'loading' && (
-              <Box className={styles.loadingOverlay}>
-                <CircularProgress size={32} sx={{ color: 'rgba(255,255,255,0.5)' }} />
-              </Box>
-            )}
-            <Box className={styles.dialogMeta}>
-              <Box className={styles.dialogMetaTop}>
-                <Box>
-                  <Typography className={styles.dialogTitle}>{image.alt}</Typography>
-                  {image.tags && image.tags.length > 0 && (
-                    <Typography className={styles.dialogCat}>
-                      <TagIcon sx={{ fontSize: 14, mr: 0.5 }} />
-                      {image.tags.join(' · ')}
-                    </Typography>
-                  )}
-                  {image.location && (
-                    <Typography className={styles.dialogLocation}>
-                      <LocationOnIcon sx={{ fontSize: 15, mr: 0.5 }} />
-                      {[image.location.province, image.location.city].filter(Boolean).join(' · ')}
-                    </Typography>
-                  )}
+
+          {currentIndex > 0 && (
+            <IconButton
+              className={`${styles.navBtn} ${styles.navPrev}`}
+              onClick={() => onNavigate(currentIndex - 1)}
+              aria-label="上一张"
+            >
+              <ChevronLeft />
+            </IconButton>
+          )}
+          {currentIndex < images.length - 1 && (
+            <IconButton
+              className={`${styles.navBtn} ${styles.navNext}`}
+              onClick={() => onNavigate(currentIndex + 1)}
+              aria-label="下一张"
+            >
+              <ChevronRight />
+            </IconButton>
+          )}
+
+          <Box
+            className={styles.dialogContent}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
+            <Box className={styles.imgContainer}>
+              <img
+                key={image.id}
+                src={displaySrc}
+                alt={image.alt}
+                decoding="async"
+                loading="eager"
+                fetchPriority="high"
+                draggable={false}
+                className={`${styles.dialogImg} ${
+                  originalState === 'loading' ? styles.dialogImgLoading : styles.dialogImgReady
+                }`}
+              />
+
+              {originalState === 'loading' && (
+                <Box className={styles.loadingOverlay}>
+                  <CircularProgress size={32} sx={{ color: 'rgba(255,255,255,0.45)' }} />
                 </Box>
+              )}
+
+              <Box className={styles.dialogMeta}>
+                <Box className={styles.dialogMetaTop}>
+                  <Box>
+                    <Typography className={styles.dialogTitle}>{image.alt}</Typography>
+                    {image.tags && image.tags.length > 0 && (
+                      <Typography className={styles.dialogCat}>
+                        <TagIcon sx={{ fontSize: 14, mr: 0.5 }} />
+                        {image.tags.join(' · ')}
+                      </Typography>
+                    )}
+                    {image.location && (
+                      <Typography className={styles.dialogLocation}>
+                        <LocationOnIcon sx={{ fontSize: 15, mr: 0.5 }} />
+                        {[image.location.province, image.location.city].filter(Boolean).join(' · ')}
+                      </Typography>
+                    )}
+                  </Box>
+                </Box>
+                {image.exif && <ExifBar exif={image.exif} />}
               </Box>
-              {image.exif && <ExifBar exif={image.exif} />}
             </Box>
+
+            {images.length > 1 && (
+              <span className={styles.positionIndicator} aria-live="polite">
+                {currentIndex + 1} / {images.length}
+              </span>
+            )}
           </Box>
         </>
       )}
