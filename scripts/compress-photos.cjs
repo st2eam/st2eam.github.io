@@ -1,8 +1,12 @@
 /**
- * 压缩 public/photos/ 中的图片，生成缩略图到 public/photos/thumbnails/
+ * 从 discover 仓库读取原图，压缩生成缩略图到 public/photos/thumbnails/
  *
  * 用法：node scripts/compress-photos.cjs
  * 快捷：npm run photos:compress
+ *
+ * 原图目录（二选一）：
+ *   - 环境变量 DISCOVER_PHOTOS_DIR
+ *   - 默认：同级仓库 ../discover/photos
  *
  * 策略：
  *   - 长边缩放到 1200px（保持比例）
@@ -14,8 +18,11 @@ const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
 
-const PHOTOS_DIR = path.resolve(__dirname, '../public/photos');
-const THUMB_DIR = path.resolve(PHOTOS_DIR, 'thumbnails');
+const DEFAULT_DISCOVER = path.resolve(__dirname, '../../discover/photos');
+const PHOTOS_DIR = process.env.DISCOVER_PHOTOS_DIR
+  ? path.resolve(process.env.DISCOVER_PHOTOS_DIR)
+  : DEFAULT_DISCOVER;
+const THUMB_DIR = path.resolve(__dirname, '../public/photos/thumbnails');
 const EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.avif'];
 const MAX_LONG_EDGE = 1200;
 const JPEG_QUALITY = 82;
@@ -91,12 +98,19 @@ async function compressOne(srcPath) {
 }
 
 async function run() {
+  if (!fs.existsSync(PHOTOS_DIR)) {
+    console.error(`原图目录不存在: ${PHOTOS_DIR}`);
+    console.error('请先 clone https://github.com/st2eam/discover 到同级目录，或设置 DISCOVER_PHOTOS_DIR');
+    process.exit(1);
+  }
+
   const files = scanPhotos(PHOTOS_DIR);
   if (files.length === 0) {
-    console.log('public/photos/ 中没有找到图片');
+    console.log(`${PHOTOS_DIR} 中没有找到图片`);
     return;
   }
 
+  console.log(`原图目录: ${PHOTOS_DIR}`);
   console.log(`找到 ${files.length} 张图片，开始压缩...\n`);
 
   for (const file of files) {

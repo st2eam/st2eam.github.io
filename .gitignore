@@ -37,6 +37,11 @@ coverage/
 .env.test.local
 .env.production.local
 
+# 原图托管于 sibling 仓库 st2eam/discover，本仓库只保留缩略图
+/public/photos/*
+!/public/photos/thumbnails/
+!/public/photos/thumbnails/**
+
 # TypeScript 编译缓存
 *.tsbuildinfo
 

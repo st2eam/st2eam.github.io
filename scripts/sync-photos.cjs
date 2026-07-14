@@ -1,11 +1,13 @@
 /**
- * 增量同步 public/photos/ → src/config/photos.ts
+ * 增量同步 discover 原图 → src/config/photos.ts
  *
  * 用法：node scripts/sync-photos.cjs
  *
  * 行为：
- *   - 扫描 public/photos/（忽略 thumbnails 子目录）
- *   - 读取已有 photos.ts，以 src 为 key 做合并
+ *   - 扫描 discover/photos/（同级仓库，可用 DISCOVER_PHOTOS_DIR 覆盖）
+ *   - src 指向 jsDelivr CDN（原图仓库 st2eam/discover）
+ *   - thumbnail 仍为本地 /photos/thumbnails/
+ *   - 读取已有 photos.ts，以文件名路径为 key 做合并（兼容旧本地路径）
  *   - 已有照片：保留手动编辑的 alt / tags / location（不会覆盖）
  *   - 新照片：自动推测 alt / tags，读取 EXIF 元信息，追加到列表
  *   - 已删除的照片：从列表中移除
@@ -49,11 +51,43 @@ function setupProxy() {
   }
 }
 
-const PHOTOS_DIR = path.resolve(__dirname, '../public/photos');
-const THUMB_DIR = path.resolve(PHOTOS_DIR, 'thumbnails');
+const DEFAULT_DISCOVER = path.resolve(__dirname, '../../discover/photos');
+const PHOTOS_DIR = process.env.DISCOVER_PHOTOS_DIR
+  ? path.resolve(process.env.DISCOVER_PHOTOS_DIR)
+  : DEFAULT_DISCOVER;
+const THUMB_DIR = path.resolve(__dirname, '../public/photos/thumbnails');
 const OUTPUT_FILE = path.resolve(__dirname, '../src/config/photos.ts');
+/** 原图 CDN（仓库 https://github.com/st2eam/discover ） */
+const ORIGINAL_BASE_URL =
+  process.env.ORIGINAL_BASE_URL ||
+  'https://cdn.jsdelivr.net/gh/st2eam/discover@main/photos';
 const EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.avif', '.gif'];
 const TAG_KEYWORDS = ['城市', '风景', '人像', '建筑', '街头', '自然', '抽象', '黑白'];
+
+/** 从任意 src（本地路径或 CDN URL）提取 photos/ 后的相对路径，用作合并 key */
+function photoKey(src) {
+  if (!src) return '';
+  const cleaned = src.split('?')[0];
+  const m = cleaned.match(/\/photos\/(.+)$/);
+  if (!m) return cleaned;
+  try {
+    return decodeURIComponent(m[1]);
+  } catch {
+    return m[1];
+  }
+}
+
+function encodePhotoPath(relativePath) {
+  return relativePath
+    .split('/')
+    .map(seg => encodeURIComponent(seg))
+    .join('/');
+}
+
+function originalSrc(relativePath) {
+  const normalized = relativePath.replace(/\\/g, '/');
+  return `${ORIGINAL_BASE_URL.replace(/\/$/, '')}/${encodePhotoPath(normalized)}`;
+}
 
 function scanDir(dir, prefix = '') {
   const results = [];
@@ -343,7 +377,7 @@ function readExistingPhotos() {
       obj.tags = tagsMatch[1].match(/'([^']*)'/g).map(s => s.replace(/'/g, ''));
     }
 
-    if (obj.src) map[obj.src] = obj;
+    if (obj.src) map[photoKey(obj.src)] = obj;
   }
   return map;
 }
@@ -377,11 +411,21 @@ function serializeExif(exif) {
 
 async function run() {
   setupProxy();
+
+  if (!fs.existsSync(PHOTOS_DIR)) {
+    console.error(`原图目录不存在: ${PHOTOS_DIR}`);
+    console.error('请先 clone https://github.com/st2eam/discover 到同级目录，或设置 DISCOVER_PHOTOS_DIR');
+    process.exit(1);
+  }
+
+  console.log(`原图目录: ${PHOTOS_DIR}`);
+  console.log(`原图 CDN: ${ORIGINAL_BASE_URL}`);
+
   const files = scanDir(PHOTOS_DIR);
   files.sort((a, b) => a.relativePath.localeCompare(b.relativePath));
 
   const existing = readExistingPhotos();
-  const existingSrcs = new Set(Object.keys(existing));
+  const existingKeys = new Set(Object.keys(existing));
 
   let added = 0;
   let kept = 0;
@@ -392,16 +436,18 @@ async function run() {
   const photosArr = [];
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
-    const src = `/photos/${file.relativePath.replace(/\\/g, '/')}`;
-    const thumbnail = hasThumbnail(file.relativePath)
-      ? `/photos/thumbnails/${file.relativePath.replace(/\\/g, '/')}`
+    const relative = file.relativePath.replace(/\\/g, '/');
+    const src = originalSrc(relative);
+    const key = relative;
+    const thumbnail = hasThumbnail(relative)
+      ? `/photos/thumbnails/${relative}`
       : undefined;
     const exif = await readExif(file.fullPath);
 
-    if (existing[src]) {
+    if (existing[key]) {
       kept++;
-      existingSrcs.delete(src);
-      const prev = existing[src];
+      existingKeys.delete(key);
+      const prev = existing[key];
       photosArr.push({
         id: (i + 1).toString(),
         src,
@@ -424,7 +470,7 @@ async function run() {
     }
   }
 
-  removed = existingSrcs.size;
+  removed = existingKeys.size;
 
   photosArr.sort((a, b) => {
     const da = a.exif?.date;
@@ -458,6 +504,7 @@ async function run() {
  * 重新生成：npm run photos
  * 手动编辑后可自由调整 alt / tags，再次同步不会覆盖
  *
+ * 原图托管于 https://github.com/st2eam/discover ，src 为 CDN 地址
  * 列表顺序：按拍摄日期新→旧（无 EXIF 日期的条目排在末尾）
  */
 
@@ -514,14 +561,14 @@ export const locationTags = (() => {
     const exifInfo = p.exif
       ? ` | ${[p.exif.model, p.exif.lens, p.exif.focalLength, p.exif.aperture, p.exif.shutterSpeed, p.exif.iso ? `ISO${p.exif.iso}` : ''].filter(Boolean).join(' ')}`
       : '';
-    const status = existing[p.src] ? '  ' : '+ ';
+    const status = existing[photoKey(p.src)] ? '  ' : '+ ';
     const cleanTags = (p.tags || []).filter(t => !isLocationLikeTag(t));
     const locLabel = p.location ? ` 📍 ${[p.location.province, p.location.city].filter(Boolean).join('·')}` : '';
     console.log(`  ${status}${p.id}. "${p.alt}" [${cleanTags.join(', ') || '未分类'}]${locLabel}${exifInfo}`);
   });
   if (removed > 0) {
     console.log('\n已移除：');
-    for (const src of existingSrcs) console.log(`  - ${src}`);
+    for (const key of existingKeys) console.log(`  - ${key}`);
   }
   console.log(`\n已写入 ${OUTPUT_FILE}`);
 }
