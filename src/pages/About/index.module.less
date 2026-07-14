@@ -233,12 +233,16 @@
 }
 
 .casinoBtn {
+  perspective: 160px;
+
   svg {
-    transition: transform 0.55s @ease-spring;
+    transform-style: preserve-3d;
+    transition: transform 0.7s @ease-spring;
+    will-change: transform;
   }
 
   &:hover svg {
-    transform: rotate(360deg);
+    transform: rotateY(360deg) rotateX(18deg);
   }
 
   @media (prefers-reduced-motion: reduce) {
