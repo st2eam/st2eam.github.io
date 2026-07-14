@@ -14,7 +14,7 @@ import {
   Divider,
   IconButton,
 } from '@mui/material';
-import { PhotoCamera, Email, GitHub, Camera, Palette, Code, CameraAlt, Casino } from '@mui/icons-material';
+import { PhotoCamera, Email, GitHub, Camera, Palette, Code, CameraAlt } from '@mui/icons-material';
 import ScrollReveal from '@/components/ScrollReveal';
 import CountUp from '@/components/reactbits/CountUp/CountUp';
 import Magnet from '@/components/reactbits/Magnet/Magnet';
@@ -23,10 +23,10 @@ import { photos as realPhotos } from '@/config/photos';
 import styles from './index.module.less';
 
 const skills = [
-  { name: '摄影技巧', icon: <PhotoCamera />, level: 80 },
+  { name: '摄影构图', icon: <PhotoCamera />, level: 80 },
   { name: '后期处理', icon: <Palette />, level: 65 },
   { name: '应用开发', icon: <Code />, level: 88 },
-  { name: '创意构图', icon: <Camera />, level: 76 },
+  { name: '桌游运营', icon: <Camera />, level: 76 },
 ];
 
 const equipment = [
