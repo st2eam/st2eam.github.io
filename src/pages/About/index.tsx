@@ -80,7 +80,7 @@ const About: React.FC = () => {
                     href="https://st2eam.github.io/boardgames/zh/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={styles.socialBtn}
+                    className={`${styles.socialBtn} ${styles.casinoBtn}`}
                     aria-label="The Game Shelf 桌游站"
                   >
                     <Casino />

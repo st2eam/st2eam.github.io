@@ -232,6 +232,26 @@
   }
 }
 
+.casinoBtn {
+  svg {
+    transition: transform 0.55s @ease-spring;
+  }
+
+  &:hover svg {
+    transform: rotate(360deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    svg {
+      transition: none;
+    }
+
+    &:hover svg {
+      transform: none;
+    }
+  }
+}
+
 // ══ Content ══
 .content {
   padding: 0 24px 120px;
