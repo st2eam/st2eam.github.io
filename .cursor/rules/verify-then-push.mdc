@@ -1,0 +1,14 @@
+---
+description: After changes pass verification, commit and push without waiting to be asked
+alwaysApply: true
+---
+
+# Verify Then Push
+
+When finishing a task that changes the repo:
+
+1. Run appropriate verification (`npm run build`, targeted checks, or the relevant test/lint for the change).
+2. If verification passes, **commit and push to `origin` immediately** — do not wait for the user to say "PUSH".
+3. Still follow the git safety protocol: never force-push, never amend pushed commits, never update git config, use HEREDOC commit messages.
+4. If verification fails, fix first; only push after it passes.
+5. Summarize what was pushed in the reply (commit hash + short message).

@@ -312,6 +312,19 @@
   }
 }
 
+.inlineLink {
+  color: @accent-dark;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: fade(@accent, 45%);
+  transition: color 0.25s ease, text-decoration-color 0.25s ease;
+
+  &:hover {
+    color: @accent;
+    text-decoration-color: @accent;
+  }
+}
+
 .quote {
   font-family: @font-display;
   font-style: italic;

@@ -14,7 +14,7 @@ import {
   Divider,
   IconButton,
 } from '@mui/material';
-import { PhotoCamera, Email, GitHub, Camera, Palette, Code, CameraAlt } from '@mui/icons-material';
+import { PhotoCamera, Email, GitHub, Camera, Palette, Code, CameraAlt, Casino } from '@mui/icons-material';
 import ScrollReveal from '@/components/ScrollReveal';
 import CountUp from '@/components/reactbits/CountUp/CountUp';
 import Magnet from '@/components/reactbits/Magnet/Magnet';
@@ -61,7 +61,7 @@ const About: React.FC = () => {
               <Typography variant="h3" component="h1" className={styles.name}>
                 ST2EAM
               </Typography>
-              <Typography className={styles.tagline}>AI · 摄影师 · 视觉艺术家</Typography>
+              <Typography className={styles.tagline}>AI · 摄影师 · 视觉艺术家 · 桌游店老板</Typography>
               <Typography className={styles.slogan}>雨涧听溪，山野春行</Typography>
               <Box className={styles.socialRow}>
                 <Magnet padding={70} magnetStrength={2.5}>
@@ -73,6 +73,17 @@ const About: React.FC = () => {
                     aria-label="GitHub"
                   >
                     <GitHub />
+                  </IconButton>
+                </Magnet>
+                <Magnet padding={70} magnetStrength={2.5}>
+                  <IconButton
+                    href="https://st2eam.github.io/boardgames/zh/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.socialBtn}
+                    aria-label="The Game Shelf 桌游站"
+                  >
+                    <Casino />
                   </IconButton>
                 </Magnet>
                 <Magnet padding={70} magnetStrength={2.5}>
@@ -123,6 +134,18 @@ const About: React.FC = () => {
                   <Typography className={styles.bodyText}>
                     我偏爱自然与人文交织的画面——清晨山谷里的薄雾、老街檐角淌下的雨滴、
                     黄昏时分远山层叠的轮廓。每一次快门，都是试图留住那些安静而动人的时刻。
+                  </Typography>
+                  <Typography className={styles.bodyText}>
+                    镜头之外，我还是一名桌游店老板——爱坐在桌边推演规则、翻开新盒，也乐于把好玩的游戏介绍给更多人。整理了自己的桌游规则站{' '}
+                    <a
+                      href="https://st2eam.github.io/boardgames/zh/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.inlineLink}
+                    >
+                      The Game Shelf
+                    </a>
+                    ，把玩过的游戏规则、流程和计分工具收在一处——和摄影一样，都是认真对待每一次「在场」的乐趣。
                   </Typography>
                 </CardContent>
               </Card>
