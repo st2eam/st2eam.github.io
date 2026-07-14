@@ -49,7 +49,7 @@ const AutoImage = React.memo<AutoImageProps>(({ image, onSelect, delay }) => {
   const [errored, setErrored] = useState(false);
   const retryCount = useRef(0);
   const imgRef = useRef<HTMLImageElement>(null);
-  const outerRef = useRef<HTMLButtonElement>(null);
+  const outerRef = useRef<HTMLDivElement>(null);
   const inView = useInView(outerRef);
 
   const previewSrc = image.thumbnail || image.src;
@@ -89,62 +89,63 @@ const AutoImage = React.memo<AutoImageProps>(({ image, onSelect, delay }) => {
 
   return (
     <Fade in timeout={600} style={fadeStyle}>
-      <Box
-        component="button"
-        type="button"
-        className={styles.cardOuter}
-        ref={outerRef}
-        onClick={handleSelect}
-        onKeyDown={handleKeyDown}
-        aria-label={`查看作品：${image.alt}`}
-      >
-        <Card className={styles.card}>
-          <Box className={styles.imgWrap} style={wrapStyle}>
-            {errored ? (
-              <Box className={styles.imgError}>
-                <Typography variant="caption" color="textSecondary">
-                  加载失败
-                </Typography>
-              </Box>
-            ) : inView ? (
-              <img
-                ref={imgRef}
-                src={previewSrc}
-                alt={image.alt}
-                loading="lazy"
-                decoding="async"
-                className={`${styles.img} ${loaded ? styles.imgLoaded : ''}`}
-                onLoad={() => {
-                  if (ratio === 0 && imgRef.current) {
-                    setRatio(imgRef.current.naturalWidth / imgRef.current.naturalHeight);
-                  }
-                  setLoaded(true);
-                }}
-                onError={handleError}
-              />
-            ) : null}
-            {!loaded && (
-              <Skeleton variant="rectangular" className={styles.imgSkeleton} animation="wave" />
-            )}
-          </Box>
-          <Box className={styles.overlay}>
-            <Box className={styles.overlayInner}>
-              <Typography className={styles.imgTitle}>{image.alt}</Typography>
-              {image.tags && image.tags.length > 0 && (
-                <Typography className={styles.imgCat}>
-                  <TagIcon sx={{ fontSize: 13, mr: 0.5 }} />
-                  {image.tags.join(' · ')}
-                </Typography>
-              )}
-              {image.location && (
-                <Typography className={styles.imgLocation}>
-                  <LocationOnIcon sx={{ fontSize: 14, mr: 0.5 }} />
-                  {[image.location.province, image.location.city].filter(Boolean).join(' · ')}
-                </Typography>
+      <Box className={styles.cardOuter} ref={outerRef}>
+        <Box
+          component="button"
+          type="button"
+          className={styles.cardButton}
+          onClick={handleSelect}
+          onKeyDown={handleKeyDown}
+          aria-label={`查看作品：${image.alt}`}
+        >
+          <Card className={styles.card}>
+            <Box className={styles.imgWrap} style={wrapStyle}>
+              {errored ? (
+                <Box className={styles.imgError}>
+                  <Typography variant="caption" color="textSecondary">
+                    加载失败
+                  </Typography>
+                </Box>
+              ) : inView ? (
+                <img
+                  ref={imgRef}
+                  src={previewSrc}
+                  alt={image.alt}
+                  loading="lazy"
+                  decoding="async"
+                  className={`${styles.img} ${loaded ? styles.imgLoaded : ''}`}
+                  onLoad={() => {
+                    if (ratio === 0 && imgRef.current) {
+                      setRatio(imgRef.current.naturalWidth / imgRef.current.naturalHeight);
+                    }
+                    setLoaded(true);
+                  }}
+                  onError={handleError}
+                />
+              ) : null}
+              {!loaded && (
+                <Skeleton variant="rectangular" className={styles.imgSkeleton} animation="wave" />
               )}
             </Box>
-          </Box>
-        </Card>
+            <Box className={styles.overlay}>
+              <Box className={styles.overlayInner}>
+                <Typography className={styles.imgTitle}>{image.alt}</Typography>
+                {image.tags && image.tags.length > 0 && (
+                  <Typography className={styles.imgCat}>
+                    <TagIcon sx={{ fontSize: 13, mr: 0.5 }} />
+                    {image.tags.join(' · ')}
+                  </Typography>
+                )}
+                {image.location && (
+                  <Typography className={styles.imgLocation}>
+                    <LocationOnIcon sx={{ fontSize: 14, mr: 0.5 }} />
+                    {[image.location.province, image.location.city].filter(Boolean).join(' · ')}
+                  </Typography>
+                )}
+              </Box>
+            </Box>
+          </Card>
+        </Box>
       </Box>
     </Fade>
   );
