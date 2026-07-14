@@ -57,10 +57,12 @@ const PHOTOS_DIR = process.env.DISCOVER_PHOTOS_DIR
   : DEFAULT_DISCOVER;
 const THUMB_DIR = path.resolve(__dirname, '../public/photos/thumbnails');
 const OUTPUT_FILE = path.resolve(__dirname, '../src/config/photos.ts');
-/** 原图 CDN（仓库 https://github.com/st2eam/discover ） */
+/** 原图地址（仓库 https://github.com/st2eam/discover ）
+ *  默认用 raw.githubusercontent.com：cdn.jsdelivr.net 对大图常 403
+ */
 const ORIGINAL_BASE_URL =
   process.env.ORIGINAL_BASE_URL ||
-  'https://cdn.jsdelivr.net/gh/st2eam/discover@main/photos';
+  'https://raw.githubusercontent.com/st2eam/discover/main/photos';
 const EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.avif', '.gif'];
 const TAG_KEYWORDS = ['城市', '风景', '人像', '建筑', '街头', '自然', '抽象', '黑白'];
 

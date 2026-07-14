@@ -207,7 +207,7 @@ npm run photos:sync      # only sync config
 3. Edit `src/config/photos.ts` — customize `alt` and `tags`
 4. Run `npm run photos` again — manual edits preserved
 
-Website keeps only `public/photos/thumbnails/`. Original `src` points to jsDelivr CDN.
+Website keeps only `public/photos/thumbnails/`. Original `src` points to `raw.githubusercontent.com` (discover repo).
 
 ## Build & Deploy
 
