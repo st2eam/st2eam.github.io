@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   Container,
   Typography,
@@ -14,10 +14,11 @@ import {
   Divider,
   IconButton,
 } from '@mui/material';
-import { PhotoCamera, Email, GitHub, Camera, Palette, Code, CameraAlt, Casino } from '@mui/icons-material';
+import { PhotoCamera, Email, GitHub, Camera, Palette, Code, CameraAlt } from '@mui/icons-material';
 import ScrollReveal from '@/components/ScrollReveal';
 import CountUp from '@/components/reactbits/CountUp/CountUp';
 import Magnet from '@/components/reactbits/Magnet/Magnet';
+import Dice3D from '@/components/Dice3D';
 import { photos as realPhotos } from '@/config/photos';
 import styles from './index.module.less';
 
@@ -48,6 +49,10 @@ const stats = [
 ];
 
 const About: React.FC = () => {
+  const [diceRolling, setDiceRolling] = useState(false);
+  const startRoll = useCallback(() => setDiceRolling(true), []);
+  const stopRoll = useCallback(() => setDiceRolling(false), []);
+
   return (
     <Box className={styles.aboutPage}>
       {/* ── Header ── */}
@@ -82,8 +87,12 @@ const About: React.FC = () => {
                     rel="noopener noreferrer"
                     className={`${styles.socialBtn} ${styles.casinoBtn}`}
                     aria-label="The Game Shelf 桌游站"
+                    onMouseEnter={startRoll}
+                    onMouseLeave={stopRoll}
+                    onFocus={startRoll}
+                    onBlur={stopRoll}
                   >
-                    <Casino />
+                    <Dice3D rolling={diceRolling} />
                   </IconButton>
                 </Magnet>
                 <Magnet padding={70} magnetStrength={2.5}>
