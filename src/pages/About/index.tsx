@@ -127,25 +127,26 @@ const About: React.FC = () => {
                     关于我
                   </Typography>
                   <Typography className={styles.bodyText}>
-                    你好！我是
-                    STREAM。喜欢背上相机走进山野，在雨后的山涧旁听溪水潺潺，在春日的田埂上感受风拂过镜头。
-                    对我而言，摄影不是刻意的创作，而是行走途中与光影的一次次不期而遇。
+                    你好，我是 STREAM。
+                    背着相机穿行山野是我的日常：在雨后山涧等溪声漫过石滩，在春日田埂任风擦过镜头。
+                    我从不把摄影当作刻意的创作，它更像行走路上，与光影偶然相撞的细碎惊喜。
                   </Typography>
                   <Typography className={styles.bodyText}>
-                    我偏爱自然与人文交织的画面——清晨山谷里的薄雾、老街檐角淌下的雨滴、
-                    黄昏时分远山层叠的轮廓。每一次快门，都是试图留住那些安静而动人的时刻。
+                    我着迷于自然与人文交织的瞬间 —— 山谷晨雾、老街落雨、黄昏时层叠晕染的远山。
+                    每一次快门落下，都是为了接住那些安静却有重量的时刻。
                   </Typography>
                   <Typography className={styles.bodyText}>
-                    镜头之外，我还是一名桌游店老板——爱坐在桌边推演规则、翻开新盒，也乐于把好玩的游戏介绍给更多人。整理了自己的桌游规则站{' '}
+                    镜头之外，我经营着一家
                     <a
                       href="https://st2eam.github.io/boardgames/zh/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className={styles.inlineLink}
                     >
-                      The Game Shelf
+                      桌游店
                     </a>
-                    ，把玩过的游戏规则、流程和计分工具收在一处——和摄影一样，都是认真对待每一次「在场」的乐趣。
+                    。推演规则、拆封新盒、把喜欢的游戏分享给同好。
+                    无论是取景器里的光影，还是牌桌上的回合，于我都是同一件事：认真沉浸于每一个「在场」的当下。
                   </Typography>
                 </CardContent>
               </Card>
