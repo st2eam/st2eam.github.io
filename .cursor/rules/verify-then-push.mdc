@@ -1,14 +1,23 @@
 ---
-description: After changes pass verification, commit and push without waiting to be asked
+description: After implementation changes pass verification, commit and push — but not for advisory/consultative turns
 alwaysApply: true
 ---
 
 # Verify Then Push
 
-When finishing a task that changes the repo:
+When finishing a task that **changes the repo** with clear implementation intent:
 
 1. Run appropriate verification (`npm run build`, targeted checks, or the relevant test/lint for the change).
 2. If verification passes, **commit and push to `origin` immediately** — do not wait for the user to say "PUSH".
 3. Still follow the git safety protocol: never force-push, never amend pushed commits, never update git config, use HEREDOC commit messages.
 4. If verification fails, fix first; only push after it passes.
 5. Summarize what was pushed in the reply (commit hash + short message).
+
+## Do NOT auto-commit or push when
+
+- The user is asking for **advice, opinions, naming, copy options, or design consultation** (e.g. “能不能给一个…”, “你觉得呢”, “哪种更好”).
+- The user is **exploring / tuning locally** and has said not to push, or is clearly iterating before deciding.
+- You only answered a question and made **no code changes**, or changes are speculative drafts pending confirmation.
+- The user explicitly says **不要推送** / **先别 push** / **等我说再推**.
+
+In those cases: discuss or edit locally if needed, show the result, and **wait for the user to ask to push** (or to confirm the change should ship).
