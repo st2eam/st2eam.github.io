@@ -17,12 +17,12 @@
   width: @dice-size;
   height: @dice-size;
   transform-style: preserve-3d;
-  transform: rotateX(-24deg) rotateY(36deg);
+  transform: rotateY(36deg) rotateX(-24deg);
   transition: transform 0.5s @ease-spring;
 }
 
 .rolling {
-  animation: dice-tumble 0.55s linear infinite;
+  animation: dice-roll 0.55s linear infinite;
 }
 
 .face {
@@ -63,12 +63,13 @@
 .bl { grid-area: 3 / 1; }
 .br { grid-area: 3 / 3; }
 
-@keyframes dice-tumble {
+/* 只绕 X 轴向前翻滚，Y 倾斜固定以露出立体面 */
+@keyframes dice-roll {
   0% {
-    transform: rotateX(-24deg) rotateY(36deg) rotateZ(0deg);
+    transform: rotateY(36deg) rotateX(-24deg);
   }
   100% {
-    transform: rotateX(335deg) rotateY(396deg) rotateZ(180deg);
+    transform: rotateY(36deg) rotateX(-384deg);
   }
 }
 
