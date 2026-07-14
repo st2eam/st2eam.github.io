@@ -14,7 +14,7 @@ import {
   Divider,
   IconButton,
 } from '@mui/material';
-import { PhotoCamera, Email, GitHub, Camera, Palette, Code, CameraAlt } from '@mui/icons-material';
+import { PhotoCamera, Email, GitHub, Camera, Palette, Code, CameraAlt, Casino } from '@mui/icons-material';
 import ScrollReveal from '@/components/ScrollReveal';
 import CountUp from '@/components/reactbits/CountUp/CountUp';
 import Magnet from '@/components/reactbits/Magnet/Magnet';
