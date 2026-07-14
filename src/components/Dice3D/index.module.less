@@ -1,7 +1,7 @@
 @import '@/styles/global.less';
 
-@dice-size: 18px;
-@half: 9px;
+@dice-size: 14px;
+@half: 7px;
 
 .scene {
   display: inline-flex;
@@ -10,20 +10,28 @@
   width: @dice-size + 4px;
   height: @dice-size + 4px;
   perspective: 64px;
+  color: inherit;
+}
+
+.spinner {
+  display: block;
+  width: @dice-size;
+  height: @dice-size;
+  transform-style: preserve-3d;
+}
+
+.rolling {
+  animation: spin-y 0.55s linear infinite;
 }
 
 .cube {
   position: relative;
+  display: block;
   width: @dice-size;
   height: @dice-size;
   transform-style: preserve-3d;
-  /* Z=45° 使角朝下，再绕 X 轴翻滚 */
+  /* 仅姿态：角朝下 + 略倾，不参与旋转动画 */
   transform: rotateZ(45deg) rotateX(28deg);
-  transition: transform 0.5s @ease-spring;
-}
-
-.rolling {
-  animation: dice-roll 0.55s linear infinite;
 }
 
 .face {
@@ -34,10 +42,11 @@
   grid-template-rows: repeat(3, 1fr);
   padding: 2px;
   box-sizing: border-box;
-  background: #1a1a1a;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: currentColor;
+  border: 1px solid fade(#000, 12%);
   border-radius: 3px;
   backface-visibility: hidden;
+  transition: background-color 0.35s @ease-out-quart;
 }
 
 .front  { transform: translateZ(@half); }
@@ -64,20 +73,16 @@
 .bl { grid-area: 3 / 1; }
 .br { grid-area: 3 / 3; }
 
-@keyframes dice-roll {
-  0% {
-    transform: rotateZ(45deg) rotateX(28deg);
+@keyframes spin-y {
+  from {
+    transform: rotateY(0deg);
   }
-  100% {
-    transform: rotateZ(45deg) rotateX(388deg);
+  to {
+    transform: rotateY(360deg);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cube {
-    transition: none;
-  }
-
   .rolling {
     animation: none;
   }

@@ -25,14 +25,17 @@ interface Dice3DProps {
 
 const Dice3D: React.FC<Dice3DProps> = ({ rolling = false }) => (
   <span className={styles.scene} aria-hidden>
-    <span className={`${styles.cube} ${rolling ? styles.rolling : ''}`}>
-      {FACES.map(({ value, face }) => (
-        <span key={face} className={`${styles.face} ${styles[face]}`}>
-          {PIP_LAYOUTS[value].map(pos => (
-            <span key={pos} className={`${styles.pip} ${styles[pos]}`} />
-          ))}
-        </span>
-      ))}
+    {/* 外层只绕世界竖直轴（Y）转，内层固定角朝下姿态 */}
+    <span className={`${styles.spinner} ${rolling ? styles.rolling : ''}`}>
+      <span className={styles.cube}>
+        {FACES.map(({ value, face }) => (
+          <span key={face} className={`${styles.face} ${styles[face]}`}>
+            {PIP_LAYOUTS[value].map(pos => (
+              <span key={pos} className={`${styles.pip} ${styles[pos]}`} />
+            ))}
+          </span>
+        ))}
+      </span>
     </span>
   </span>
 );
