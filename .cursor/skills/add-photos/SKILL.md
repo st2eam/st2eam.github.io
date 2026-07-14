@@ -11,6 +11,53 @@ description: >-
 
 Add images to this site without putting originals in the website repo.
 
+## What information is needed
+
+### From the user (ask if missing)
+
+| Field | Required? | What to collect |
+|-------|-----------|-----------------|
+| **Image file(s)** | **Yes** | Path(s) to originals, or confirmation they are already in `discover/photos/` |
+| **`alt`** | **Yes** | Chinese caption/title for the photo (e.g. `武汉 · 江城风光`, or a short poetic line). Never ship bare `DSC#####` / `IMG_####` |
+| **`tags`** | Recommended | Content categories for gallery filters, e.g. `风光` `人文` `建筑` `夜景` `花草` `动物`. Prefer existing tags when possible |
+| **`location`** | Recommended | `{ country, province, city }` if EXIF/geo did not fill it (e.g. 中国 / 湖北 / 武汉) |
+
+### Filled automatically (do not ask)
+
+| Field | Source |
+|-------|--------|
+| `src` / `thumbnail` / `width` / `height` | compress + sync scripts |
+| `exif` (camera, lens, exposure, date, lat/lng) | EXIF on the file |
+| `id` | sync script |
+| `location` (when possible) | reverse-geocode from EXIF GPS |
+
+If the user only drops files and says “加图”, still run the pipeline, then **prompt for any missing fields below before committing**.
+
+### Remind user when incomplete
+
+After `npm run photos`, inspect each **new** entry in `src/config/photos.ts`. Treat as incomplete and **ask the user** (list the filename + what’s missing) when any of these hold:
+
+1. **`alt` missing or placeholder** — empty, equals filename stem, matches `/^DSC\d+/i` or `/^IMG[_-]?\d+/i`, or is clearly auto-garbage.
+2. **`tags` empty** — no content tags (location-like tags alone do not count).
+3. **`location` empty** — no `country` / `province` / `city` after sync/geo.
+
+Prompt template (adapt to Chinese):
+
+```text
+这几张图还缺信息，补一下我再提交：
+
+- DSC01234.jpg
+  - alt：（必填）中文标题/说明
+  - tags：（建议）如 风光 / 人文 / 建筑…
+  - location：（建议）省·市，如 湖北 · 武汉
+```
+
+Rules:
+
+- **Do not commit/push** until required **`alt`** is filled for every new photo (unless the user explicitly says ship with placeholders).
+- **`tags` / `location`**: remind once; if user says skip or “先这样”, proceed.
+- Batch one reminder for all incomplete new photos — do not nag per field in separate turns unless the user only answered partially.
+
 ## Architecture (do not skip)
 
 | Role | Location |
@@ -28,10 +75,12 @@ Override originals path with `DISCOVER_PHOTOS_DIR` if the discover clone is not 
 
 ```
 Add photos:
+- [ ] 0. Collect from user (or note gaps): image files, alt (required), tags, location
 - [ ] 1. Drop originals into discover/photos
 - [ ] 2. Commit & push discover (so raw GitHub URLs resolve)
 - [ ] 3. In website repo: npm run photos
 - [ ] 4. Edit alt / tags / location in photos.ts
+- [ ] 4b. If alt/tags/location still incomplete → remind user; wait for alt before ship
 - [ ] 5. Re-run npm run photos if needed (manual fields preserved)
 - [ ] 6. npm run build → commit website changes → push
 ```
@@ -81,13 +130,11 @@ node scripts/sync-photos.cjs --geo-debug   # debug reverse-geocode
 
 Geo (Nominatim) may fail behind GFW; set `HTTPS_PROXY` / `NOMINATIM_BASE_URL` in `.env` if needed. Missing `location` is OK — fill manually.
 
-## Step 4 — Edit metadata
+## Step 4 — Edit metadata (+ remind if missing)
 
-Open `src/config/photos.ts`. For each new photo:
+Open `src/config/photos.ts`. For each new photo, apply user-provided `alt` / `tags` / `location`.
 
-1. **`alt`** — Chinese, descriptive; never leave bare `DSC#####` for user-facing text.
-2. **`tags`** — optional; gallery filters derive from unique tags (e.g. `风光`, `人文`, `建筑`, `夜景`, `花草`, `动物`).
-3. **`location`** — optional `{ country, province, city }`.
+If anything in **Remind user when incomplete** still fails → stop and ask using the prompt template. Do not invent poetic `alt` at shipping quality without asking, unless the user already gave wording.
 
 Do **not** hand-edit `src`, `thumbnail`, `exif`, `width`, `height`, or `id` unless fixing a sync bug — the next `npm run photos` will overwrite machine fields.
 
