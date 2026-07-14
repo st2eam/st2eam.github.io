@@ -22,6 +22,7 @@
 const fs = require('fs');
 const path = require('path');
 const exifr = require('exifr');
+const sharp = require('sharp');
 
 // ── 加载 .env ──
 const ENV_FILE = path.resolve(__dirname, '../.env');
@@ -128,6 +129,20 @@ function generateAlt(file) {
 
 function hasThumbnail(relativePath) {
   return fs.existsSync(path.join(THUMB_DIR, relativePath));
+}
+
+async function readDimensions(relativePath, originalPath) {
+  const thumbPath = path.join(THUMB_DIR, relativePath);
+  const target = fs.existsSync(thumbPath) ? thumbPath : originalPath;
+  try {
+    const meta = await sharp(target).metadata();
+    if (meta.width && meta.height) {
+      return { width: meta.width, height: meta.height };
+    }
+  } catch {
+    /* ignore */
+  }
+  return {};
 }
 
 function formatExposure(val) {
@@ -445,6 +460,7 @@ async function run() {
       ? `/photos/thumbnails/${relative}`
       : undefined;
     const exif = await readExif(file.fullPath);
+    const dims = await readDimensions(relative, file.fullPath);
 
     if (existing[key]) {
       kept++;
@@ -457,6 +473,7 @@ async function run() {
         tags: prev.tags || [],
         location: prev.location,
         thumbnail,
+        ...dims,
         exif,
       });
     } else {
@@ -467,6 +484,7 @@ async function run() {
         alt: generateAlt(file),
         tags: guessTags(file),
         thumbnail,
+        ...dims,
         exif,
       });
     }
@@ -495,6 +513,7 @@ async function run() {
       if (cleanTags.length > 0) parts.push(`tags: [${cleanTags.map(t => `'${t}'`).join(', ')}]`);
       if (p.location) parts.push(`location: ${serializeLocation(p.location)}`);
       if (p.thumbnail) parts.push(`thumbnail: '${p.thumbnail}'`);
+      if (p.width && p.height) parts.push(`width: ${p.width}`, `height: ${p.height}`);
       if (p.exif) parts.push(`exif: ${serializeExif(p.exif)}`);
       return `  { ${parts.join(', ')} },`;
     })

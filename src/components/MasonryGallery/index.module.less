@@ -71,16 +71,19 @@
 .imgWrap {
   position: relative;
   overflow: hidden;
+  width: 100%;
   background: fade(@text-muted, 6%);
 }
 
 .img {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
   object-fit: cover;
   opacity: 0;
-  transition: opacity 0.5s ease, transform 0.7s @ease-out-expo;
+  transition: opacity 0.45s ease, transform 0.7s @ease-out-expo;
 
   &.imgLoaded {
     opacity: 1;

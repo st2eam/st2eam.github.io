@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useRef, useCallback, useMemo } from 'react';
 import Masonry from '@mui/lab/Masonry';
 import { Box, Card, Fade, Skeleton, Typography } from '@mui/material';
 import { LocationOn as LocationOnIcon, LocalOffer as TagIcon } from '@mui/icons-material';
@@ -17,26 +17,6 @@ const MASONRY_SPACING = 2.5;
 const SKELETON_HEIGHTS = [280, 340, 260, 380, 300, 320, 350, 290];
 const SKELETON_SX = { borderRadius: '16px' };
 
-function useInView(ref: React.RefObject<HTMLElement | null>, rootMargin = '240px') {
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-          io.disconnect();
-        }
-      },
-      { rootMargin },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [ref, rootMargin]);
-  return inView;
-}
-
 interface AutoImageProps {
   image: PhotoConfig;
   onSelect: (img: PhotoConfig) => void;
@@ -44,13 +24,13 @@ interface AutoImageProps {
 }
 
 const AutoImage = React.memo<AutoImageProps>(({ image, onSelect, delay }) => {
-  const [ratio, setRatio] = useState(image.width && image.height ? image.width / image.height : 0);
+  // 固定宽高比，避免图片 onLoad 改高度导致 Masonry 整列重排闪动
+  const ratio =
+    image.width && image.height ? image.width / image.height : 3 / 4;
   const [loaded, setLoaded] = useState(false);
   const [errored, setErrored] = useState(false);
   const retryCount = useRef(0);
   const imgRef = useRef<HTMLImageElement>(null);
-  const outerRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(outerRef);
 
   const previewSrc = image.thumbnail || image.src;
 
@@ -80,16 +60,13 @@ const AutoImage = React.memo<AutoImageProps>(({ image, onSelect, delay }) => {
     [onSelect, image],
   );
 
-  const wrapStyle = useMemo(
-    () => (ratio > 0 ? { aspectRatio: `${ratio}` } : { minHeight: 240 }),
-    [ratio],
-  );
+  const wrapStyle = useMemo(() => ({ aspectRatio: `${ratio}` }), [ratio]);
 
   const fadeStyle = useMemo(() => ({ transitionDelay: `${delay}ms` }), [delay]);
 
   return (
     <Fade in timeout={600} style={fadeStyle}>
-      <Box className={styles.cardOuter} ref={outerRef}>
+      <Box className={styles.cardOuter}>
         <Box
           component="button"
           type="button"
@@ -106,7 +83,7 @@ const AutoImage = React.memo<AutoImageProps>(({ image, onSelect, delay }) => {
                     加载失败
                   </Typography>
                 </Box>
-              ) : inView ? (
+              ) : (
                 <img
                   ref={imgRef}
                   src={previewSrc}
@@ -114,15 +91,10 @@ const AutoImage = React.memo<AutoImageProps>(({ image, onSelect, delay }) => {
                   loading="lazy"
                   decoding="async"
                   className={`${styles.img} ${loaded ? styles.imgLoaded : ''}`}
-                  onLoad={() => {
-                    if (ratio === 0 && imgRef.current) {
-                      setRatio(imgRef.current.naturalWidth / imgRef.current.naturalHeight);
-                    }
-                    setLoaded(true);
-                  }}
+                  onLoad={() => setLoaded(true)}
                   onError={handleError}
                 />
-              ) : null}
+              )}
               {!loaded && (
                 <Skeleton variant="rectangular" className={styles.imgSkeleton} animation="wave" />
               )}
