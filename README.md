@@ -26,7 +26,6 @@
 | 路由 | React Router v6 | `BrowserRouter` + `Routes` |
 | 瀑布流 | @mui/lab Masonry | 响应式瀑布流布局 |
 | 动画 | Motion (Framer Motion) | 文字旋转、弹性过渡 |
-| 3D | @react-three/fiber + drei | Hero 区域视觉效果 |
 | 图片处理 | sharp + exifr | 压缩（仅开发时）+ EXIF 提取 |
 | 构建 | Vite 6 | 快速 HMR + Rollup 打包 |
 | 部署 | GitHub Actions → GitHub Pages | 自动 CI/CD |
@@ -73,13 +72,13 @@
 ┌────────────────────────────┴────────────────────────────────┐
 │                     照片处理管线                              │
 │                                                             │
-│  public/photos/*.jpg                                        │
+│  ../discover/photos/*.jpg  （原图 sibling 仓库）              │
 │      │                                                      │
 │      ├─ compress-photos.cjs ──→ public/photos/thumbnails/   │
 │      │   (sharp: 长边 1200px, JPEG q82)                     │
 │      │                                                      │
 │      └─ sync-photos.cjs ─────→ src/config/photos.ts         │
-│          (exifr: EXIF 提取, 增量合并 alt/tags)               │
+│          (exifr + src → raw.githubusercontent.com)           │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -92,10 +91,12 @@ st2eam.github.io/
 ├── scripts/
 │   ├── compress-photos.cjs      # 图片压缩（sharp，增量跳过已有缩略图）
 │   └── sync-photos.cjs          # 照片配置同步（EXIF + 标签推测 + 增量合并）
+├── index.html                   # Vite HTML 入口（Google Fonts CDN）
 ├── public/
-│   ├── index.html               # HTML 入口（Google Fonts CDN）
-│   └── photos/                  # 原始照片目录（未纳入 Git）
-│       └── thumbnails/          # 压缩缩略图（自动生成）
+│   ├── favicon.svg
+│   ├── manifest.json
+│   └── photos/
+│       └── thumbnails/          # 压缩缩略图（原图在 st2eam/discover）
 ├── src/
 │   ├── index.tsx                # 应用入口：MUI v9 主题 + BrowserRouter
 │   ├── App.tsx                  # 布局骨架：ClickSpark + Navbar + PageTransition + Footer
@@ -290,15 +291,13 @@ push master / workflow_dispatch
 | `@/pages/*` | `src/pages/*` |
 | `@/styles/*` | `src/styles/*` |
 | `@/utils/*` | `src/utils/*` |
-| `@/hooks/*` | `src/hooks/*` |
-| `@/types/*` | `src/types/*` |
 
 ## 照片管理
 
 ### 添加照片
 
-1. 将照片放入 `public/photos/` 目录（支持子目录分类）
-2. 运行一键命令：
+1. 将原图放入 sibling 仓库 `discover/photos/`（https://github.com/st2eam/discover），提交并推送
+2. 在本仓库运行一键命令（默认读取 `../discover/photos`，可用 `DISCOVER_PHOTOS_DIR` 覆盖）：
 
 ```bash
 npm run photos
@@ -307,7 +306,7 @@ npm run photos
 脚本会自动完成：
 - 压缩图片生成缩略图（长边 1200px，JPEG 质量 82，体积减少 95%+）
 - 读取 EXIF 元信息（相机型号、镜头、光圈、快门、ISO、拍摄日期）
-- 增量更新 `src/config/photos.ts` 配置文件
+- 增量更新 `src/config/photos.ts`（`src` 指向 raw.githubusercontent.com 原图地址）
 
 3. 编辑 `src/config/photos.ts` 自定义照片的 `alt`（标题）和 `tags`（标签）
 4. 再次运行 `npm run photos` 不会覆盖你的手动编辑

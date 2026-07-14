@@ -24,7 +24,7 @@ Build a complete Dribbble-tier photography portfolio site from scratch, or maint
 | UI Library | Material UI v5 |
 | Styling | Less + CSS Modules |
 | Routing | React Router v6 |
-| Gallery | react-masonry-css |
+| Gallery | @mui/lab Masonry |
 | Image Processing | sharp (compression) + exifr (EXIF) |
 | Build | Create React App + CRACO |
 | Deploy | GitHub Pages (output to `docs/`) |
@@ -144,9 +144,9 @@ src/components/
 - Triggers once, then unobserves
 
 ### MasonryGallery
-- `react-masonry-css` breakpoints: 4 → 3 → 2 → 1 columns
+- MUI Lab `Masonry` with responsive column counts
 - `AutoImage`: detects aspect ratio via `new Image().naturalWidth/naturalHeight`
-- Uses `thumbnail` for preview, `src` for lightbox
+- Uses `thumbnail` for preview, `src` for lightbox (remote originals)
 - Skeleton loading with opacity transition
 
 ### TimelineGallery

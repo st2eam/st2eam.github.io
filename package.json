@@ -12,8 +12,6 @@
     "photos": "node scripts/compress-photos.cjs && node scripts/sync-photos.cjs",
     "photos:sync": "node scripts/sync-photos.cjs",
     "photos:compress": "node scripts/compress-photos.cjs",
-    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
-    "lint:fix": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,less,md}\"",
     "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,less,md}\""
   },
@@ -23,21 +21,16 @@
     "@mui/icons-material": "^9.0.0",
     "@mui/lab": "^9.0.0-beta.2",
     "@mui/material": "^9.0.0",
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.6.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "motion": "^12.38.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "react-router-dom": "^6.22.3",
-    "three": "^0.184.0"
+    "react-router-dom": "^6.22.3"
   },
   "devDependencies": {
     "@types/node": "^25.6.0",
     "@vitejs/plugin-react": "^4.3.4",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.3",
     "exifr": "^7.1.3",
     "less": "^4.2.0",
     "prettier": "^3.6.2",
