@@ -202,6 +202,10 @@ npm run photos:sync      # only sync config
 
 ## Workflow
 
+For adding photos day-to-day, follow **[add-photos](../add-photos/SKILL.md)** (canonical checklist).
+
+Summary:
+
 1. Drop originals into sibling repo `discover/photos/` (https://github.com/st2eam/discover), commit & push
 2. In the website repo, run `npm run photos` (reads `../discover/photos` or `DISCOVER_PHOTOS_DIR`)
 3. Edit `src/config/photos.ts` — customize `alt` and `tags`
