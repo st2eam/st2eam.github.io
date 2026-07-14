@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useMemo } from 'react';
+import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import Masonry from '@mui/lab/Masonry';
 import { Box, Card, Fade, Skeleton, Typography } from '@mui/material';
 import { LocationOn as LocationOnIcon, LocalOffer as TagIcon } from '@mui/icons-material';
@@ -17,6 +17,26 @@ const MASONRY_SPACING = 2.5;
 const SKELETON_HEIGHTS = [280, 340, 260, 380, 300, 320, 350, 290];
 const SKELETON_SX = { borderRadius: '16px' };
 
+function useInView(ref: React.RefObject<HTMLElement | null>, rootMargin = '240px') {
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [ref, rootMargin]);
+  return inView;
+}
+
 interface AutoImageProps {
   image: PhotoConfig;
   onSelect: (img: PhotoConfig) => void;
@@ -29,6 +49,8 @@ const AutoImage = React.memo<AutoImageProps>(({ image, onSelect, delay }) => {
   const [errored, setErrored] = useState(false);
   const retryCount = useRef(0);
   const imgRef = useRef<HTMLImageElement>(null);
+  const outerRef = useRef<HTMLButtonElement>(null);
+  const inView = useInView(outerRef);
 
   const previewSrc = image.thumbnail || image.src;
 
@@ -46,7 +68,17 @@ const AutoImage = React.memo<AutoImageProps>(({ image, onSelect, delay }) => {
     }
   };
 
-  const handleClick = useCallback(() => onSelect(image), [onSelect, image]);
+  const handleSelect = useCallback(() => onSelect(image), [onSelect, image]);
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        onSelect(image);
+      }
+    },
+    [onSelect, image],
+  );
 
   const wrapStyle = useMemo(
     () => (ratio > 0 ? { aspectRatio: `${ratio}` } : { minHeight: 240 }),
@@ -57,7 +89,15 @@ const AutoImage = React.memo<AutoImageProps>(({ image, onSelect, delay }) => {
 
   return (
     <Fade in timeout={600} style={fadeStyle}>
-      <Box className={styles.cardOuter} onClick={handleClick}>
+      <Box
+        component="button"
+        type="button"
+        className={styles.cardOuter}
+        ref={outerRef}
+        onClick={handleSelect}
+        onKeyDown={handleKeyDown}
+        aria-label={`查看作品：${image.alt}`}
+      >
         <Card className={styles.card}>
           <Box className={styles.imgWrap} style={wrapStyle}>
             {errored ? (
@@ -66,11 +106,13 @@ const AutoImage = React.memo<AutoImageProps>(({ image, onSelect, delay }) => {
                   加载失败
                 </Typography>
               </Box>
-            ) : (
+            ) : inView ? (
               <img
                 ref={imgRef}
                 src={previewSrc}
                 alt={image.alt}
+                loading="lazy"
+                decoding="async"
                 className={`${styles.img} ${loaded ? styles.imgLoaded : ''}`}
                 onLoad={() => {
                   if (ratio === 0 && imgRef.current) {
@@ -80,7 +122,7 @@ const AutoImage = React.memo<AutoImageProps>(({ image, onSelect, delay }) => {
                 }}
                 onError={handleError}
               />
-            )}
+            ) : null}
             {!loaded && (
               <Skeleton variant="rectangular" className={styles.imgSkeleton} animation="wave" />
             )}

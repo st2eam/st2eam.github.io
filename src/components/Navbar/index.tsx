@@ -52,7 +52,7 @@ const Navbar: React.FC = () => {
           </Typography>
 
           {isMobile ? (
-            <IconButton onClick={handleDrawerToggle} className={styles.menuBtn}>
+            <IconButton onClick={handleDrawerToggle} className={styles.menuBtn} aria-label="打开菜单">
               <MenuIcon />
             </IconButton>
           ) : (
@@ -85,7 +85,7 @@ const Navbar: React.FC = () => {
             <Typography variant="h6" className={styles.drawerLogo}>
               ST2EAM
             </Typography>
-            <IconButton onClick={handleDrawerToggle} className={styles.closeBtn}>
+            <IconButton onClick={handleDrawerToggle} className={styles.closeBtn} aria-label="关闭菜单">
               <CloseIcon />
             </IconButton>
           </Box>

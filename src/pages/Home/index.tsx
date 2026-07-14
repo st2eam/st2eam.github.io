@@ -217,10 +217,10 @@ const Home: React.FC = () => {
                   className={styles.viewToggle}
                   size="small"
                 >
-                  <ToggleButton value="masonry" className={styles.toggleBtn}>
+                  <ToggleButton value="masonry" className={styles.toggleBtn} aria-label="瀑布流视图">
                     <ViewQuilt />
                   </ToggleButton>
-                  <ToggleButton value="timeline" className={styles.toggleBtn}>
+                  <ToggleButton value="timeline" className={styles.toggleBtn} aria-label="时间轴视图">
                     <Timeline />
                   </ToggleButton>
                 </ToggleButtonGroup>

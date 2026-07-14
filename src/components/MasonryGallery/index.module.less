@@ -16,7 +16,22 @@
 }
 
 .cardOuter {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
   cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+
+  &:focus-visible {
+    outline: 2px solid @accent;
+    outline-offset: 3px;
+    border-radius: @radius;
+  }
 }
 
 .card {

@@ -1,12 +1,27 @@
-import { defineConfig } from 'vite';
+import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
+import { copyFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath, URL } from 'node:url';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
+/** GitHub Pages SPA：刷新深链时用 404.html 回退到 index */
+function spaFallback404(): Plugin {
+  return {
+    name: 'spa-fallback-404',
+    closeBundle() {
+      const indexHtml = resolve(__dirname, 'docs/index.html');
+      const notFound = resolve(__dirname, 'docs/404.html');
+      if (existsSync(indexHtml)) {
+        copyFileSync(indexHtml, notFound);
+      }
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), spaFallback404()],
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),

@@ -82,7 +82,7 @@ const TimelineImage = React.memo<TimelineImageProps>(({ image, onSelect }) => {
   const [ratio, setRatio] = useState(0);
   const retryCount = useRef(0);
   const imgRef = useRef<HTMLImageElement>(null);
-  const wrapRef = useRef<HTMLDivElement>(null);
+  const wrapRef = useRef<HTMLButtonElement>(null);
   const inView = useInView(wrapRef);
   const previewSrc = image.thumbnail || image.src;
 
@@ -107,7 +107,17 @@ const TimelineImage = React.memo<TimelineImageProps>(({ image, onSelect }) => {
     }
   };
 
-  const handleClick = useCallback(() => onSelect(image), [onSelect, image]);
+  const handleSelect = useCallback(() => onSelect(image), [onSelect, image]);
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        onSelect(image);
+      }
+    },
+    [onSelect, image],
+  );
 
   const wrapStyle = useMemo(
     () => (ratio > 0 ? { aspectRatio: `${ratio}` } : { paddingBottom: '66%' }),
@@ -115,7 +125,15 @@ const TimelineImage = React.memo<TimelineImageProps>(({ image, onSelect }) => {
   );
 
   return (
-    <Box className={styles.timelineCard} onClick={handleClick} ref={wrapRef}>
+    <Box
+      component="button"
+      type="button"
+      className={styles.timelineCard}
+      onClick={handleSelect}
+      onKeyDown={handleKeyDown}
+      ref={wrapRef}
+      aria-label={`查看作品：${image.alt}`}
+    >
       <Box className={styles.cardImgWrap} style={wrapStyle}>
         {errored ? (
           <Box className={styles.cardError}>
@@ -128,6 +146,8 @@ const TimelineImage = React.memo<TimelineImageProps>(({ image, onSelect }) => {
             ref={imgRef}
             src={previewSrc}
             alt={image.alt}
+            loading="lazy"
+            decoding="async"
             className={`${styles.cardImg} ${loaded ? styles.cardImgLoaded : ''}`}
             onLoad={() => {
               if (ratio === 0 && imgRef.current) {

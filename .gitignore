@@ -1,6 +1,5 @@
 # 依赖文件
 node_modules/
-package-lock.json
 
 # 构建产物（由 GitHub Actions 自动部署）
 build/
