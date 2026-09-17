@@ -62,7 +62,9 @@
   display: block;
   object-fit: contain;
   animation: imgFadeIn 0.35s @ease-out-expo;
-  transition: filter 0.4s @ease-out-expo, opacity 0.25s ease;
+  transition:
+    filter 0.4s @ease-out-expo,
+    opacity 0.25s ease;
   will-change: filter, opacity;
 
   @media @mobile {
@@ -79,8 +81,14 @@
 }
 
 @keyframes imgFadeIn {
-  from { opacity: 0; transform: scale(0.97); }
-  to   { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 // ── Toolbar (top-right) ──
@@ -133,7 +141,10 @@
   font-weight: 500;
   letter-spacing: 0.3px;
   cursor: pointer;
-  transition: background 0.25s ease, border-color 0.25s ease, transform 0.35s @ease-spring;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.35s @ease-spring;
 
   &:hover:not(:disabled) {
     background: rgba(0, 0, 0, 0.6);
@@ -173,9 +184,12 @@
   backdrop-filter: blur(20px) saturate(1.4);
   -webkit-backdrop-filter: blur(20px) saturate(1.4);
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  width: 40px !important;
-  height: 40px !important;
-  transition: background 0.25s ease, border-color 0.25s ease, transform 0.35s @ease-spring !important;
+  width: 44px !important;
+  height: 44px !important;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.35s @ease-spring !important;
 
   svg {
     font-size: 20px;
@@ -195,15 +209,24 @@
     transform: scale(0.92);
   }
 
+  &:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.95);
+    outline-offset: 3px;
+  }
+
   @media @mobile {
-    width: 36px !important;
-    height: 36px !important;
+    width: 44px !important;
+    height: 44px !important;
   }
 }
 
 @keyframes navIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 // ── Navigation buttons ──
@@ -221,7 +244,9 @@
   height: 48px !important;
   opacity: 0;
   animation: navIn 0.35s @ease-out-expo 0.15s forwards;
-  transition: background 0.25s ease, border-color 0.25s ease !important;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease !important;
 
   svg {
     font-size: 28px;
@@ -237,8 +262,8 @@
   }
 
   @media @mobile {
-    width: 40px !important;
-    height: 40px !important;
+    width: 44px !important;
+    height: 44px !important;
 
     svg {
       font-size: 24px;
@@ -321,7 +346,9 @@
   z-index: 12;
   opacity: 0;
   transform: translateY(4px);
-  transition: opacity 0.3s ease, transform 0.35s @ease-out-expo;
+  transition:
+    opacity 0.3s ease,
+    transform 0.35s @ease-out-expo;
   pointer-events: none;
 
   @media @mobile {
@@ -333,6 +360,12 @@
 }
 
 .imgContainer:hover .dialogMeta {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.imgContainer:focus-within .dialogMeta {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;

@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Container,
   Typography,
   Box,
   Chip,
-  IconButton,
   Button,
-  useMediaQuery,
-  useTheme,
   ToggleButtonGroup,
   ToggleButton,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import {
   PhotoCamera,
-  Refresh,
   KeyboardArrowDown,
   ViewQuilt,
   Timeline,
@@ -24,252 +24,169 @@ import {
 import MasonryGallery from '@/components/MasonryGallery';
 import TimelineGallery from '@/components/TimelineGallery';
 import ScrollReveal from '@/components/ScrollReveal';
-import BlurText from '@/components/reactbits/BlurText/BlurText';
-import RotatingText from '@/components/reactbits/RotatingText/RotatingText';
-import ShinyText from '@/components/reactbits/ShinyText/ShinyText';
-import CountUp from '@/components/reactbits/CountUp/CountUp';
-import { PhotoConfig, photos as realPhotos, contentTags, locationTags } from '@/config/photos';
+import { photos as realPhotos, contentTags, locationTags } from '@/config/photos';
 import { sortPhotosByDateDesc } from '@/utils/sortPhotosByDate';
 import styles from './index.module.less';
 
-const ROTATE_TEXTS = ['瞬间', '故事', '旅途', '光阴'];
-const ROTATE_TRANSITION = { type: 'spring' as const, damping: 22, stiffness: 280 };
-const ROTATE_INITIAL = { y: '100%', opacity: 0 };
-const ROTATE_ANIMATE = { y: 0, opacity: 1 };
-const ROTATE_EXIT = { y: '-120%', opacity: 0 };
-
-const generatePlaceholders = (count: number): PhotoConfig[] => {
-  const cats = ['城市', '风景', '人像', '建筑', '街头', '自然', '抽象', '黑白'];
-  const titles = [
-    '城市夜景',
-    '自然风光',
-    '人像写真',
-    '建筑艺术',
-    '街头印象',
-    '山水之间',
-    '光影游戏',
-    '时光印记',
-    '城市韵律',
-    '静谧时刻',
-    '生活片段',
-    '艺术瞬间',
-    '色彩交响',
-    '几何美学',
-    '纹理探索',
-    '情感表达',
-    '动态瞬间',
-    '诗意空间',
-  ];
-  return Array.from({ length: count }, (_, i) => {
-    const w = 300 + Math.random() * 200;
-    const ratios = [0.6, 0.75, 1, 1.25, 1.5, 1.8];
-    const h = w / ratios[Math.floor(Math.random() * ratios.length)];
-    const daysAgo = Math.floor(Math.random() * 90);
-    const d = new Date(Date.now() - daysAgo * 86400000);
-    const date = d.toISOString().split('T')[0];
-    return {
-      id: (i + 1).toString(),
-      src: `https://picsum.photos/${Math.floor(w)}/${Math.floor(h)}?random=${i + 1}`,
-      alt: titles[Math.floor(Math.random() * titles.length)],
-      width: Math.floor(w),
-      height: Math.floor(h),
-      tags: [cats[Math.floor(Math.random() * cats.length)]],
-      exif: { date },
-    };
-  });
-};
-
-const useRealPhotos = realPhotos.length > 0;
-const initialPhotos = sortPhotosByDateDesc(useRealPhotos ? realPhotos : generatePlaceholders(24));
-
+const heroPhoto = realPhotos.find(photo => photo.thumbnail?.includes('DSC04146')) ?? realPhotos[0];
 type ViewMode = 'masonry' | 'timeline';
 
 const Home: React.FC = () => {
-  const [photos, setPhotos] = useState(initialPhotos);
-  const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('全部');
   const [selectedLocation, setSelectedLocation] = useState('全部');
   const [viewMode, setViewMode] = useState<ViewMode>('masonry');
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
-  const filteredPhotos = photos.filter(p => {
-    if (selectedCategory !== '全部' && !p.tags?.includes(selectedCategory)) return false;
-    if (selectedLocation !== '全部') {
-      const loc = p.location;
-      if (!loc) return false;
-      if (loc.city !== selectedLocation && loc.province !== selectedLocation) return false;
-    }
+  const photos = useMemo(() => sortPhotosByDateDesc(realPhotos), []);
+  const filteredPhotos = photos.filter(photo => {
+    if (selectedCategory !== '全部' && !photo.tags?.includes(selectedCategory)) return false;
+    if (
+      selectedLocation !== '全部' &&
+      photo.location?.city !== selectedLocation &&
+      photo.location?.province !== selectedLocation
+    )
+      return false;
     return true;
   });
-
-  const handleRefresh = () => {
-    if (useRealPhotos) return;
-    setLoading(true);
-    setTimeout(() => {
-      setPhotos(sortPhotosByDateDesc(generatePlaceholders(24)));
-      setLoading(false);
-    }, 1200);
-  };
-
-  const scrollToGallery = () => {
+  const scrollToGallery = () =>
     document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const [heroBgImage] = useState(() => {
-    const pool = useRealPhotos ? realPhotos : initialPhotos;
-    if (pool.length === 0) return '';
-    const pick = pool[Math.floor(Math.random() * pool.length)];
-    return pick.thumbnail || pick.src;
-  });
 
   return (
     <Box className={styles.homePage}>
-      <Box className={styles.hero}>
-        {heroBgImage && (
-          <Box
-            className={styles.heroBg}
-            style={{ backgroundImage: `url(${heroBgImage})` }}
-            aria-hidden
-          />
-        )}
-        <Box className={styles.heroOverlay} aria-hidden />
-
-        <Container maxWidth="lg" className={styles.heroInner}>
-          <ShinyText
-            text="PHOTOGRAPHY PORTFOLIO"
-            className={styles.heroLabel}
-            color="#b09472"
-            shineColor="#f3e2c8"
-            speed={3.5}
-            spread={120}
-          />
-          <Typography variant={isMobile ? 'h3' : 'h1'} component="h1" className={styles.heroTitle}>
-            <BlurText
-              text="捕捉光影"
-              animateBy="letters"
-              direction="top"
-              delay={70}
-              stepDuration={0.4}
-              className={styles.heroTitleLine}
-            />
-            <span className={styles.titleItalic}>
-              <BlurText
-                text="定格"
-                animateBy="letters"
-                direction="top"
-                delay={70}
-                stepDuration={0.4}
-                className={styles.heroTitleLine}
+      <Box component="section" className={styles.hero} aria-labelledby="hero-title">
+        <Container maxWidth="xl" className={styles.heroInner}>
+          <Box className={styles.heroCopy}>
+            <Typography className={styles.heroMeta}>ST2EAM · PHOTOGRAPHY ARCHIVE</Typography>
+            <Typography id="hero-title" component="h1" className={styles.heroTitle}>
+              雨涧听溪，
+              <br />
+              <em>山野春行</em>
+            </Typography>
+            <Typography className={styles.heroDesc}>
+              在雾与光之间，记录山野的回声。这里收集行走途中真实遇见的风景、人物与片刻。
+            </Typography>
+            <Box className={styles.heroActions}>
+              <Button
+                onClick={scrollToGallery}
+                className={styles.heroCta}
+                variant="contained"
+                disableElevation
+                endIcon={<ArrowForward />}
+              >
+                <PhotoCamera className={styles.ctaIcon} /> 进入作品集
+              </Button>
+              <Typography className={styles.heroCount}>
+                {photos.length} 张作品 · {locationTags.length - 1} 个地点
+              </Typography>
+            </Box>
+          </Box>
+          {heroPhoto && (
+            <Box component="figure" className={styles.heroMedia}>
+              <img
+                src={heroPhoto.thumbnail || heroPhoto.src}
+                alt={heroPhoto.alt}
+                width={heroPhoto.width}
+                height={heroPhoto.height}
+                fetchPriority="high"
               />
-              <RotatingText
-                texts={ROTATE_TEXTS}
-                rotationInterval={2400}
-                staggerDuration={0.025}
-                staggerFrom="first"
-                mainClassName={styles.titleRotate}
-                splitLevelClassName={styles.titleRotateLevel}
-                transition={ROTATE_TRANSITION}
-                initial={ROTATE_INITIAL}
-                animate={ROTATE_ANIMATE}
-                exit={ROTATE_EXIT}
-              />
-            </span>
-          </Typography>
-          <Typography className={styles.heroDesc}>
-            用镜头探索世界的纹理与色彩，记录那些转瞬即逝的美好
-          </Typography>
-          <Button
-            onClick={scrollToGallery}
-            className={styles.heroCta}
-            variant="contained"
-            disableElevation
-            endIcon={<ArrowForward />}
-            aria-label="查看作品集"
-          >
-            <PhotoCamera className={styles.ctaIcon} />
-            <span>
-              查看 <CountUp to={photos.length} duration={1.4} /> 张作品
-            </span>
-          </Button>
+              <Box component="figcaption" className={styles.heroCaption}>
+                <span>{heroPhoto.alt}</span>
+                <span>
+                  {heroPhoto.location?.city ?? '山野'} · {heroPhoto.exif?.date ?? ''}
+                </span>
+              </Box>
+            </Box>
+          )}
         </Container>
-
-        <IconButton className={styles.scrollHint} onClick={scrollToGallery} aria-label="滚动到作品集">
+        <Button className={styles.scrollHint} onClick={scrollToGallery} aria-label="滚动到作品集">
           <KeyboardArrowDown />
-        </IconButton>
+        </Button>
       </Box>
 
-      <Box id="gallery" className={styles.galleryWrap}>
+      <Box
+        id="gallery"
+        component="section"
+        className={styles.galleryWrap}
+        aria-labelledby="gallery-title"
+      >
         <Container maxWidth="xl">
           <ScrollReveal>
             <Box className={styles.galleryHeader}>
               <Box>
-                <Typography variant="h4" className={styles.galleryTitle}>
-                  作品集
+                <Typography id="gallery-title" component="h2" className={styles.galleryTitle}>
+                  作品选集
                 </Typography>
-                <Typography className={styles.gallerySubtitle}>Selected Works</Typography>
+                <Typography className={styles.gallerySubtitle}>
+                  PHOTOGRAPHY ARCHIVE · {filteredPhotos.length} WORKS
+                </Typography>
               </Box>
-              <Box className={styles.headerActions}>
-                <ToggleButtonGroup
-                  value={viewMode}
-                  exclusive
-                  onChange={(_, v) => v && setViewMode(v as ViewMode)}
-                  className={styles.viewToggle}
-                  size="small"
-                >
-                  <ToggleButton value="masonry" className={styles.toggleBtn} aria-label="瀑布流视图">
-                    <ViewQuilt />
-                  </ToggleButton>
-                  <ToggleButton value="timeline" className={styles.toggleBtn} aria-label="时间轴视图">
-                    <Timeline />
-                  </ToggleButton>
-                </ToggleButtonGroup>
-                {!useRealPhotos && (
-                  <IconButton
-                    onClick={handleRefresh}
-                    disabled={loading}
-                    className={styles.refreshBtn}
-                  >
-                    <Refresh className={loading ? styles.spinning : ''} />
-                  </IconButton>
-                )}
-              </Box>
+              <ToggleButtonGroup
+                value={viewMode}
+                exclusive
+                onChange={(_, value) => value && setViewMode(value)}
+                className={styles.viewToggle}
+                size="small"
+                aria-label="作品视图"
+              >
+                <ToggleButton value="masonry" className={styles.toggleBtn} aria-label="瀑布流视图">
+                  <ViewQuilt />
+                </ToggleButton>
+                <ToggleButton value="timeline" className={styles.toggleBtn} aria-label="时间轴视图">
+                  <Timeline />
+                </ToggleButton>
+              </ToggleButtonGroup>
             </Box>
           </ScrollReveal>
 
           {viewMode === 'masonry' && (
             <ScrollReveal delay={120}>
               <Box className={styles.filterSection}>
-                <Box className={styles.filterBar}>
+                <Box className={styles.categoryRow} aria-label="作品分类">
                   <LocalOffer className={styles.filterIcon} />
-                  {contentTags.map(cat => (
+                  {contentTags.map(category => (
                     <Chip
-                      key={cat}
-                      label={cat}
-                      onClick={() => setSelectedCategory(cat)}
-                      className={`${styles.filterChip} ${selectedCategory === cat ? styles.chipActive : ''}`}
+                      key={category}
+                      label={category}
+                      onClick={() => setSelectedCategory(category)}
+                      className={`${styles.filterChip} ${selectedCategory === category ? styles.chipActive : ''}`}
                     />
                   ))}
                 </Box>
-                <Box className={styles.filterBar}>
-                  <LocationOn className={styles.filterIcon} />
-                  {locationTags.map(loc => (
-                    <Chip
-                      key={loc}
-                      label={loc}
-                      onClick={() => setSelectedLocation(loc)}
-                      className={`${styles.filterChip} ${styles.filterChipLocation} ${selectedLocation === loc ? styles.chipLocationActive : ''}`}
-                    />
-                  ))}
-                </Box>
+                <FormControl size="small" className={styles.locationSelect}>
+                  <InputLabel id="location-label">
+                    <LocationOn fontSize="small" /> 地点
+                  </InputLabel>
+                  <Select
+                    labelId="location-label"
+                    value={selectedLocation}
+                    label="地点"
+                    onChange={event => setSelectedLocation(event.target.value)}
+                  >
+                    {locationTags.map(location => (
+                      <MenuItem key={location} value={location}>
+                        {location}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Box>
             </ScrollReveal>
           )}
 
-          {viewMode === 'masonry' ? (
-            <MasonryGallery images={filteredPhotos} loading={loading} />
+          {filteredPhotos.length === 0 ? (
+            <Box className={styles.emptyState}>
+              <Typography component="p">暂时没有符合条件的作品。</Typography>
+              <Button
+                onClick={() => {
+                  setSelectedCategory('全部');
+                  setSelectedLocation('全部');
+                }}
+              >
+                清除筛选
+              </Button>
+            </Box>
+          ) : viewMode === 'masonry' ? (
+            <MasonryGallery images={filteredPhotos} />
           ) : (
-            <TimelineGallery images={filteredPhotos} loading={loading} />
+            <TimelineGallery images={filteredPhotos} />
           )}
         </Container>
       </Box>

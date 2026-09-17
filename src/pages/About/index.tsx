@@ -16,8 +16,6 @@ import {
 } from '@mui/material';
 import { PhotoCamera, Email, GitHub, Camera, Palette, Code, CameraAlt } from '@mui/icons-material';
 import ScrollReveal from '@/components/ScrollReveal';
-import CountUp from '@/components/reactbits/CountUp/CountUp';
-import Magnet from '@/components/reactbits/Magnet/Magnet';
 import Dice3D from '@/components/Dice3D';
 import { photos as realPhotos } from '@/config/photos';
 import styles from './index.module.less';
@@ -66,44 +64,40 @@ const About: React.FC = () => {
               <Typography variant="h3" component="h1" className={styles.name}>
                 ST2EAM
               </Typography>
-              <Typography className={styles.tagline}>AI · 摄影师 · 视觉艺术家 · 桌游店老板</Typography>
+              <Typography className={styles.tagline}>
+                AI · 摄影师 · 视觉艺术家 · 桌游店老板
+              </Typography>
               <Typography className={styles.slogan}>雨涧听溪，山野春行</Typography>
               <Box className={styles.socialRow}>
-                <Magnet padding={70} magnetStrength={2.5}>
-                  <IconButton
-                    href="https://github.com/st2eam"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.socialBtn}
-                    aria-label="GitHub"
-                  >
-                    <GitHub />
-                  </IconButton>
-                </Magnet>
-                <Magnet padding={70} magnetStrength={2.5}>
-                  <IconButton
-                    href="https://st2eam.github.io/boardgames/zh/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`${styles.socialBtn} ${styles.casinoBtn}`}
-                    aria-label="The Game Shelf 桌游站"
-                    onMouseEnter={startRoll}
-                    onMouseLeave={stopRoll}
-                    onFocus={startRoll}
-                    onBlur={stopRoll}
-                  >
-                    <Dice3D rolling={diceRolling} />
-                  </IconButton>
-                </Magnet>
-                <Magnet padding={70} magnetStrength={2.5}>
-                  <IconButton
-                    href="mailto:379403404@qq.com"
-                    className={styles.socialBtn}
-                    aria-label="Email"
-                  >
-                    <Email />
-                  </IconButton>
-                </Magnet>
+                <IconButton
+                  href="https://github.com/st2eam"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.socialBtn}
+                  aria-label="GitHub"
+                >
+                  <GitHub />
+                </IconButton>
+                <IconButton
+                  href="https://st2eam.github.io/boardgames/zh/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${styles.socialBtn} ${styles.casinoBtn}`}
+                  aria-label="The Game Shelf 桌游站"
+                  onMouseEnter={startRoll}
+                  onMouseLeave={stopRoll}
+                  onFocus={startRoll}
+                  onBlur={stopRoll}
+                >
+                  <Dice3D rolling={diceRolling} />
+                </IconButton>
+                <IconButton
+                  href="mailto:379403404@qq.com"
+                  className={styles.socialBtn}
+                  aria-label="Email"
+                >
+                  <Email />
+                </IconButton>
               </Box>
             </Box>
           </ScrollReveal>
@@ -111,9 +105,13 @@ const About: React.FC = () => {
           <ScrollReveal delay={140}>
             <Box className={styles.statsGrid}>
               {stats.map((s, i) => (
-                <Box key={s.label} className={styles.statCell} style={{ transitionDelay: `${i * 60}ms` }}>
+                <Box
+                  key={s.label}
+                  className={styles.statCell}
+                  style={{ transitionDelay: `${i * 60}ms` }}
+                >
                   <Typography className={styles.statValue}>
-                    <CountUp to={s.value} duration={1.6} />
+                    {s.value}
                     <span className={styles.statSuffix}>{s.suffix}</span>
                   </Typography>
                   <Typography className={styles.statLabel}>{s.label}</Typography>
@@ -136,7 +134,7 @@ const About: React.FC = () => {
                     关于我
                   </Typography>
                   <Typography className={styles.bodyText}>
-                    你好，我是 STREAM。
+                    你好，我是 ST2EAM。
                     背着相机穿行山野是我的日常：在雨后山涧等溪声漫过石滩，在春日田埂任风擦过镜头。
                     我从不把摄影当作刻意的创作，它更像行走路上，与光影偶然相撞的细碎惊喜。
                   </Typography>

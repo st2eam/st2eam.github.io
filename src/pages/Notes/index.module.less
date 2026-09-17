@@ -1,13 +1,61 @@
 @import '../../styles/global.less';
-
 .notesPage {
-  height: calc(100vh - 72px);
-  width: 100%;
-  border: none;
-  overflow: hidden;
+  min-height: calc(100vh - 72px);
+  position: relative;
   background: @bg;
-
-  @media @mobile {
+}
+.notesPage iframe {
+  display: block;
+  width: 100%;
+  height: calc(100vh - 72px);
+  border: 0;
+  background: @bg;
+}
+.loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: @text-secondary;
+  background: @bg;
+  z-index: 1;
+  pointer-events: none;
+}
+.fallback {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 14px;
+  color: @text-muted;
+  font-size: 12px;
+  border: 1px solid @border;
+  background: fade(@surface-solid, 94%);
+  border-radius: @radius-xs;
+  box-shadow: @shadow-sm;
+}
+.fallbackLoaded {
+  opacity: 0.58;
+}
+.fallback button {
+  color: @accent-dark;
+  text-transform: none;
+}
+@media @mobile {
+  .notesPage {
+    min-height: calc(100vh - 60px);
+  }
+  .notesPage iframe {
     height: calc(100vh - 60px);
+  }
+  .fallback {
+    right: 10px;
+    top: 10px;
+    flex-wrap: wrap;
   }
 }

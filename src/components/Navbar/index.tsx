@@ -19,6 +19,7 @@ import styles from './index.module.less';
 
 const navItems = [
   { name: '作品', path: '/' },
+  { name: '项目', path: '/projects' },
   { name: '笔记', path: '/notes' },
   { name: '关于', path: '/about' },
 ];
@@ -52,7 +53,11 @@ const Navbar: React.FC = () => {
           </Typography>
 
           {isMobile ? (
-            <IconButton onClick={handleDrawerToggle} className={styles.menuBtn} aria-label="打开菜单">
+            <IconButton
+              onClick={handleDrawerToggle}
+              className={styles.menuBtn}
+              aria-label="打开菜单"
+            >
               <MenuIcon />
             </IconButton>
           ) : (
@@ -63,6 +68,7 @@ const Navbar: React.FC = () => {
                   component={Link}
                   to={item.path}
                   className={`${styles.navLink} ${location.pathname === item.path ? styles.active : ''}`}
+                  aria-current={location.pathname === item.path ? 'page' : undefined}
                   disableRipple
                 >
                   {item.name}
@@ -85,7 +91,11 @@ const Navbar: React.FC = () => {
             <Typography variant="h6" className={styles.drawerLogo}>
               ST2EAM
             </Typography>
-            <IconButton onClick={handleDrawerToggle} className={styles.closeBtn} aria-label="关闭菜单">
+            <IconButton
+              onClick={handleDrawerToggle}
+              className={styles.closeBtn}
+              aria-label="关闭菜单"
+            >
               <CloseIcon />
             </IconButton>
           </Box>
@@ -97,6 +107,7 @@ const Navbar: React.FC = () => {
                 to={item.path}
                 onClick={handleDrawerToggle}
                 className={`${styles.drawerItem} ${location.pathname === item.path ? styles.active : ''}`}
+                aria-current={location.pathname === item.path ? 'page' : undefined}
               >
                 <ListItemText
                   primary={item.name}

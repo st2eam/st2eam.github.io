@@ -1,188 +1,124 @@
 @import '@/styles/global.less';
-
 .navbar {
-  background: transparent;
-  transition: all 0.5s @ease-out-expo;
-
-  &.scrolled {
-    .glass-strong();
-    box-shadow: @shadow-sm;
-  }
-
-  .toolbar {
-    max-width: 1200px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 40px;
-    min-height: 72px;
-
-    @media @mobile {
-      padding: 0 20px;
-      min-height: 60px;
-    }
-  }
-
-  .logo {
-    font-family: @font-display;
-    font-weight: 700;
-    font-size: 22px;
-    letter-spacing: 2.5px;
-    color: @text;
-    text-decoration: none;
-    position: relative;
-    transition: letter-spacing 0.4s @ease-out-expo;
-    background-image: linear-gradient(90deg, @text 0%, @text 50%, @accent 50%, @accent 100%);
-    background-size: 200% 100%;
-    background-position: 0% 0;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    transition: background-position 0.55s @ease-out-expo, letter-spacing 0.4s @ease-out-expo;
-
-    &:hover {
-      background-position: -100% 0;
-      letter-spacing: 3.5px;
-    }
-  }
-
-  .menuBtn {
-    color: @text;
-  }
-
-  .navLinks {
-    display: flex;
-    gap: 6px;
-    margin-left: auto;
-  }
-
-  .navLink {
-    font-family: @font-body;
-    font-weight: 600;
-    font-size: 15px;
-    letter-spacing: 0.3px;
-    text-transform: none;
-    color: @text;
-    opacity: 0.55;
-    padding: 8px 20px;
-    border-radius: @radius-full;
-    transition: all 0.35s @ease-out-quart;
-    position: relative;
-    overflow: hidden;
-
-    &::before {
-      content: '';
-      position: absolute;
-      left: 50%;
-      bottom: 4px;
-      width: 0;
-      height: 2px;
-      background: @accent;
-      border-radius: 2px;
-      transform: translateX(-50%);
-      transition: width 0.45s @ease-out-expo;
-      pointer-events: none;
-    }
-
-    &:hover {
-      opacity: 1;
-      background: fade(@text, 5%);
-
-      &::before {
-        width: 18px;
-      }
-    }
-
-    &.active {
-      opacity: 1;
-      color: @text;
-      background: fade(@text, 7%);
-
-      &::before {
-        width: 22px;
-      }
-    }
+  background: fade(@bg, 96%) !important;
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.navbar.scrolled {
+  background: fade(@bg, 99%) !important;
+  box-shadow: 0 1px 0 @border;
+}
+.toolbar {
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 40px;
+  min-height: 72px;
+  @media @mobile {
+    padding: 0 20px;
+    min-height: 60px;
   }
 }
-
-.drawerRoot {
-  .MuiDrawer-paper {
-    width: 300px;
-    background: @bg;
-    border-left: none;
-    box-shadow: -20px 0 60px rgba(0, 0, 0, 0.08);
+.logo {
+  font-family: @font-display-latin;
+  font-weight: 600;
+  font-size: 22px !important;
+  letter-spacing: 2.5px;
+  color: @text !important;
+  text-decoration: none;
+  &:hover {
+    color: @accent !important;
   }
 }
-
+.menuBtn {
+  color: @text !important;
+}
+.navLinks {
+  display: flex;
+  gap: 2px;
+  margin-left: auto;
+}
+.navLink {
+  font-family: @font-body;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  letter-spacing: 0.3px;
+  text-transform: none !important;
+  color: @text-secondary !important;
+  padding: 10px 14px !important;
+  border-radius: 0 !important;
+  position: relative;
+  &:hover {
+    color: @text !important;
+    background: transparent !important;
+  }
+  &.active {
+    color: @text !important;
+  }
+  &.active::after {
+    content: '';
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 5px;
+    height: 2px;
+    background: @accent;
+  }
+}
+.drawerRoot :global(.MuiDrawer-paper) {
+  width: min(320px, 86vw);
+  background: @bg;
+  border-left: none;
+  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.12);
+}
 .mobileDrawer {
   height: 100%;
   padding: 8px 0;
 }
-
 .drawerHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px 28px;
   margin-bottom: 8px;
-
-  .drawerLogo {
-    font-family: @font-display;
-    font-weight: 600;
-    letter-spacing: 2px;
-    color: @text;
-  }
-
-  .closeBtn {
-    color: @text-muted;
-    width: 36px;
-    height: 36px;
-  }
 }
-
+.drawerLogo {
+  font-family: @font-display-latin !important;
+  font-weight: 600 !important;
+  letter-spacing: 2px;
+  color: @text;
+}
+.closeBtn {
+  color: @text-muted !important;
+  width: 36px;
+  height: 36px;
+}
 .drawerList {
-  padding: 0 16px;
+  padding: 0 16px !important;
 }
-
 .drawerItem {
-  padding: 14px 20px;
-  margin-bottom: 2px;
-  border-radius: @radius-sm;
+  padding: 14px 20px !important;
+  margin-bottom: 4px !important;
+  border-radius: @radius-xs !important;
   text-decoration: none;
-  color: @text-secondary;
-  transition: all 0.35s @ease-out-quart;
-  position: relative;
-  overflow: hidden;
-
-  &::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 3px;
-    background: @accent;
-    transform: translateX(-100%);
-    transition: transform 0.4s @ease-out-expo;
-  }
-
+  color: @text-secondary !important;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+  border-left: 3px solid transparent;
   &:hover {
     background: fade(@accent, 6%);
-    color: @text;
-    padding-left: 26px;
-
-    &::after { transform: translateX(0); }
+    color: @text !important;
   }
-
   &.active {
     background: fade(@accent, 10%);
-    color: @accent-dark;
-
-    &::after { transform: translateX(0); }
+    color: @accent-dark !important;
+    border-left-color: @accent;
   }
-
-  .drawerItemText {
-    font-size: 16px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-  }
+}
+.drawerItemText {
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.5px;
 }

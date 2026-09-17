@@ -30,16 +30,17 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
   className = '',
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  // Content remains available on first paint; the home hero owns the single authored reveal.
+  const [isVisible] = useState(true);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true);
           observer.unobserve(entry.target);
         }
       },
@@ -50,12 +51,15 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
     return () => observer.disconnect();
   }, []);
 
-  const sx = useMemo(() => ({
-    opacity: isVisible ? 1 : 0,
-    transform: getTransform(direction, distance, isVisible),
-    transition: `opacity ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
-    willChange: 'opacity, transform',
-  }), [isVisible, direction, distance, duration, delay]);
+  const sx = useMemo(
+    () => ({
+      opacity: isVisible ? 1 : 0,
+      transform: getTransform(direction, distance, isVisible),
+      transition: `opacity ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
+      willChange: 'opacity, transform',
+    }),
+    [isVisible, direction, distance, duration, delay]
+  );
 
   return (
     <Box ref={ref} className={className} sx={sx}>

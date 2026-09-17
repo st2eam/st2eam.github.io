@@ -15,7 +15,13 @@
   top: 0;
   bottom: 0;
   width: 1px;
-  background: linear-gradient(to bottom, transparent, fade(@accent, 20%) 10%, fade(@accent, 20%) 90%, transparent);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    fade(@accent, 20%) 10%,
+    fade(@accent, 20%) 90%,
+    transparent
+  );
 
   @media @mobile {
     left: 52px;
@@ -59,7 +65,9 @@
   flex-shrink: 0;
   position: relative;
   z-index: 1;
-  transition: transform 0.4s @ease-spring, box-shadow 0.4s ease;
+  transition:
+    transform 0.4s @ease-spring,
+    box-shadow 0.4s ease;
 
   &::before,
   &::after {
@@ -169,10 +177,10 @@
   }
 
   &:hover {
-    transform: translateY(-6px) rotate(-0.6deg);
+    transform: translateY(-3px);
 
     .cardImgWrap {
-      box-shadow: @shadow-lg;
+      box-shadow: @shadow-sm;
     }
 
     .cardImg {
@@ -182,6 +190,11 @@
     .cardOverlay {
       opacity: 1;
     }
+  }
+
+  &:focus-visible {
+    outline: 2px solid @pine;
+    outline-offset: 4px;
   }
 
   @media @mobile {
@@ -194,8 +207,8 @@
   overflow: hidden;
   background: fade(@text-muted, 6%);
   display: block;
-  border-radius: @radius;
-  box-shadow: @shadow-xs;
+  border-radius: @radius-xs;
+  box-shadow: none;
 }
 
 .cardImg {
@@ -205,7 +218,9 @@
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  transition: opacity 0.5s ease, transform 0.7s @ease-out-expo;
+  transition:
+    opacity 0.5s ease,
+    transform 0.7s @ease-out-expo;
 }
 
 .cardImgLoaded {
@@ -232,7 +247,12 @@
 .cardOverlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.05) 50%, transparent 100%);
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.05) 50%,
+    transparent 100%
+  );
   opacity: 0;
   transition: opacity 0.4s ease;
   display: flex;

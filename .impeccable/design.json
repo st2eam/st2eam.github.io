@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "name": "ST2EAM · 东方山野诗集",
+  "mode": "experience",
+  "palette": {
+    "paper": "#F2EFE7",
+    "paperDeep": "#E8E1D4",
+    "ink": "#1D1C18",
+    "inkMuted": "#625F57",
+    "pine": "#31463B",
+    "copper": "#9B7952",
+    "hairline": "rgba(29, 28, 24, 0.14)",
+    "night": "#111512"
+  },
+  "typography": {
+    "displayCn": ["Songti SC", "STSong", "Noto Serif CJK SC", "serif"],
+    "displayLatin": ["Playfair Display", "Georgia", "serif"],
+    "body": ["DM Sans", "PingFang SC", "Microsoft YaHei", "sans-serif"],
+    "mono": ["Space Mono", "Consolas", "monospace"]
+  },
+  "surfaces": {
+    "home": { "mode": "experience", "hero": "DSC04146.jpg" },
+    "projects": { "mode": "read", "priority": "secondary" },
+    "notes": { "mode": "read", "external": true },
+    "about": { "mode": "read" }
+  },
+  "routes": ["/", "/projects", "/notes", "/about"],
+  "navigationOrder": ["作品", "项目", "笔记", "关于"],
+  "references": {
+    "desktop": ".impeccable/mocks/decision/home-desktop.png",
+    "mobile": ".impeccable/mocks/decision/home-mobile.png",
+    "status": "decision-artifacts-only"
+  },
+  "motion": {
+    "signature": "hero-scroll-reveal",
+    "reducedMotion": "content-visible-no-essential-motion"
+  }
+}
