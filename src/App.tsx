@@ -10,6 +10,7 @@ const Home = lazy(() => import('@/pages/Home'));
 const Notes = lazy(() => import('@/pages/Notes'));
 const About = lazy(() => import('@/pages/About'));
 const Projects = lazy(() => import('@/pages/Projects'));
+const NotFound = lazy(() => import('@/pages/NotFound'));
 
 const routeFallback = (
   <Box
@@ -36,6 +37,7 @@ const App: React.FC = () => {
               <Route path="/projects" element={<Projects />} />
               <Route path="/notes" element={<Notes />} />
               <Route path="/about" element={<About />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
         </PageTransition>
