@@ -31,7 +31,7 @@ const NotFound: React.FC = () => (
 
       <Box component="figure" className={styles.photo}>
         <Typography component="p" className={styles.code} aria-label="错误代码 404">
-          404
+          错误代码&nbsp;·&nbsp;404
         </Typography>
         <img
           src="/photos/thumbnails/DSC04146.jpg"
