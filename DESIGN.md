@@ -27,7 +27,7 @@ Large titles are compact but never overflow. Body measure stays around 65–75ch
 ## Composition
 
 - Home first viewport: desktop 40/60 text-to-photo split; mobile photo-first vertical composition.
-- Hero photography is the fixed fog-forest frame `DSC04146.jpg`.
+- Hero photography rotates through the real `风光` archive every seven days and stays stable within each window. The fog-forest frame `DSC04146.jpg` remains one of the available photographs.
 - Archive uses generous gutters, restrained image corners, compact filters, and metadata revealed through hover, focus, or opening the viewer.
 - Projects is a quiet secondary archive, not a competing hero.
 - Notes keeps the existing external document experience inside a titled, full-height frame and exposes a direct-link fallback.
@@ -41,4 +41,4 @@ The approved visual references are stored at `.impeccable/mocks/decision/home-de
 
 ## Anti-patterns to Avoid
 
-No random hero selection, gradient text, glassmorphism cards, excessive pills, continuous marquee decoration, low-contrast gray copy, fake photography, or template-like metric/card scaffolding.
+No per-load random hero selection, gradient text, glassmorphism cards, excessive pills, continuous marquee decoration, low-contrast gray copy, fake photography, or template-like metric/card scaffolding.

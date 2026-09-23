@@ -19,7 +19,14 @@
     "mono": ["Space Mono", "Consolas", "monospace"]
   },
   "surfaces": {
-    "home": { "mode": "experience", "hero": "DSC04146.jpg" },
+    "home": {
+      "mode": "experience",
+      "heroRotation": {
+        "source": "realPhotos tagged 风光",
+        "intervalDays": 7,
+        "stableWithinInterval": true
+      }
+    },
     "projects": { "mode": "read", "priority": "secondary" },
     "notes": { "mode": "read", "external": true },
     "about": { "mode": "read" }

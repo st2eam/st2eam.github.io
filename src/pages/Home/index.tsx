@@ -28,7 +28,11 @@ import { photos as realPhotos, contentTags, locationTags } from '@/config/photos
 import { sortPhotosByDateDesc } from '@/utils/sortPhotosByDate';
 import styles from './index.module.less';
 
-const heroPhoto = realPhotos.find(photo => photo.thumbnail?.includes('DSC04146')) ?? realPhotos[0];
+const heroCandidates = realPhotos.filter(photo => photo.tags?.includes('风光'));
+const heroPool = heroCandidates.length > 0 ? heroCandidates : realPhotos;
+const daysPerRotation = 7;
+const rotationIndex = Math.floor(Date.now() / (daysPerRotation * 24 * 60 * 60 * 1000));
+const heroPhoto = heroPool[rotationIndex % heroPool.length];
 type ViewMode = 'masonry' | 'timeline';
 
 const Home: React.FC = () => {
