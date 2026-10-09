@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { Box, CircularProgress } from '@mui/material';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -26,8 +26,10 @@ const routeFallback = (
 );
 
 const App: React.FC = () => {
+  const isNotePage = useLocation().pathname === '/note';
+
   return (
-    <Box className="app">
+    <Box className={isNotePage ? 'app app-note' : 'app'}>
       <Navbar />
       <Box component="main" className="main-content">
         <PageTransition>
@@ -42,7 +44,7 @@ const App: React.FC = () => {
           </Suspense>
         </PageTransition>
       </Box>
-      <Footer />
+      {!isNotePage && <Footer />}
     </Box>
   );
 };

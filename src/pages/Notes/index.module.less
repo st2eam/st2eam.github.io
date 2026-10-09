@@ -1,13 +1,14 @@
 @import '../../styles/global.less';
 .notesPage {
-  min-height: calc(100vh - 72px);
+  height: calc(100dvh - 72px);
+  overflow: hidden;
   position: relative;
   background: @bg;
 }
 .notesPage iframe {
   display: block;
   width: 100%;
-  height: calc(100vh - 72px);
+  height: 100%;
   border: 0;
   background: @bg;
 }
@@ -24,9 +25,6 @@
 }
 @media @mobile {
   .notesPage {
-    min-height: calc(100vh - 60px);
-  }
-  .notesPage iframe {
-    height: calc(100vh - 60px);
+    height: calc(100dvh - 60px);
   }
 }
