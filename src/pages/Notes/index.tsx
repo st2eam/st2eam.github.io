@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, Button } from '@mui/material';
-import { OpenInNew } from '@mui/icons-material';
+import { Box, Typography } from '@mui/material';
 import styles from './index.module.less';
 
 const notesUrl = 'https://st2eam.github.io/notes/Web/?embed=true';
@@ -15,17 +14,6 @@ const Notes: React.FC = () => {
         </Box>
       )}
       <iframe title="ST2EAM 技术笔记" src={notesUrl} onLoad={() => setLoaded(true)} />
-      <Box className={`${styles.fallback} ${loaded ? styles.fallbackLoaded : ''}`}>
-        <Typography>如果笔记无法嵌入，可直接访问：</Typography>
-        <Button
-          href={notesUrl.replace('?embed=true', '')}
-          target="_blank"
-          rel="noopener noreferrer"
-          endIcon={<OpenInNew />}
-        >
-          打开技术笔记
-        </Button>
-      </Box>
     </Box>
   );
 };
