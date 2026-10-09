@@ -20,7 +20,7 @@ import styles from './index.module.less';
 const navItems = [
   { name: '作品', path: '/' },
   { name: '项目', path: '/projects' },
-  { name: '笔记', path: '/notes' },
+  { name: '笔记', path: '/note' },
   { name: '关于', path: '/about' },
 ];
 

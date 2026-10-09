@@ -22,7 +22,7 @@ const Footer: React.FC = () => {
             <Link to="/projects" className={styles.link}>
               项目
             </Link>
-            <Link to="/notes" className={styles.link}>
+            <Link to="/note" className={styles.link}>
               笔记
             </Link>
             <Link to="/about" className={styles.link}>

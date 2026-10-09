@@ -54,7 +54,7 @@
 │              ├── PageTransition                              │
 │              │   └── Routes                                  │
 │              │       ├── /        → Home (画廊)              │
-│              │       ├── /notes   → Notes (iframe 嵌入)      │
+│              │       ├── /note    → Notes (iframe 嵌入)      │
 │              │       └── /about   → About (个人介绍)         │
 │              └── Footer                                      │
 │                                                             │
@@ -159,7 +159,7 @@ index.tsx
                 │           │       ├── ScrollReveal (每个日期分组)
                 │           │       ├── TimelineImage (React.memo)
                 │           │       └── PhotoLightbox
-                │           ├── /notes → Notes (iframe)
+                │           ├── /note → Notes (iframe)
                 │           └── /about → About
                 │               ├── Grid (MUI v9, size prop)
                 │               └── ScrollReveal (各内容区块)
@@ -253,7 +253,7 @@ Home (筛选 category → 过滤 photos[])
 | 路径 | 页面 | 导航显示 | 说明 |
 |------|------|----------|------|
 | `/` | Home | 作品 | 画廊主页，瀑布流/时间轴切换 |
-| `/notes` | Notes | 笔记 | iframe 嵌入 `st2eam.github.io/notes/Web/` |
+| `/note` | Notes | 笔记 | iframe 嵌入 `st2eam.github.io/notes/Web/` |
 | `/about` | About | 关于 | 个人介绍、技能、器材 |
 | — | Projects | 未挂载 | 已实现但未注册路由和导航 |
 

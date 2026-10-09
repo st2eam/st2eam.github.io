@@ -26,7 +26,7 @@ The archive is authored from the photographer's own travel, nature, and human-do
 
 The site is a static GitHub Pages experience. Thumbnails are kept in this repository, originals remain in the `st2eam/discover` repository, and the Notes page embeds the existing external notes site.
 
-The public information architecture is fixed as `作品 /` (the archive), `项目 /projects`, `笔记 /notes`, and `关于 /about`. The Projects and Notes sections are intentionally secondary to the photographic archive.
+The public information architecture is fixed as `作品 /` (the archive), `项目 /projects`, `笔记 /note`, and `关于 /about`. The Projects and Notes sections are intentionally secondary to the photographic archive.
 
 ## Capabilities and Constraints
 
@@ -45,7 +45,7 @@ The identity is `ST2EAM`. Existing language and assets include “雨涧听溪�
 ## Evidence on Hand
 
 - 58 configured photographs with local thumbnails and real EXIF/location data in `src/config/photos.ts`.
-- Public routes for works (`/`), projects (`/projects`), notes (`/notes`), and about (`/about`), with the same order in the primary and footer navigation.
+- Public routes for works (`/`), projects (`/projects`), notes (`/note`), and about (`/about`), with the same order in the primary and footer navigation.
 - Existing GitHub, email, board-game site, and notes links in the repository.
 
 ## Product Principles
