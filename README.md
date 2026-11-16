@@ -207,16 +207,18 @@ Home (筛选 category → 过滤 photos[])
 | rendering-hoist-jsx | MasonryGallery | 骨架屏高度预生成固定数组，替代 `Math.random()` |
 | rerender-memo | ScrollReveal | `sx` 对象用 `useMemo` 缓存，避免 MUI sx 重复解析 |
 
-### Bundle 分包策略
+### 构建优化与分包策略
 
-在 `vite.config.ts` 中配置 `manualChunks`：
+MUI 组件和图标使用公开的组件路径按需导入（如 `@mui/material/Box`、`@mui/icons-material/GitHub`），避免构建时遍历整包入口导出的未使用模块。新增组件也应沿用这种导入方式。
 
-| Chunk | 包含 | 大小 (gzip) |
-|-------|------|-------------|
-| react | react, react-dom, react-router-dom | ~12 KB |
-| mui | @mui/material, @mui/icons-material, @mui/lab, @emotion/* | ~67 KB |
-| motion | motion (framer-motion) | ~32 KB |
-| index | 应用代码 | ~86 KB |
+`vite.config.ts` 使用函数形式的 `manualChunks`，只对实际引入的依赖分包，避免为了创建 chunk 而加载整个包：
+
+| Chunk | 包含 |
+|-------|------|
+| react | React、React DOM、React Router、scheduler |
+| mui | 实际使用的 MUI 组件、图标及 Emotion |
+| motion | 实际使用的 Motion 依赖；未使用时不生成 |
+| index / 页面 chunk | 应用代码及懒加载页面 |
 
 ## 设计系统
 
@@ -358,7 +360,7 @@ npm run dev
 npm run build:docs
 ```
 
-构建产物输出到 `docs/` 目录，用于 GitHub Pages 部署。
+构建产物输出到 `docs/` 目录，用于 GitHub Pages 部署。Vite 会在构建时自动清空旧产物，`build:docs` 直接复用 `build`，避免重复清理；需要单独清空时可运行 `npm run clean:docs`。
 
 ## License
 

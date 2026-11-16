@@ -1,7 +1,12 @@
 import React, { useState, useRef, useCallback, useMemo } from 'react';
 import Masonry from '@mui/lab/Masonry';
-import { Box, Card, Fade, Skeleton, Typography } from '@mui/material';
-import { LocationOn as LocationOnIcon, LocalOffer as TagIcon } from '@mui/icons-material';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import Fade from '@mui/material/Fade';
+import Skeleton from '@mui/material/Skeleton';
+import Typography from '@mui/material/Typography';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import TagIcon from '@mui/icons-material/LocalOffer';
 import { PhotoConfig } from '@/config/photos';
 import PhotoLightbox from '@/components/PhotoLightbox';
 import styles from './index.module.less';

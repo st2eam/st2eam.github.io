@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
-import { Box } from '@mui/material';
+import Box from '@mui/material/Box';
 
 interface ScrollRevealProps {
   children: React.ReactNode;

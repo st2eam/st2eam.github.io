@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
-import { Box, Typography, Skeleton } from '@mui/material';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Skeleton from '@mui/material/Skeleton';
 import { PhotoConfig } from '@/config/photos';
 import PhotoLightbox from '@/components/PhotoLightbox';
 import ScrollReveal from '@/components/ScrollReveal';

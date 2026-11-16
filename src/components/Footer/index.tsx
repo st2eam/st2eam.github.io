@@ -1,6 +1,10 @@
 import React from 'react';
-import { Box, Container, Typography, IconButton } from '@mui/material';
-import { GitHub, Email } from '@mui/icons-material';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import GitHub from '@mui/icons-material/GitHub';
+import Email from '@mui/icons-material/Email';
 import { Link } from 'react-router-dom';
 import styles from './index.module.less';
 

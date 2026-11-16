@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "build:docs": "npm run clean:docs && npm run build",
+    "build:docs": "npm run build",
     "clean:docs": "rimraf docs",
     "preview": "vite preview",
     "photos": "node scripts/compress-photos.cjs && node scripts/sync-photos.cjs",

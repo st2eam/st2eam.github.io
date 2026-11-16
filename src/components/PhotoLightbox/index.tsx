@@ -1,20 +1,22 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { Box, Dialog, IconButton, Typography, CircularProgress } from '@mui/material';
-import {
-  Close as CloseIcon,
-  ChevronLeft,
-  ChevronRight,
-  CameraAlt,
-  Camera,
-  Iso,
-  ShutterSpeed,
-  CalendarToday,
-  LocationOn as LocationOnIcon,
-  LocalOffer as TagIcon,
-  Refresh as RefreshIcon,
-  PhotoSizeSelectActual as OriginalIcon,
-  Check as CheckIcon,
-} from '@mui/icons-material';
+import Box from '@mui/material/Box';
+import Dialog from '@mui/material/Dialog';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import CircularProgress from '@mui/material/CircularProgress';
+import CloseIcon from '@mui/icons-material/Close';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
+import ChevronRight from '@mui/icons-material/ChevronRight';
+import CameraAlt from '@mui/icons-material/CameraAlt';
+import Camera from '@mui/icons-material/Camera';
+import Iso from '@mui/icons-material/Iso';
+import ShutterSpeed from '@mui/icons-material/ShutterSpeed';
+import CalendarToday from '@mui/icons-material/CalendarToday';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import TagIcon from '@mui/icons-material/LocalOffer';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import OriginalIcon from '@mui/icons-material/PhotoSizeSelectActual';
+import CheckIcon from '@mui/icons-material/Check';
 import { PhotoConfig, ExifData } from '@/config/photos';
 import styles from './index.module.less';
 

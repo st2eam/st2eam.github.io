@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import {
-  Container,
-  Typography,
-  Box,
-  Card,
-  CardContent,
-  Chip,
-  IconButton,
-  Button,
-} from '@mui/material';
-import { GitHub, Launch, Code } from '@mui/icons-material';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Chip from '@mui/material/Chip';
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import GitHub from '@mui/icons-material/GitHub';
+import Launch from '@mui/icons-material/Launch';
+import Code from '@mui/icons-material/Code';
 import styles from './index.module.less';
 
 interface Project {

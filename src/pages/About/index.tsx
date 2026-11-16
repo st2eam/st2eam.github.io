@@ -1,20 +1,24 @@
 import React, { useState, useCallback } from 'react';
-import {
-  Container,
-  Typography,
-  Box,
-  Card,
-  CardContent,
-  Grid,
-  Chip,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Divider,
-  IconButton,
-} from '@mui/material';
-import { PhotoCamera, Email, GitHub, Camera, Palette, Code, CameraAlt } from '@mui/icons-material';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Grid from '@mui/material/Grid';
+import Chip from '@mui/material/Chip';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import Email from '@mui/icons-material/Email';
+import GitHub from '@mui/icons-material/GitHub';
+import Camera from '@mui/icons-material/Camera';
+import Palette from '@mui/icons-material/Palette';
+import Code from '@mui/icons-material/Code';
+import CameraAlt from '@mui/icons-material/CameraAlt';
 import ScrollReveal from '@/components/ScrollReveal';
 import Dice3D from '@/components/Dice3D';
 import { photos as realPhotos } from '@/config/photos';

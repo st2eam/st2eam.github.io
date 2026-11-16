@@ -1,4 +1,4 @@
-import { defineConfig, type Plugin } from 'vite';
+import { type Plugin, defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { copyFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -43,10 +43,17 @@ export default defineConfig({
     chunkSizeWarningLimit: 800,
     rollupOptions: {
       output: {
-        manualChunks: {
-          react: ['react', 'react-dom', 'react-router-dom'],
-          mui: ['@mui/material', '@mui/icons-material', '@mui/lab', '@emotion/react', '@emotion/styled'],
-          motion: ['motion'],
+        // 只给实际引入的模块分包，避免为分包扫描组件库的整包入口。
+        manualChunks(id) {
+          if (/\/node_modules\/(?:@mui|@emotion)\//.test(id)) return 'mui';
+          if (
+            /\/node_modules\/(?:react|react-dom|react-router|react-router-dom|scheduler)\//.test(id)
+          ) {
+            return 'react';
+          }
+          if (/\/node_modules\/(?:motion|motion-dom|motion-utils|framer-motion)\//.test(id)) {
+            return 'motion';
+          }
         },
       },
     },
