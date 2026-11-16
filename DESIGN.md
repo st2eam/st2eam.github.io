@@ -26,8 +26,8 @@ Large titles are compact but never overflow. Body measure stays around 65–75ch
 
 ## Composition
 
-- Home first viewport: desktop 40/60 text-to-photo split; mobile photo-first vertical composition.
-- Hero photography rotates through the real `风光` archive every seven days and stays stable within each window. The fog-forest frame `DSC04146.jpg` remains one of the available photographs.
+- Home first viewport: a full-bleed photograph fills the Hero beneath the existing navigation. On desktop, a large white Songti title, description, and outlined archive action sit on the left; the full quotation and right-aligned author sit lower on the right. Mobile stacks the same content over the image.
+- Each page load independently picks a random Hero photograph from the real `风光` archive and a random quotation from `src/config/quotes.ts`. Both stay fixed during the current browse, including filter changes and route navigation. The fog-forest frame `DSC04146.jpg` remains one of the available photographs.
 - Archive uses generous gutters, restrained image corners, compact filters, and metadata revealed through hover, focus, or opening the viewer.
 - Projects is a quiet secondary archive, not a competing hero.
 - Notes keeps the existing external document experience inside a titled, full-height frame and exposes a direct-link fallback.
@@ -37,8 +37,8 @@ Large titles are compact but never overflow. Body measure stays around 65–75ch
 
 Use one authored scroll/hero reveal, subtle page transitions, deliberate image hover states, and the lightbox's intentional image/toolbar transitions. Content remains visible by default and all non-essential motion turns off for reduced-motion users.
 
-The approved visual references are stored at `.impeccable/mocks/decision/home-desktop.png` (1440×900) and `.impeccable/mocks/decision/home-mobile.png` (390×844). They are decision artifacts only; generated imagery is never shipped as photography content.
+Historical initial split-layout references are stored at `.impeccable/mocks/decision/home-desktop.png` (1440×900) and `.impeccable/mocks/decision/home-mobile.png` (390×844). The current user-approved Hero uses the full-background composition described above. These images remain historical decision artifacts only; generated imagery is never shipped as photography content.
 
 ## Anti-patterns to Avoid
 
-No per-load random hero selection, gradient text, glassmorphism cards, excessive pills, continuous marquee decoration, low-contrast gray copy, fake photography, or template-like metric/card scaffolding.
+No automatic Hero changes during the current browse, gradient text, glassmorphism cards, excessive pills, continuous marquee decoration, low-contrast gray copy, fake photography, or template-like metric/card scaffolding.

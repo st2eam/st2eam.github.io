@@ -32,7 +32,7 @@ The public information architecture is fixed as `作品 /` (the archive), `项�
 
 - Browse 58 photographs in masonry or timeline views.
 - Filter by content tags and province/city, then open a full-screen viewer with optional original-image loading, EXIF, keyboard navigation, and touch swipes.
-- Rotate the home hero through real photographs tagged `风光` every seven days; keep the selected image stable during each rotation window and prioritize its fetch for the first paint.
+- Randomly select a real photograph tagged `风光` and a quotation on each page load; keep both fixed during the current browse and prioritize the image fetch for the first paint.
 - On mobile, browse categories in a horizontal strip and choose a location from a compact selector; an empty result state always provides a clear reset action.
 - Read the external Notes site inside a titled iframe, with a visible direct-link fallback when embedding is unavailable.
 - Keep the existing `PhotoConfig` shape, photo sync scripts, remote originals, and external Notes URL compatible.

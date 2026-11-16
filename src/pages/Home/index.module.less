@@ -4,116 +4,248 @@
 }
 .hero {
   position: relative;
-  background: @bg;
-  padding: 112px 0 82px;
+  isolation: isolate;
+  display: grid;
+  min-height: clamp(680px, calc(100svh - 72px), 960px);
   overflow: hidden;
+  background: @bg-hero;
+  color: @surface-solid;
+}
+.heroMedia {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  margin: 0;
+  background: @bg-hero;
+}
+.heroMedia::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      fade(@bg-hero, 68%) 0%,
+      fade(@bg-hero, 48%) 44%,
+      fade(@bg-hero, 18%) 72%
+    ),
+    linear-gradient(
+      180deg,
+      fade(@bg-hero, 8%) 0%,
+      fade(@bg-hero, 12%) 35%,
+      fade(@bg-hero, 88%) 100%
+    );
+}
+.heroMedia img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 55%;
 }
 .heroInner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: inherit;
+  gap: 64px;
+  max-width: 1600px !important;
+  padding: clamp(64px, 9vh, 112px) clamp(28px, 5vw, 80px) 28px !important;
+}
+.heroBody {
+  flex: 1;
   display: grid;
-  grid-template-columns: minmax(280px, 2fr) minmax(0, 3fr);
-  gap: clamp(40px, 7vw, 112px);
-  align-items: center;
-  padding: 0 40px !important;
-  max-width: 1380px !important;
+  grid-template-columns: minmax(0, 1.3fr) minmax(300px, 0.85fr);
+  align-items: end;
+  gap: clamp(56px, 8vw, 136px);
+  animation: heroReveal 0.9s @ease-out-expo both;
 }
 .heroCopy {
-  max-width: 510px;
-  animation: heroReveal 0.8s @ease-out-expo both;
+  align-self: center;
+  min-width: 0;
+  padding: 24px 0;
 }
-.heroMeta,
+.heroTitle {
+  margin-bottom: 26px;
+  color: @surface-solid;
+  font-family: @font-display;
+  font-size: clamp(3.5rem, 7vw, 6rem);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.heroTitle em {
+  font-style: normal;
+}
+.heroDesc {
+  max-width: 420px;
+  margin-bottom: 32px;
+  color: @surface-solid;
+  font-size: 15px;
+  line-height: 1.95;
+}
+.heroCta {
+  min-height: 50px;
+  padding: 12px 24px !important;
+  border: 1px solid fade(@surface-solid, 65%) !important;
+  border-radius: 2px !important;
+  color: @surface-solid !important;
+  background: transparent !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+  letter-spacing: 0.08em;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease !important;
+  &:hover {
+    background: @surface-solid !important;
+    color: @bg-hero !important;
+  }
+}
+.heroQuote {
+  min-width: 0;
+  max-width: 440px;
+  margin: 0 0 24px;
+  justify-self: end;
+}
+.quoteText {
+  margin: 0;
+  color: @surface-solid;
+  font-family: @font-display;
+  font-size: clamp(17px, 1.35vw, 20px);
+  line-height: 2;
+  letter-spacing: 0.04em;
+  line-break: strict;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+.quoteText p {
+  margin: 0;
+}
+.quoteTrigger {
+  display: inline-block;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+  cursor: help;
+  &:hover .quoteHint {
+    color: @surface-solid;
+    border-bottom-color: @surface-solid;
+  }
+  &:focus-visible {
+    outline: 2px solid @surface-solid;
+    outline-offset: 6px;
+  }
+}
+.quoteHint {
+  display: inline-block;
+  margin-left: 12px;
+  border-bottom: 1px dotted fade(@surface-solid, 65%);
+  color: fade(@surface-solid, 85%);
+  font-family: @font-body;
+  font-size: 11px;
+  line-height: 1.8;
+  letter-spacing: 0.06em;
+  vertical-align: middle;
+}
+.quoteTooltip.quoteTooltip {
+  max-width: min(340px, calc(100vw - 32px));
+  padding: 16px 20px;
+  border-radius: 4px;
+  color: @text;
+  background: @surface-solid;
+  box-shadow: 0 12px 32px fade(@bg-hero, 28%);
+  font-family: @font-body;
+  font-size: 13px;
+  line-height: 1.85;
+}
+.quoteTooltipArrow.quoteTooltipArrow {
+  color: @surface-solid;
+}
+.quoteSource {
+  margin: 0 0 8px;
+  color: @pine;
+  font-family: @font-display;
+  font-size: 14px;
+  font-weight: 600;
+}
+.quoteExplanation {
+  margin: 0;
+}
+.quoteAuthor {
+  margin-top: 18px;
+  color: fade(@surface-solid, 85%);
+  font-family: @font-display;
+  font-size: 14px;
+  line-height: 1.8;
+  letter-spacing: 0.08em;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+.heroFooter {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 56px;
+  padding-top: 20px;
+  border-top: 1px solid fade(@surface-solid, 25%);
+}
+.heroCount {
+  color: fade(@surface-solid, 82%);
+  font-family: @font-mono;
+  font-size: 11px;
+  line-height: 1.8;
+}
+.heroCaption {
+  position: absolute;
+  z-index: 1;
+  right: max(5vw, calc((100vw - 1440px) / 2));
+  bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  max-width: 36%;
+  color: fade(@surface-solid, 85%);
+  font-family: @font-body;
+  font-size: 11px;
+  line-height: 1.8;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+.scrollHint {
+  position: absolute !important;
+  left: 50%;
+  bottom: -4px;
+  transform: translateX(-50%);
+  min-width: 44px !important;
+  width: 44px;
+  height: 44px;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  color: @surface-solid !important;
+  &:hover {
+    background: fade(@surface-solid, 12%) !important;
+  }
+}
+.heroCta:focus-visible,
+.scrollHint:focus-visible {
+  outline: 2px solid @surface-solid;
+  outline-offset: 5px;
+}
 .gallerySubtitle {
   font-family: @font-mono;
   font-size: 11px;
   letter-spacing: 1.8px;
   color: @accent-dark;
-}
-.heroMeta {
-  margin-bottom: 28px;
-}
-.heroTitle {
-  font-family: @font-display;
-  font-size: clamp(3rem, 5.2vw, 5.5rem);
-  line-height: 1.1;
-  font-weight: 600;
-  letter-spacing: -0.04em;
-  color: @text;
-  margin-bottom: 28px;
-}
-.heroTitle em {
-  color: @pine;
-  font-style: normal;
-}
-.heroDesc {
-  color: @text-secondary;
-  font-size: 16px;
-  line-height: 1.9;
-  max-width: 440px;
-  margin-bottom: 34px;
-}
-.heroActions {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-.heroCta {
-  background: @pine !important;
-  color: @surface-solid !important;
-  border-radius: 4px !important;
-  padding: 12px 20px !important;
-  text-transform: none !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.2px;
-  &:hover {
-    background: darken(@pine, 8%) !important;
-  }
-}
-.ctaIcon {
-  font-size: 18px !important;
-}
-.heroCount {
-  font-family: @font-mono;
-  font-size: 11px;
-  color: @text-muted;
-}
-.heroMedia {
-  margin: 0;
-  position: relative;
-  min-height: 520px;
-  background: @bg-warm;
-  overflow: hidden;
-  animation: heroReveal 0.9s @ease-out-expo 0.08s both;
-}
-.heroMedia img {
-  width: 100%;
-  height: 100%;
-  min-height: 520px;
-  object-fit: cover;
-  object-position: center;
-}
-.heroCaption {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 36px 20px 16px;
-  color: rgba(255, 253, 248, 0.92);
-  font-family: @font-mono;
-  font-size: 10px;
-  letter-spacing: 0.5px;
-  background: linear-gradient(transparent, rgba(17, 21, 18, 0.78));
-}
-.scrollHint {
-  position: absolute !important;
-  bottom: 22px;
-  left: 50%;
-  transform: translateX(-50%);
-  min-width: 44px !important;
-  color: @text-muted !important;
-  animation: float-y 2.8s ease-in-out infinite;
 }
 .galleryWrap {
   padding: 92px 0 120px;
@@ -222,7 +354,7 @@
 }
 @keyframes heroReveal {
   from {
-    opacity: 0;
+    opacity: 0.65;
     transform: translateY(18px);
   }
   to {
@@ -232,56 +364,83 @@
 }
 @media @tablet {
   .heroInner {
-    gap: 44px;
-    padding: 0 28px !important;
+    gap: 48px;
+    padding: 64px 28px 24px !important;
   }
-  .heroMedia,
-  .heroMedia img {
-    min-height: 430px;
+  .heroBody {
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.9fr);
+    gap: 40px;
+  }
+  .heroCaption {
+    right: 28px;
+    bottom: 24px;
   }
 }
 @media @mobile {
   .hero {
-    padding: 60px 0 54px;
+    min-height: calc(100svh - 60px);
   }
   .heroInner {
-    display: flex;
-    flex-direction: column-reverse;
     gap: 32px;
-    padding: 0 16px !important;
-    align-items: stretch;
+    padding: 48px 24px 24px !important;
   }
-  .heroMedia,
   .heroMedia img {
-    min-height: 290px;
+    object-position: 58% center;
+  }
+  .heroMedia::after {
+    background: linear-gradient(
+      180deg,
+      fade(@bg-hero, 54%) 0%,
+      fade(@bg-hero, 64%) 40%,
+      fade(@bg-hero, 92%) 100%
+    );
+  }
+  .heroBody {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 36px;
   }
   .heroCopy {
-    max-width: none;
-  }
-  .heroMeta {
-    margin-bottom: 18px;
-    font-size: 10px;
+    padding: 0;
   }
   .heroTitle {
-    font-size: clamp(2.7rem, 12vw, 4rem);
+    font-size: clamp(3rem, 12.5vw, 4rem);
     line-height: 1.16;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
   }
   .heroDesc {
+    max-width: 380px;
     font-size: 14px;
     line-height: 1.85;
     margin-bottom: 24px;
   }
+  .heroQuote {
+    max-width: none;
+    margin: 0;
+    justify-self: stretch;
+  }
+  .quoteText {
+    font-size: 16px;
+    line-height: 1.95;
+    letter-spacing: 0.03em;
+  }
+  .quoteAuthor {
+    margin-top: 12px;
+    font-size: 13px;
+  }
+  .heroFooter {
+    min-height: 64px;
+    align-items: flex-end;
+  }
+  .heroCount {
+    max-width: 45%;
+    font-size: 10px;
+  }
   .heroCaption {
-    padding: 28px 12px 12px;
-    font-size: 9px;
-  }
-  .heroActions {
-    gap: 14px;
-  }
-  .heroCta {
-    width: 100%;
-    justify-content: center;
+    right: 24px;
+    bottom: 24px;
+    max-width: 45%;
+    font-size: 10px;
   }
   .scrollHint {
     display: none !important;

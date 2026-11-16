@@ -10,7 +10,8 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import Tooltip from '@mui/material/Tooltip';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import ViewQuilt from '@mui/icons-material/ViewQuilt';
 import Timeline from '@mui/icons-material/Timeline';
@@ -21,20 +22,23 @@ import MasonryGallery from '@/components/MasonryGallery';
 import TimelineGallery from '@/components/TimelineGallery';
 import ScrollReveal from '@/components/ScrollReveal';
 import { photos as realPhotos, contentTags, locationTags } from '@/config/photos';
+import { quotes } from '@/config/quotes';
 import { sortPhotosByDateDesc } from '@/utils/sortPhotosByDate';
 import styles from './index.module.less';
 
 const heroCandidates = realPhotos.filter(photo => photo.tags?.includes('风光'));
 const heroPool = heroCandidates.length > 0 ? heroCandidates : realPhotos;
-const daysPerRotation = 7;
-const rotationIndex = Math.floor(Date.now() / (daysPerRotation * 24 * 60 * 60 * 1000));
-const heroPhoto = heroPool[rotationIndex % heroPool.length];
+// 每次打开页面分别随机选择封面和摘抄，在本次浏览中保持稳定。
+const heroPhoto =
+  heroPool.length > 0 ? heroPool[Math.floor(Math.random() * heroPool.length)] : undefined;
+const heroQuote = quotes.length > 0 ? quotes[Math.floor(Math.random() * quotes.length)] : undefined;
 type ViewMode = 'masonry' | 'timeline';
 
 const Home: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('全部');
   const [selectedLocation, setSelectedLocation] = useState('全部');
   const [viewMode, setViewMode] = useState<ViewMode>('masonry');
+  const [quoteExplanationOpen, setQuoteExplanationOpen] = useState(false);
   const photos = useMemo(() => sortPhotosByDateDesc(realPhotos), []);
   const filteredPhotos = photos.filter(photo => {
     if (selectedCategory !== '全部' && !photo.tags?.includes(selectedCategory)) return false;
@@ -52,53 +56,108 @@ const Home: React.FC = () => {
   return (
     <Box className={styles.homePage}>
       <Box component="section" className={styles.hero} aria-labelledby="hero-title">
+        {heroPhoto && (
+          <Box component="figure" className={styles.heroMedia}>
+            <img
+              src={heroPhoto.thumbnail || heroPhoto.src}
+              alt={heroPhoto.alt}
+              width={heroPhoto.width}
+              height={heroPhoto.height}
+              fetchPriority="high"
+            />
+            <Box component="figcaption" className={styles.heroCaption}>
+              <span>{heroPhoto.alt}</span>
+              <span>
+                {[heroPhoto.location?.city ?? '山野', heroPhoto.exif?.date]
+                  .filter(Boolean)
+                  .join(' · ')}
+              </span>
+            </Box>
+          </Box>
+        )}
         <Container maxWidth="xl" className={styles.heroInner}>
-          <Box className={styles.heroCopy}>
-            <Typography className={styles.heroMeta}>ST2EAM · PHOTOGRAPHY ARCHIVE</Typography>
-            <Typography id="hero-title" component="h1" className={styles.heroTitle}>
-              雨涧听溪，
-              <br />
-              <em>山野春行</em>
-            </Typography>
-            <Typography className={styles.heroDesc}>
-              在雾与光之间，记录山野的回声。这里收集行走途中真实遇见的风景、人物与片刻。
-            </Typography>
-            <Box className={styles.heroActions}>
+          <Box className={styles.heroBody}>
+            <Box className={styles.heroCopy}>
+              <Typography id="hero-title" component="h1" className={styles.heroTitle}>
+                雨涧听溪，
+                <br />
+                <em>山野春行</em>
+              </Typography>
+              <Typography className={styles.heroDesc}>
+                在雾与光之间，记录山野的回声。这里收集行走途中真实遇见的风景、人物与片刻。
+              </Typography>
               <Button
                 onClick={scrollToGallery}
                 className={styles.heroCta}
-                variant="contained"
-                disableElevation
+                variant="outlined"
                 endIcon={<ArrowForward />}
               >
-                <PhotoCamera className={styles.ctaIcon} /> 进入作品集
+                进入作品集
               </Button>
-              <Typography className={styles.heroCount}>
-                {photos.length} 张作品 · {locationTags.length - 1} 个地点
-              </Typography>
             </Box>
+            {heroQuote && (
+              <figure className={styles.heroQuote} aria-label="句子摘抄">
+                <blockquote className={styles.quoteText}>
+                  {heroQuote.explanation ? (
+                    <ClickAwayListener onClickAway={() => setQuoteExplanationOpen(false)}>
+                      <Tooltip
+                        title={
+                          <>
+                            {heroQuote.source && (
+                              <p className={styles.quoteSource}>
+                                {[heroQuote.author, heroQuote.source].filter(Boolean).join(' · ')}
+                              </p>
+                            )}
+                            <p className={styles.quoteExplanation}>{heroQuote.explanation}</p>
+                          </>
+                        }
+                        placement="top"
+                        enterDelay={0}
+                        arrow
+                        describeChild
+                        disableTouchListener
+                        open={quoteExplanationOpen}
+                        onOpen={() => setQuoteExplanationOpen(true)}
+                        onClose={() => setQuoteExplanationOpen(false)}
+                        slotProps={{
+                          tooltip: { className: styles.quoteTooltip },
+                          arrow: { className: styles.quoteTooltipArrow },
+                        }}
+                      >
+                        <button
+                          type="button"
+                          className={styles.quoteTrigger}
+                          aria-expanded={quoteExplanationOpen}
+                          onClick={() => setQuoteExplanationOpen(true)}
+                          onBlur={() => setQuoteExplanationOpen(false)}
+                        >
+                          “{heroQuote.text}”<span className={styles.quoteHint}>释义</span>
+                        </button>
+                      </Tooltip>
+                    </ClickAwayListener>
+                  ) : (
+                    <p>“{heroQuote.text}”</p>
+                  )}
+                </blockquote>
+                {heroQuote.author && (
+                  <figcaption className={styles.quoteAuthor}>——{heroQuote.author}</figcaption>
+                )}
+              </figure>
+            )}
           </Box>
-          {heroPhoto && (
-            <Box component="figure" className={styles.heroMedia}>
-              <img
-                src={heroPhoto.thumbnail || heroPhoto.src}
-                alt={heroPhoto.alt}
-                width={heroPhoto.width}
-                height={heroPhoto.height}
-                fetchPriority="high"
-              />
-              <Box component="figcaption" className={styles.heroCaption}>
-                <span>{heroPhoto.alt}</span>
-                <span>
-                  {heroPhoto.location?.city ?? '山野'} · {heroPhoto.exif?.date ?? ''}
-                </span>
-              </Box>
-            </Box>
-          )}
+          <Box className={styles.heroFooter}>
+            <Typography className={styles.heroCount}>
+              {photos.length} 张作品 · {locationTags.length - 1} 个地点
+            </Typography>
+            <Button
+              className={styles.scrollHint}
+              onClick={scrollToGallery}
+              aria-label="滚动到作品集"
+            >
+              <KeyboardArrowDown />
+            </Button>
+          </Box>
         </Container>
-        <Button className={styles.scrollHint} onClick={scrollToGallery} aria-label="滚动到作品集">
-          <KeyboardArrowDown />
-        </Button>
       </Box>
 
       <Box
