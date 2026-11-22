@@ -12,12 +12,9 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import ViewQuilt from '@mui/icons-material/ViewQuilt';
 import Timeline from '@mui/icons-material/Timeline';
 import ArrowForward from '@mui/icons-material/ArrowForward';
-import LocationOn from '@mui/icons-material/LocationOn';
-import LocalOffer from '@mui/icons-material/LocalOffer';
 import MasonryGallery from '@/components/MasonryGallery';
 import TimelineGallery from '@/components/TimelineGallery';
 import ScrollReveal from '@/components/ScrollReveal';
@@ -31,6 +28,12 @@ const heroPool = heroCandidates.length > 0 ? heroCandidates : realPhotos;
 // 每次打开页面分别随机选择封面和摘抄，在本次浏览中保持稳定。
 const heroPhoto =
   heroPool.length > 0 ? heroPool[Math.floor(Math.random() * heroPool.length)] : undefined;
+const heroPhotoDetails = [
+  heroPhoto?.location?.city || heroPhoto?.location?.province,
+  heroPhoto?.exif?.date,
+]
+  .filter(Boolean)
+  .join(' · ');
 const heroQuote = quotes.length > 0 ? quotes[Math.floor(Math.random() * quotes.length)] : undefined;
 type ViewMode = 'masonry' | 'timeline';
 
@@ -56,25 +59,6 @@ const Home: React.FC = () => {
   return (
     <Box className={styles.homePage}>
       <Box component="section" className={styles.hero} aria-labelledby="hero-title">
-        {heroPhoto && (
-          <Box component="figure" className={styles.heroMedia}>
-            <img
-              src={heroPhoto.thumbnail || heroPhoto.src}
-              alt={heroPhoto.alt}
-              width={heroPhoto.width}
-              height={heroPhoto.height}
-              fetchPriority="high"
-            />
-            <Box component="figcaption" className={styles.heroCaption}>
-              <span>{heroPhoto.alt}</span>
-              <span>
-                {[heroPhoto.location?.city ?? '山野', heroPhoto.exif?.date]
-                  .filter(Boolean)
-                  .join(' · ')}
-              </span>
-            </Box>
-          </Box>
-        )}
         <Container maxWidth="xl" className={styles.heroInner}>
           <Box className={styles.heroBody}>
             <Box className={styles.heroCopy}>
@@ -82,9 +66,6 @@ const Home: React.FC = () => {
                 雨涧听溪，
                 <br />
                 <em>山野春行</em>
-              </Typography>
-              <Typography className={styles.heroDesc}>
-                在雾与光之间，记录山野的回声。这里收集行走途中真实遇见的风景、人物与片刻。
               </Typography>
               <Button
                 onClick={scrollToGallery}
@@ -145,18 +126,21 @@ const Home: React.FC = () => {
               </figure>
             )}
           </Box>
-          <Box className={styles.heroFooter}>
-            <Typography className={styles.heroCount}>
-              {photos.length} 张作品 · {locationTags.length - 1} 个地点
-            </Typography>
-            <Button
-              className={styles.scrollHint}
-              onClick={scrollToGallery}
-              aria-label="滚动到作品集"
-            >
-              <KeyboardArrowDown />
-            </Button>
-          </Box>
+          {heroPhoto && (
+            <figure className={styles.heroPhoto}>
+              <img
+                src={heroPhoto.thumbnail || heroPhoto.src}
+                alt={heroPhoto.alt}
+                width={heroPhoto.width}
+                height={heroPhoto.height}
+                fetchPriority="high"
+              />
+              <figcaption className={styles.heroCaption}>
+                <span>{heroPhoto.alt}</span>
+                {heroPhotoDetails && <span>{heroPhotoDetails}</span>}
+              </figcaption>
+            </figure>
+          )}
         </Container>
       </Box>
 
@@ -169,14 +153,9 @@ const Home: React.FC = () => {
         <Container maxWidth="xl">
           <ScrollReveal>
             <Box className={styles.galleryHeader}>
-              <Box>
-                <Typography id="gallery-title" component="h2" className={styles.galleryTitle}>
-                  作品选集
-                </Typography>
-                <Typography className={styles.gallerySubtitle}>
-                  PHOTOGRAPHY ARCHIVE · {filteredPhotos.length} WORKS
-                </Typography>
-              </Box>
+              <Typography id="gallery-title" component="h2" className={styles.galleryTitle}>
+                作品选集
+              </Typography>
               <ToggleButtonGroup
                 value={viewMode}
                 exclusive
@@ -198,21 +177,19 @@ const Home: React.FC = () => {
           {viewMode === 'masonry' && (
             <ScrollReveal delay={120}>
               <Box className={styles.filterSection}>
-                <Box className={styles.categoryRow} aria-label="作品分类">
-                  <LocalOffer className={styles.filterIcon} />
+                <Box className={styles.categoryRow} role="group" aria-label="作品分类">
                   {contentTags.map(category => (
                     <Chip
                       key={category}
                       label={category}
+                      aria-pressed={selectedCategory === category}
                       onClick={() => setSelectedCategory(category)}
                       className={`${styles.filterChip} ${selectedCategory === category ? styles.chipActive : ''}`}
                     />
                   ))}
                 </Box>
                 <FormControl size="small" className={styles.locationSelect}>
-                  <InputLabel id="location-label">
-                    <LocationOn fontSize="small" /> 地点
-                  </InputLabel>
+                  <InputLabel id="location-label">地点</InputLabel>
                   <Select
                     labelId="location-label"
                     value={selectedLocation}

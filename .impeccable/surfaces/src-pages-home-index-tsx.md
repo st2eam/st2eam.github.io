@@ -7,7 +7,7 @@ related_targets: ["src/pages/Home/index.module.less"]
 
 # Home Hero
 
-Scope: Home Hero only. Mode: Experience. The visitor first encounters real photography, reads the supplied quotation, then enters the archive. Preserve the archive, navigation, supplied copy, and independent quote configuration. Each page load independently randomizes the Hero photograph and quotation; both remain fixed during the current browse.
+Scope: Home Hero and archive header. Mode: Experience. The visitor first encounters a photograph, reads the quotation, then enters the archive. Each page load independently randomizes the Hero photograph and quotation. Both stay fixed during the current browse.
 
 ## Direction contract
 
@@ -17,7 +17,9 @@ OWN-WORLD: Retain the established Chinese serif, warm paper foreground, pine-bla
 
 STORY: Visitors recognize the photography archive, read the title and quotation, and use the existing archive action. Photo title, location, and date remain truthful and visible.
 
-FIRST VIEWPORT: The background fills the entire Hero beneath the existing navigation. A large two-line title, description, and outlined archive action occupy the left; the full quote and right-aligned author sit lower on the right. A quiet footer anchors counts, scrolling, and photo metadata. Mobile stacks the title, action, and complete quote over the same background; content can grow instead of clipping.
+FIRST VIEWPORT: The photograph fills the Hero beneath the navigation. A large two-line title and outlined archive action occupy the left. The full quotation and right-aligned author sit lower on the right, with the photo caption at the bottom edge. Mobile stacks the title, action, and quotation over the image and lets the Hero grow with its content.
+
+ARCHIVE HEADER: Place the view switcher next to the section title. Group category and location filters directly above the photographs.
 
 FORM: User-pinned full-background composition; direct implementation of a precisely specified local redesign. No concept seed or generated comp applies. One visible-default content reveal; reduced-motion users get a static scene.
 

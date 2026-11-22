@@ -26,9 +26,9 @@ Large titles are compact but never overflow. Body measure stays around 65–75ch
 
 ## Composition
 
-- Home first viewport: a full-bleed photograph fills the Hero beneath the existing navigation. On desktop, a large white Songti title, description, and outlined archive action sit on the left; the full quotation and right-aligned author sit lower on the right. Mobile stacks the same content over the image.
+- A full-bleed photograph fills the Home Hero beneath the navigation. On desktop, the Songti title and outlined archive action sit on the left. The quotation and its author sit lower on the right, with the photo caption at the bottom edge. Mobile stacks the same content over the image.
 - Each page load independently picks a random Hero photograph from the real `风光` archive and a random quotation from `src/config/quotes.ts`. Both stay fixed during the current browse, including filter changes and route navigation. The fog-forest frame `DSC04146.jpg` remains one of the available photographs.
-- Archive uses generous gutters, restrained image corners, compact filters, and metadata revealed through hover, focus, or opening the viewer.
+- The archive pairs its title with the view switcher and groups filters directly above the photographs. It uses generous gutters, restrained image corners, and metadata revealed through hover, focus, or opening the viewer.
 - Projects is a quiet secondary archive, not a competing hero.
 - Notes keeps the existing external document experience inside a titled, full-height frame and exposes a direct-link fallback.
 - Footer is a quiet index of the four public routes, identity, contact, and the existing GitHub/email links; no continuous marquee is used.
